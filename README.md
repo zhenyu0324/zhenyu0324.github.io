@@ -1,2 +1,2 @@
-# zhenyu0324.github.io
-超级阵雨的BLOG
+# 超级阵雨的BLOG
+zhenyu0324.github.io
