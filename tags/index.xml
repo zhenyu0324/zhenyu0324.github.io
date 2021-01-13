@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 超级阵雨的乌托邦星球</title>
+    <link>http://localhost:1313/tags/</link>
+    <description>Recent content in Tags on 超级阵雨的乌托邦星球</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 13 Jan 2021 18:13:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LeetCode</title>
+      <link>http://localhost:1313/tags/leetcode/</link>
+      <pubDate>Wed, 13 Jan 2021 18:13:54 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/leetcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>算法之美</title>
+      <link>http://localhost:1313/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/</link>
+      <pubDate>Wed, 13 Jan 2021 18:13:54 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>preview</title>
+      <link>http://localhost:1313/tags/preview/</link>
+      <pubDate>Wed, 30 Aug 2017 01:37:56 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/preview/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tag-1</title>
+      <link>http://localhost:1313/tags/tag-1/</link>
+      <pubDate>Wed, 30 Aug 2017 01:37:56 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/tag-1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>中文</title>
+      <link>http://localhost:1313/tags/%E4%B8%AD%E6%96%87/</link>
+      <pubDate>Wed, 30 Aug 2017 01:37:56 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/%E4%B8%AD%E6%96%87/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
