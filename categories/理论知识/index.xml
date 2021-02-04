@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>理论知识 on 超级阵雨的乌托邦星球</title>
+    <link>https://zhenyu0324.github.io/categories/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/</link>
+    <description>Recent content in 理论知识 on 超级阵雨的乌托邦星球</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 04 Feb 2021 15:24:50 +0800</lastBuildDate>
+    
+	<atom:link href="https://zhenyu0324.github.io/categories/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>区块链学习笔记</title>
+      <link>https://zhenyu0324.github.io/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 04 Feb 2021 15:24:50 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>区块链学习 1. 区块链基础 区块链是什么 区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通</description>
+    </item>
+    
+  </channel>
+</rss>
