@@ -10,41 +10,48 @@
   
   <url>
     <loc>https://zhenyu0324.github.io/categories/</loc>
-    <lastmod>2021-02-04T15:24:50+08:00</lastmod>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://zhenyu0324.github.io/post/</loc>
-    <lastmod>2021-02-04T15:24:50+08:00</lastmod>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://zhenyu0324.github.io/tags/</loc>
-    <lastmod>2021-02-04T15:24:50+08:00</lastmod>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</loc>
-    <lastmod>2021-02-04T15:24:50+08:00</lastmod>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://zhenyu0324.github.io/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</loc>
-    <lastmod>2021-02-04T15:24:50+08:00</lastmod>
+    <loc>https://zhenyu0324.github.io/post/blockchain2/</loc>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2021-02-05T10:15:28+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhenyu0324.github.io/post/blockchain1/</loc>
     <lastmod>2021-02-04T15:24:50+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

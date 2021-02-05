@@ -6,17 +6,26 @@
     <description>Recent content in 区块链 on 超级阵雨的乌托邦星球</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 04 Feb 2021 15:24:50 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 05 Feb 2021 10:15:28 +0800</lastBuildDate>
     
 	<atom:link href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>区块链学习--2技术</title>
+      <link>https://zhenyu0324.github.io/post/blockchain2/</link>
+      <pubDate>Fri, 05 Feb 2021 10:15:28 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/blockchain2/</guid>
+      <description>区块链学习&amp;ndash;2技术 2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据</description>
+    </item>
+    
+    <item>
       <title>区块链学习--1区块链基础</title>
-      <link>https://zhenyu0324.github.io/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</link>
+      <link>https://zhenyu0324.github.io/post/blockchain1/</link>
       <pubDate>Thu, 04 Feb 2021 15:24:50 +0800</pubDate>
       
-      <guid>https://zhenyu0324.github.io/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</guid>
+      <guid>https://zhenyu0324.github.io/post/blockchain1/</guid>
       <description>1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行</description>
     </item>
     

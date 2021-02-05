@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>区块链学习--2技术 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="超级阵雨" /><meta name="description" content="区块链学习&amp;ndash;2技术 2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.1 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/blockchain2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="区块链学习--2技术" />
+<meta property="og:description" content="区块链学习&ndash;2技术 2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/blockchain2/" />
+<meta property="article:published_time" content="2021-02-05T10:15:28+08:00" />
+<meta property="article:modified_time" content="2021-02-05T10:15:28+08:00" />
+<meta itemprop="name" content="区块链学习--2技术">
+<meta itemprop="description" content="区块链学习&ndash;2技术 2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据">
+<meta itemprop="datePublished" content="2021-02-05T10:15:28&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-05T10:15:28&#43;08:00" />
+<meta itemprop="wordCount" content="4345">
+
+
+
+<meta itemprop="keywords" content="区块链," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="区块链学习--2技术"/>
+<meta name="twitter:description" content="区块链学习&ndash;2技术 2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">区块链学习--2技术</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 4345 words </span>
+          <span class="more-meta"> 9 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#区块链学习--2技术">区块链学习&ndash;2技术</a></li>
+    <li><a href="#2-区块链技术">2. 区块链技术</a>
+      <ul>
+        <li><a href="#21-技术基础">2.1 技术基础</a>
+          <ul>
+            <li><a href="#211-区块链的技术定义">2.1.1 区块链的技术定义</a></li>
+            <li><a href="#212-区块链的类型">2.1.2 区块链的类型</a></li>
+            <li><a href="#213区块链的核心技术组成">2.1.3区块链的核心技术组成</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-p2p网络">2.2 P2P网络</a>
+          <ul>
+            <li><a href="#221-网络连接与拓扑结构">2.2.1 网络连接与拓扑结构</a></li>
+            <li><a href="#222-节点发现">2.2.2 节点发现</a></li>
+            <li><a href="#223-局域网穿透">2.2.3 局域网穿透</a></li>
+            <li><a href="#234-节点交互协议">2.3.4 节点交互协议</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-共识算法与分布式一致性算法">2.3 共识算法与分布式一致性算法</a>
+          <ul>
+            <li><a href="#231-有关分布式系统的定理">2.3.1 有关分布式系统的定理</a></li>
+            <li><a href="#232-共识算法与分布式一致性算法">2.3.2 共识算法与分布式一致性算法</a></li>
+          </ul>
+        </li>
+        <li><a href="#24-pow共识">2.4 PoW共识</a></li>
+        <li><a href="#25-pos共识机制">2.5 PoS共识机制</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="区块链学习--2技术">区块链学习&ndash;2技术</h1>
+<h1 id="2-区块链技术">2. 区块链技术</h1>
+<h2 id="21-技术基础">2.1 技术基础</h2>
+<h3 id="211-区块链的技术定义">2.1.1 区块链的技术定义</h3>
+<p>简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。</p>
+<ul>
+<li>从数据结构上看，它是基于时间序列的链式数据块结构</li>
+<li>从节点拓扑上看，它所有的节点互为冗余备份</li>
+<li>从操作上看，它提供了基于密码学的公私钥管理体系来管理账户</li>
+</ul>
+<p><strong>区块链在技术上的 7 个特征</strong></p>
+<ol>
+<li>
+<p>区块链的存储基于分布式数据库；</p>
+</li>
+<li>
+<p>数据库是区块链的数据载体，区块链是交易的业务逻辑载体；</p>
+</li>
+<li>
+<p>区块链按时间序列化区块数据，整个网络有一个最终确定状态；</p>
+</li>
+<li>
+<p>区块链只对添加有效，对其他操作无效；</p>
+</li>
+<li>
+<p>交易基于非对称加密的公私钥验证；</p>
+</li>
+<li>
+<p>区块链网络要求拜占庭将军容错；</p>
+</li>
+<li>
+<p>共识算法能够“解决”双花问题</p>
+</li>
+</ol>
+<h3 id="212-区块链的类型">2.1.2 区块链的类型</h3>
+<ul>
+<li>公有区块链
+区块链通常指的是公有区块链</li>
+<li>联盟链
+所谓联盟链，就是这个区块链具有准入许可，不像公链，任何人都可以随时进入。准入许可也就意味着候选节点进入区块链时需要得到已经在网络中的节点许可，所以联盟链也叫做许可链。</li>
+<li>侧链
+侧链是一种双向挂钩技术，将主链中的代币锁定到侧链中使用。所以可以将主链看作主干道，侧链看作与主链相对独立的一条分支道，作为主链功能的低耦合拓展。</li>
+</ul>
+<h3 id="213区块链的核心技术组成">2.1.3区块链的核心技术组成</h3>
+<p>四个组成模块</p>
+<ol>
+<li>P2P 网络协议</li>
+<li>分布式一致性算法（共识机制）</li>
+<li>加密签名算法</li>
+<li>账户与存储模型</li>
+</ol>
+<h4 id="2131-p2p-网络协议">2.1.3.1 P2P 网络协议</h4>
+<p>P2P 网络协议是所有区块链的最底层模块，负责交易数据的网络传输和广播、节点发现和维护</p>
+<p>通常我们所用的都是比特币 P2P 网络协议模块，它遵循一定的交互原则。比如：初次连接到其他节点会被要求按照<strong>握手协议</strong>来确认状态，在握手之后开始请求 Peer 节点的<strong>地址数据</strong>以及<strong>区块数据</strong>。</p>
+<p>这套 P2P 交互协议也具有自己的指令集合，指令体现在在消息头（Message Header) 的命令（command）域中，这些命令为上层提供了节点发现、节点获取、区块头获取、区块获取等功能。</p>
+<h4 id="2132分布式一致性算法">2.1.3.2分布式一致性算法</h4>
+<p>在经典分布式计算领域，我们有 Raft 和 Paxos 算法家族代表的非拜占庭容错算法，以及具有拜占庭容错特性的 PBFT 共识算法。</p>
+<p>如果从技术演化的角度来看，我们可以得出一个图，其中，区块链技术把原来的分布式算法进行了经济学上的拓展。</p>
+<p>![](/static/images/blockchain2_01.png =500x)</p>
+<p>在图中我们可以看到，计算机应用在最开始多为单点应用，高可用方便采用的是冷灾备，后来发展到异地多活，这些异地多活可能采用的是负载均衡和路由技术，随着分布式系统技术的发展，我们过渡到了 Paxos 和 Raft 为主的分布式系统。</p>
+<p>而在区块链领域，多采用 PoW 工作量证明算法、PoS 权益证明算法，以及 DPoS 代理权益证明算法，以上三种是业界主流的共识算法，这些算法与经典分布式一致性算法不同的是融入了经济学博弈的概念，下面我分别简单介绍这三种共识算法。</p>
+<ol>
+<li>
+<p>PoW：通常是指在给定的约束下，求解一个特定难度的数学问题，谁解的速度快，谁就能获得记账权（出块）权利。这个求解过程往往会转换成计算问题，所以在比拼速度的情况下，也就变成了谁的计算方法更优，以及谁的设备性能更好。比特币本身的演化很好地诠释了这个问题，中本聪设计的思路本来是由 CPU 计算。随着市场发展，人们发现 GPU 也可以参与其中，而且效率可以达到十倍百倍，现在，这项工作基本以 ASIC 专业挖矿芯片为主。</p>
+</li>
+<li>
+<p>PoS：这是一种股权证明机制，它的基本概念是产生区块的难度应该与你在网络里所占的股权（所有权占比）成比例，目前有三个版本 PoS1.0、PoS2.0、PoS3.0。它实现的核心思路是：使用你所锁定代币的币龄（CoinAge）以及一个小的工作量证明，去计算一个目标值，当满足目标值时，你将可能获取记账权。</p>
+</li>
+<li>
+<p>DPoS：简单来理解就是将 PoS 共识算法中的记账者转换为指定节点数组成的小圈子，而不是所有人都可以参与记账，这个圈子可能是 21 个节点，也有可能是 101 个节点。这一点取决于设计，只有这个圈子中的节点才能获得记账权。这将极大地提高系统的吞吐量，因为更少的节点也就意味着网络和节点的可控。</p>
+</li>
+</ol>
+<h4 id="2133加密签名算法">2.1.3.3加密签名算法</h4>
+<p>在区块链领域，哈希算法是应用得最多的算法。哈希算法具有抗碰撞性、原像不可逆、难题友好性等特征。</p>
+<p>其中，难题友好性正是众多 PoW 币种赖以存在的基础，在比特币中，SHA256 算法被用作工作量证明的计算方法，也就是我们所说的挖矿算法。</p>
+<p>区块链 Token 系统的基石：公私钥密码算法</p>
+<p>在比特币大类的代码中，基本上使用的都是 ECDSA。ECDSA 是 ECC 与 DSA 的结合，整个签名过程与 DSA 类似，所不一样的是签名中采取的算法为 ECC（椭圆曲线函数）。</p>
+<h4 id="2134-账户与交易模型">2.1.3.4 账户与交易模型</h4>
+<p>区块链的账本特性，通常分为 UTXO 结构以及基于 Account-Balance 结构的账本结构，我们也称为账本模型。UTXO 是“unspent transaction input/output”的缩写，翻译过来就是指“未花费的交易输入输出”。</p>
+<p>这个区块链中 Token 转移的一种记账模式，每次转移均以输入输出的形式出现。而在 Balance 结构中，是没有这个模式的。</p>
+<h2 id="22-p2p网络">2.2 P2P网络</h2>
+<p>比特币、以太坊等众多数字货币都实现了属于自己的 P2P 网络协议。</p>
+<p>主要有4部分：</p>
+<ol>
+<li>区块链的网络连接与拓扑结构</li>
+<li>节点发现</li>
+<li>局域网穿透</li>
+<li>节点交互协议</li>
+</ol>
+<h3 id="221-网络连接与拓扑结构">2.2.1 网络连接与拓扑结构</h3>
+<h4 id="2211-网络连接">2.2.1.1 网络连接</h4>
+<p>除去少数支持 UDP 协议的区块链项目外，绝大部分的区块链项目所使用的底层网络协议依然是 TCP/IP 协议。</p>
+<p>所以从网络协议的角度来看，区块链其实是基于 TCP/IP 网络协议的，这与 HTTP 协议、SMTP 协议是处在同一层，也就是应用层。</p>
+<p>比特币的 P2P 网络基于 TCP 构建，主网默认通信端口为 8333。</p>
+<p>以太坊的 P2P 网络则与比特币不太相同，以太坊 P2P 网络是一个完全加密的网络，提供 UDP 和 TCP 两种连接方式，主网默认 TCP 通信端口是 30303，推荐的 UDP 发现端口为 30301。</p>
+<h4 id="2212-拓扑结构">2.2.1.2 拓扑结构</h4>
+<p>P2P 网络拓扑结构有很多种，有些是中心化拓扑，有些是半中心化拓扑，有些是全分布式拓扑结构。</p>
+<p>比特币全节点组成的网络是一种全分布式的拓扑结构，节点与节点之间的传输过程更接近“泛洪算法”，即：交易从某个节点产生，接着广播到临近节点，临近节点一传十十传百，直至传播到全网。﻿﻿</p>
+<h3 id="222-节点发现">2.2.2 节点发现</h3>
+<p>节点发现是任何区块链节点接入区块链 P2P 网络的第一步。这与你孤身一人去陌生地方旅游一样，如果没有地图和导航，那你只能拽附近的人问路，“拽附近的人问路”的这个动作就可以理解成节点发现。</p>
+<h4 id="2221-初始节点发现">2.2.2.1 初始节点发现</h4>
+<p>节点发现可分为初始节点发现，和启动后节点发现。</p>
+<p>初始节点发现一共有两种方式：</p>
+<ol>
+<li>第一种叫做 DNS-seed，又称 DNS 种子节点，DNS 就是中心化域名查询服务，比特币的社区维护者会维护一些域名。</li>
+<li>第二种方式就是，代码中硬编码（ hard-code ）了一些地址，这些地址我们称之为种子节点（seed-node），当所有的种子节点全部失效时，全节点会尝试连接这些种子节点。</li>
+</ol>
+<h4 id="启动后节点发现">启动后节点发现</h4>
+<p>在 Bitcoin 的网络中，一个节点可以将自己维护的对等节点列表 (peer list) 发送给临近节点，所以在初始节点发现之后，你的节点要做的第一件事情就是向对方要列表：“快把你的节点列表给我复制一份。”</p>
+<p>所以在每次需要发送协议消息的时候，它会花费固定的时间尝试和已存的节点列表中的节点建立链接，如果有任何一个节点在超时之前可以连接上，就不用去 DNS seed 获取地址，一般来说，这种可能性很小，尤其是全节点数目非常多的情况下。</p>
+<p>而在以太坊网络中，也会维护类似的一个节点列表 (NodeTable)，但是这个节点列表与比特币的简单维护不同，它采用了 P2P 网络协议中一个成熟的算法，叫做 Kademlia 网络，简称 KAD 网络。</p>
+<h4 id="2223-黑名单与长连接">2.2.2.3 黑名单与长连接</h4>
+<p>公有区块链面临的网络环境是非常开放的，任何人只要下载好钱包，打开运行就进入了这个 P2P 网络，这也会带来被攻击的可能。</p>
+<p>不过总的来说，黑名单我们也可以通过操作系统的防火墙去处理，这并不算一个特别棘手的问题。</p>
+<h3 id="223-局域网穿透">2.2.3 局域网穿透</h3>
+<p>公网与局域网建立 映射
+NAT 技术和 UPnP 协议</p>
+<p>NAT 技术非常常见，这里使用的是源 NAT，简而言之就是替换 TCP 报文中的源地址并映射到内网地址。</p>
+<p>UPnP 是通用即插即用（Universal Plug and Play）的缩写，它主要用于设备的智能互联互通，所有在网络上的设备马上就能知道有新设备加入。</p>
+<h3 id="234-节点交互协议">2.3.4 节点交互协议</h3>
+<p>一旦节点建立连接以后，节点之间的交互是遵循一些特定的命令，这些命令写在消息的头部，消息体写的则是消息内容。</p>
+<p>命令分为两种，一种是请求命令，一种是数据交互命令。</p>
+<h2 id="23-共识算法与分布式一致性算法">2.3 共识算法与分布式一致性算法</h2>
+<p>分布式系统面临的问题
+分布式系统面临了几个问题：一致性问题，可终止性问题、合法性问题。</p>
+<p>可终止性可以理解为系统必须在有限的时间内给出一致性结果，合法性是指提案必须是系统内的节点提出。当然其中面对的最重要也是最基础的问题，就是我们常说的一致性问题。</p>
+<p>一致性是指在某个分布式系统中，任意节点的提案能够在约定的协议下被其他所有节点所认可。</p>
+<h3 id="231-有关分布式系统的定理">2.3.1 有关分布式系统的定理</h3>
+<p>我们在介绍具体的分布式一致性算法之前，先介绍两个定理，做一下铺垫。</p>
+<ul>
+<li>第一个是 FLP 不可能性，简单来说是：即使网络通信完全可靠，只要产生了拜占庭错误，就不存在一个确定性的共识算法能够为异步分布式系统提供一致性。换句话来说就是，不存在一个通用的共识算法可以解决所有的拜占庭错误。</li>
+<li>第二个是 CAP 定理，CAP 定理是分布式系统领域最重要的定理之一，这个我们在“理解区块链的常见误区”一文中稍微讲到过。也就是在设计分布式系统的过程中，“一致性”“可用性”“分区容忍性”三者中，我们只能选择两个作为主要强化的点，另外一个必然会被弱化。</li>
+</ul>
+<p>我们由 CAP 定理可以推导出严格一致性和最终一致性。</p>
+<p>通过以上我们可以发现比特币、以太坊等公链是偏重高可用性、分区容忍性（AP），满足最终一致性（C）且 TPS 较低的分布式系统。</p>
+<h3 id="232-共识算法与分布式一致性算法">2.3.2 共识算法与分布式一致性算法</h3>
+<h4 id="2321-经典的分布式一致性算法">2.3.2.1 经典的分布式一致性算法</h4>
+<p>经典分布式一致性算法有 Raft 协议，Raft 协议是一种强 Leader 的一致性算法，它的吞吐量基本就是 Leader 的吞吐量，它无法抵御节点恶意篡改数据的攻击。</p>
+<p>稍微复杂一点的就是 Paxos 协议，Paxos 能提供不同场合不同种类的一致性算法，所以 Paxos 有很多变种，经典 Paxos 是 Leaderless 的，有变种是强 Leader 型的，叫做 Fast Paxos，有关 Paxos 的文献非常丰富，这里就不赘述了。</p>
+<p>以上两种都是不提供拜占庭容错的系统，下面介绍一种具有拜占庭容错的一致性算法。</p>
+<p>PBFT 全称实用性拜占庭容错系统（Practical Byzantine Fault Tolerance, PBFT)，PBFT 是一种状态机，要求所有节点共同维护一个状态，所有节点采取的行动一致，PBFT 非常适合联盟链等对性能具有较高要求的场合，超级账本项目中的 Fabric 框架默认采用的就是 PBFT 的修改版本。</p>
+<h4 id="2322-区块链共识算法">2.3.2.2 区块链共识算法</h4>
+<p>区块链的共识算法，我在某些场合直接称作基于经济学的博弈算法，以区别于经典分布式一致性算法思路，它的整体思路就是让攻击者的攻击成本远远大于收益。</p>
+<p>区块链中的共识算法目前具有工业成熟度的是 PoW，另外两种比较成熟的是 PoS 和 DPoS，其次还有一些变种和单一币种使用的共识算法，例如 Ripple 共识、
+PoC 共识（概念性证明）、PoE 共识（存在性证明）。</p>
+<p>在使用 PoW 共识算法的情况下，容错阈值是 50%，而 PBFT 及其变种的容错阈值是 33% 左右，这里的百分比是指作弊节点占全网节点的比例。</p>
+<p>&mdash;-未完待续&mdash;-</p>
+<h2 id="24-pow共识">2.4 PoW共识</h2>
+<h2 id="25-pos共识机制">2.5 PoS共识机制</h2>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-02-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/blockchain1/">
+            <span class="next-text nav-default">区块链学习--1区块链基础</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
