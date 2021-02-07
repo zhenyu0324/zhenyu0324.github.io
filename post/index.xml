@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 超级阵雨的乌托邦星球</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 07 Feb 2021 16:05:48 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 07 Feb 2021 17:38:26 +0800</lastBuildDate>
     
 	<atom:link href="https://zhenyu0324.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>区块链学习--5数字货币与数字资产</title>
+      <link>https://zhenyu0324.github.io/post/blockchain5/</link>
+      <pubDate>Sun, 07 Feb 2021 17:38:26 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/blockchain5/</guid>
+      <description>5.1 比特币专题（一）历史与货币 5.1.1 比特币的逆袭史 比特币的历史总结起来大约有四个时期：创立前期、创立期、成长和稳定期。 创立前期 在比特币创立之前，世</description>
+    </item>
     
     <item>
       <title>区块链学习--4技术下</title>
