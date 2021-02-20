@@ -1,2 +1,1 @@
 User-agent: *
-Sitemap: https://zhenyu0324.github.io/sitemap.xml

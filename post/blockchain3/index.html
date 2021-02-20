@@ -1,184 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>区块链学习--3技术中 - 超级阵雨的乌托邦星球</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.67.1" />
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <title>区块链学习--3技术中 &middot; 超级阵雨的乌托邦星球</title>
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+    
 
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
 
-<meta name="author" content="超级阵雨" /><meta name="description" content="2.7 哈希与加密算法 核心：区块链的密码学基础 区块链中主要应用了两类密码学算法： 哈希算法 非对称加密算法 2.7.1 哈希算法 哈希算法是一类数学函数算法，又称散" />
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
 
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
 
+  <link rel="stylesheet" href="/css/blackburn.css">
 
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
 
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
 
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-<meta name="generator" content="Hugo 0.67.1 with theme even" />
+ 
+  
 
+  
 
-<link rel="canonical" href="https://zhenyu0324.github.io/post/blockchain3/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="https://zhenyu0324.github.io/img/favicon.ico" type="image/x-icon" />
 
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="区块链学习--3技术中" />
-<meta property="og:description" content="2.7 哈希与加密算法 核心：区块链的密码学基础 区块链中主要应用了两类密码学算法： 哈希算法 非对称加密算法 2.7.1 哈希算法 哈希算法是一类数学函数算法，又称散" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://zhenyu0324.github.io/post/blockchain3/" />
-<meta property="article:published_time" content="2021-02-07T16:00:25+08:00" />
-<meta property="article:modified_time" content="2021-02-07T16:00:25+08:00" />
-<meta itemprop="name" content="区块链学习--3技术中">
-<meta itemprop="description" content="2.7 哈希与加密算法 核心：区块链的密码学基础 区块链中主要应用了两类密码学算法： 哈希算法 非对称加密算法 2.7.1 哈希算法 哈希算法是一类数学函数算法，又称散">
-<meta itemprop="datePublished" content="2021-02-07T16:00:25&#43;08:00" />
-<meta itemprop="dateModified" content="2021-02-07T16:00:25&#43;08:00" />
-<meta itemprop="wordCount" content="6436">
-
-
-
-<meta itemprop="keywords" content="区块链," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="区块链学习--3技术中"/>
-<meta name="twitter:description" content="2.7 哈希与加密算法 核心：区块链的密码学基础 区块链中主要应用了两类密码学算法： 哈希算法 非对称加密算法 2.7.1 哈希算法 哈希算法是一类数学函数算法，又称散"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
+  
+  
 
 </head>
+
+
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">Tags</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">About</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
-</div>
+<div id="layout">
 
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">Tags</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">About</a>
-      </li>
-  </ul>
-</nav>
-    </header>
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
 
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/">Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/">Archives</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/tags/">Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/categories/">Categories</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
     
-    <header class="post-header">
-      <h1 class="post-title">区块链学习--3技术中</h1>
 
-      <div class="post-meta">
-        <span class="post-time"> 2021-02-07 </span>
-        <div class="post-category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
-            </div>
-          <span class="more-meta"> 6436 words </span>
-          <span class="more-meta"> 13 mins read </span>
-        
-      </div>
-    </header>
+    
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#27-哈希与加密算法">2.7 哈希与加密算法</a>
-          <ul>
-            <li><a href="#271-哈希算法">2.7.1 哈希算法</a></li>
-            <li><a href="#272-非对称加密算法">2.7.2 非对称加密算法</a></li>
-          </ul>
-        </li>
-        <li><a href="#28-utxo与普通账户模型">2.8 UTXO与普通账户模型</a>
-          <ul>
-            <li><a href="#281-普通账户模型">2.8.1 普通账户模型</a></li>
-            <li><a href="#282-utxo-模型">2.8.2 UTXO 模型</a></li>
-            <li><a href="#283-账户余额模型与-utxo-的比较">2.8.3 账户余额模型与 UTXO 的比较</a></li>
-            <li><a href="#284-utxo-的特性及缺点">2.8.4 UTXO 的特性及缺点</a></li>
-          </ul>
-        </li>
-        <li><a href="#29去中心化与区块链交易性能">2.9去中心化与区块链交易性能</a>
-          <ul>
-            <li><a href="#291-去中心化">2.9.1 去中心化</a></li>
-            <li><a href="#292技术上的去中心化">2.9.2技术上的去中心化</a></li>
-            <li><a href="#293-各个区块链的-tps-指标">2.9.3 各个区块链的 TPS 指标</a></li>
-            <li><a href="#294-业界的可选方案之一sharding-分片">2.9.4 业界的可选方案之一：Sharding 分片</a></li>
-          </ul>
-        </li>
-        <li><a href="#210-智能合约与以太坊">2.10 智能合约与以太坊</a>
-          <ul>
-            <li><a href="#2101-智能合约">2.10.1 智能合约</a></li>
-            <li><a href="#2102-以太坊及其发展历史">2.10.2 以太坊及其发展历史</a></li>
-            <li><a href="#2103-以太坊的核心概念">2.10.3 以太坊的核心概念</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
   </ul>
-</nav>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
   </div>
 </div>
-    <div class="post-content">
-      <h2 id="27-哈希与加密算法">2.7 哈希与加密算法</h2>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>区块链学习--3技术中</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>07 Feb 2021, 16:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <h2 id="27-哈希与加密算法">2.7 哈希与加密算法</h2>
 <p>核心：<strong>区块链的密码学基础</strong></p>
 <p>区块链中主要应用了两类密码学算法：</p>
 <ol>
@@ -347,96 +396,92 @@
 <p>区块链的开发者因为智能合约的出现开始分为两类。第一类是公链底层开发者，主要是以 C++ 和 Go 语言为主的全节点开发者，他们需要对区块链各个技术模块有很深的理解。</p>
 <p>第二类是智能合约开发者，也就是应用开发者，这类开发者对区块链的运行原理不需要理解很深，只需要会编写 Solidity，了解规范即可。</p>
 
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">Author</span>
-    <span class="item-content">超级阵雨</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">LastMod</span>
-    <span class="item-content">
-        2021-02-07
-        
-    </span>
-  </p>
   
-  
-</div>
-<footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/blockchain4/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">区块链学习--4技术下</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/blockchain2/">
-            <span class="next-text nav-default">区块链学习--2技术上</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain3%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
 
-  
 
-  
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
 
-      </div>
-    </main>
+	ul.share-buttons li{
+	  display: inline;
+	}
 
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
-      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
-      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
-      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
-      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
-      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
-      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
-  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
 
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - 
-    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
 
   
-
-  <span class="copyright-year">
-    &copy; 
-    2017 - 
-    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
-  </span>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://zhenyu0324.github.io/post/blockchain2/"><i class="fa fa-chevron-left"></i></a>
+    
   </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://zhenyu0324.github.io/post/blockchain2/">区块链学习--2技术上</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://zhenyu0324.github.io/post/blockchain4/">区块链学习--4技术下</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://zhenyu0324.github.io/post/blockchain4/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
   
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+  
+  
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://zhenyu0324.github.io/js/ui.js"></script>
+<script src="https://zhenyu0324.github.io/js/menus.js"></script>
 
 
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 
@@ -447,3 +492,4 @@
 
 </body>
 </html>
+

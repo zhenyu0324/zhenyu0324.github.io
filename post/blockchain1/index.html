@@ -1,214 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>区块链学习--1区块链基础 - 超级阵雨的乌托邦星球</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.67.1" />
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <title>区块链学习--1区块链基础 &middot; 超级阵雨的乌托邦星球</title>
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+    
 
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
 
-<meta name="author" content="超级阵雨" /><meta name="description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行" />
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
 
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
 
+  <link rel="stylesheet" href="/css/blackburn.css">
 
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
 
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
 
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-<meta name="generator" content="Hugo 0.67.1 with theme even" />
+ 
+  
 
+  
 
-<link rel="canonical" href="https://zhenyu0324.github.io/post/blockchain1/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="https://zhenyu0324.github.io/img/favicon.ico" type="image/x-icon" />
 
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="区块链学习--1区块链基础" />
-<meta property="og:description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://zhenyu0324.github.io/post/blockchain1/" />
-<meta property="article:published_time" content="2021-02-04T15:24:50+08:00" />
-<meta property="article:modified_time" content="2021-02-04T15:24:50+08:00" />
-<meta itemprop="name" content="区块链学习--1区块链基础">
-<meta itemprop="description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行">
-<meta itemprop="datePublished" content="2021-02-04T15:24:50&#43;08:00" />
-<meta itemprop="dateModified" content="2021-02-04T15:24:50&#43;08:00" />
-<meta itemprop="wordCount" content="9431">
-
-
-
-<meta itemprop="keywords" content="区块链," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="区块链学习--1区块链基础"/>
-<meta name="twitter:description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
+  
+  
 
 </head>
+
+
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">Tags</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">About</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
-</div>
+<div id="layout">
 
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">Tags</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">About</a>
-      </li>
-  </ul>
-</nav>
-    </header>
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
 
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/">Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/">Archives</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/tags/">Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/categories/">Categories</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
     
-    <header class="post-header">
-      <h1 class="post-title">区块链学习--1区块链基础</h1>
 
-      <div class="post-meta">
-        <span class="post-time"> 2021-02-04 </span>
-        <div class="post-category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
-            </div>
-          <span class="more-meta"> 9431 words </span>
-          <span class="more-meta"> 19 mins read </span>
-        
-      </div>
-    </header>
+    
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-区块链基础">1. 区块链基础</a>
-      <ul>
-        <li><a href="#11区块链是什么">1.1区块链是什么</a>
-          <ul>
-            <li><a href="#111区块链与区块链行业">1.1.1区块链与区块链行业</a></li>
-            <li><a href="#112区块链的魅力">1.1.2区块链的魅力</a></li>
-            <li><a href="#113区块链究竟是什么">1.1.3区块链究竟是什么</a></li>
-            <li><a href="#114-推荐资料">1.1.4 推荐资料</a></li>
-          </ul>
-        </li>
-        <li><a href="#12-区块链怎么运行">1.2 区块链怎么运行</a>
-          <ul>
-            <li><a href="#121-中心化记账的问题">1.2.1 中心化记账的问题</a></li>
-            <li><a href="#122记账介绍">1.2.2记账介绍</a></li>
-          </ul>
-        </li>
-        <li><a href="#13共识机制">1.3共识机制</a>
-          <ul>
-            <li><a href="#131拜占庭将军问题">1.3.1拜占庭将军问题</a></li>
-            <li><a href="#132-最经典的入门型共识机制pow-工作量证明">1.3.2 最经典的入门型共识机制：PoW 工作量证明</a></li>
-            <li><a href="#133-pow-到底是如何避免作弊者的呢">1.3.3 PoW 到底是如何避免作弊者的呢</a></li>
-            <li><a href="#134-pow-工作量证明的补充解决双花攻击">1.3.4 PoW 工作量证明的补充：解决双花攻击</a></li>
-          </ul>
-        </li>
-        <li><a href="#14区块链的应用类型">1.4区块链的应用类型</a>
-          <ul>
-            <li><a href="#141-数字货币应用方向">1.4.1 数字货币应用方向</a></li>
-            <li><a href="#142-数字资产方向">1.4.2 数字资产方向</a></li>
-            <li><a href="#143-比较成熟的应用类型">1.4.3 比较成熟的应用类型</a></li>
-          </ul>
-        </li>
-        <li><a href="#15-如何理解数字货币它与区块链又是什么样的关系">1.5 如何理解数字货币？它与区块链又是什么样的关系？</a>
-          <ul>
-            <li><a href="#151-数字货币的概念">1.5.1 数字货币的概念</a></li>
-            <li><a href="#152-数字货币的发行过程">1.5.2 数字货币的发行过程</a></li>
-          </ul>
-        </li>
-        <li><a href="#16-理解区块链之前先上手体验一把数字货币">1.6 理解区块链之前，先上手体验一把数字货币</a>
-          <ul>
-            <li><a href="#161-什么是数字货币钱包">1.6.1 什么是数字货币钱包</a></li>
-            <li><a href="#附录">附录</a></li>
-          </ul>
-        </li>
-        <li><a href="#17-区块链的常见误区">1.7 区块链的常见误区</a>
-          <ul>
-            <li><a href="#1-71数字货币没有背书我为什么要用呢">1. 7.1数字货币没有背书，我为什么要用呢？</a></li>
-            <li><a href="#172-数字货币是不是投机炒币">1.7.2 数字货币是不是投机炒币？</a></li>
-            <li><a href="#173--区块链是不是万能的">1.7.3  区块链是不是万能的？</a></li>
-            <li><a href="#174-去中心化是不是区块链唯一的评价标准">1.7.4 去中心化是不是区块链唯一的评价标准？</a></li>
-          </ul>
-        </li>
-        <li><a href="#18-最主流区块链项目有哪些">1.8 最主流区块链项目有哪些？</a>
-          <ul>
-            <li><a href="#181-比特币">1.8.1 比特币</a></li>
-            <li><a href="#182-以太坊">1.8.2 以太坊</a></li>
-            <li><a href="#183-瑞波币">1.8.3 瑞波币</a></li>
-            <li><a href="#184-莱特币">1.8.4 莱特币</a></li>
-            <li><a href="#185-tether">1.8.5 Tether</a></li>
-            <li><a href="#186-国内的公有区块链项目">1.8.6 国内的公有区块链项目</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
   </ul>
-</nav>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
   </div>
 </div>
-    <div class="post-content">
-      <h1 id="1-区块链基础">1. 区块链基础</h1>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>区块链学习--1区块链基础</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>04 Feb 2021, 15:24</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <h1 id="1-区块链基础">1. 区块链基础</h1>
 <h2 id="11区块链是什么">1.1区块链是什么</h2>
 <h3 id="111区块链与区块链行业">1.1.1区块链与区块链行业</h3>
 <ul>
@@ -531,96 +550,92 @@ bitcoin86：【www.bitcoin86.com】
 <p>公信宝是比特股社区的开发者，将比特股的底层技术石墨烯技术改造成属于自己的公链项目，公信宝团队是一个靠谱的团队，市场价值也十分不错。</p>
 <p>比原链是巴比特社区创始人长铗发起的，比原链目前负责人是段新星，比原链也是一个致力于打造资产数字化，提供资产流通的一个公链平台。</p>
 
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">Author</span>
-    <span class="item-content">超级阵雨</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">LastMod</span>
-    <span class="item-content">
-        2021-02-04
-        
-    </span>
-  </p>
   
-  
-</div>
-<footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/blockchain2/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">区块链学习--2技术上</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/leetcode2/">
-            <span class="next-text nav-default">LeetCode 2:Add Two Numbers</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fzhenyu0324.github.io%2fpost%2fblockchain1%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
 
-  
 
-  
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
 
-      </div>
-    </main>
+	ul.share-buttons li{
+	  display: inline;
+	}
 
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
-      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
-      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
-      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
-      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
-      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
-      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
-  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
 
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - 
-    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
 
   
-
-  <span class="copyright-year">
-    &copy; 
-    2017 - 
-    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
-  </span>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://zhenyu0324.github.io/post/leetcode2/"><i class="fa fa-chevron-left"></i></a>
+    
   </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://zhenyu0324.github.io/post/leetcode2/">LeetCode 2:Add Two Numbers</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://zhenyu0324.github.io/post/blockchain2/">区块链学习--2技术上</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://zhenyu0324.github.io/post/blockchain2/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
   
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+  
+  
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://zhenyu0324.github.io/js/ui.js"></script>
+<script src="https://zhenyu0324.github.io/js/menus.js"></script>
 
 
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 
@@ -631,3 +646,4 @@ bitcoin86：【www.bitcoin86.com】
 
 </body>
 </html>
+
