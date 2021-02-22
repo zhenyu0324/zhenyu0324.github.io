@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>秒杀 on 超级阵雨的乌托邦星球</title>
+    <link>https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/</link>
+    <description>Recent content in 秒杀 on 超级阵雨的乌托邦星球</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 22 Feb 2021 14:10:48 +0800</lastBuildDate>
+    
+	<atom:link href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何设计秒杀系统(上)</title>
+      <link>https://zhenyu0324.github.io/post/secondkill1/</link>
+      <pubDate>Mon, 22 Feb 2021 14:10:48 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/secondkill1/</guid>
+      <description>1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”</description>
+    </item>
+    
+  </channel>
+</rss>

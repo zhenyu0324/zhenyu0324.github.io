@@ -23,6 +23,15 @@ It makes use of a variety of open source projects including:
     </item>
     
     <item>
+      <title>如何设计秒杀系统(上)</title>
+      <link>https://zhenyu0324.github.io/post/secondkill1/</link>
+      <pubDate>Mon, 22 Feb 2021 14:10:48 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/secondkill1/</guid>
+      <description>1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”</description>
+    </item>
+    
+    <item>
       <title>白话法律笔记</title>
       <link>https://zhenyu0324.github.io/post/baihuafalv/</link>
       <pubDate>Sat, 20 Feb 2021 11:40:52 +0800</pubDate>
