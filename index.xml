@@ -23,6 +23,15 @@ It makes use of a variety of open source projects including:
     </item>
     
     <item>
+      <title>Java性能调优1</title>
+      <link>https://zhenyu0324.github.io/post/javaoptimize1/</link>
+      <pubDate>Wed, 24 Feb 2021 18:16:39 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/javaoptimize1/</guid>
+      <description>1. 引言 1.1怎样才能做好性能调优 互联网时代，一个简单的系统就囊括了应用程序、数据库、容器、操作系统、网络等技术，线上一旦出现性能问题，就可能</description>
+    </item>
+    
+    <item>
       <title>如何设计秒杀系统(下)</title>
       <link>https://zhenyu0324.github.io/post/secondkill2/</link>
       <pubDate>Tue, 23 Feb 2021 15:01:13 +0800</pubDate>
