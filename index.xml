@@ -23,6 +23,15 @@ It makes use of a variety of open source projects including:
     </item>
     
     <item>
+      <title>Java性能调优2</title>
+      <link>https://zhenyu0324.github.io/post/javaoptimize2/</link>
+      <pubDate>Wed, 24 Feb 2021 19:51:41 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/javaoptimize2/</guid>
+      <description>Java性能调优2 &amp;mdash;- Java编程性能调优 1. 字符串性能优化 String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String</description>
+    </item>
+    
+    <item>
       <title>Java性能调优1</title>
       <link>https://zhenyu0324.github.io/post/javaoptimize1/</link>
       <pubDate>Wed, 24 Feb 2021 18:16:39 +0800</pubDate>
