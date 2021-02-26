@@ -23,6 +23,15 @@ It makes use of a variety of open source projects including:
     </item>
     
     <item>
+      <title>Java性能调优3</title>
+      <link>https://zhenyu0324.github.io/post/javaoptimize3/</link>
+      <pubDate>Fri, 26 Feb 2021 10:17:05 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/javaoptimize3/</guid>
+      <description>1.多线程之锁优化 1.1 深入了解Synchronized同步锁的优化方法 在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原</description>
+    </item>
+    
+    <item>
       <title>Java性能调优2</title>
       <link>https://zhenyu0324.github.io/post/javaoptimize2/</link>
       <pubDate>Wed, 24 Feb 2021 19:51:41 +0800</pubDate>
