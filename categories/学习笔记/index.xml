@@ -6,15 +6,33 @@
     <description>Recent content in 学习笔记 on 超级阵雨的乌托邦星球</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Mar 2021 12:51:07 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 02 Apr 2021 10:43:46 +0800</lastBuildDate>
     
 	<atom:link href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>说透中台--概念篇</title>
+      <link>https://zhenyu0324.github.io/post/zhongtai1/</link>
+      <pubDate>Fri, 02 Apr 2021 10:43:46 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/zhongtai1/</guid>
+      <description>1.来龙去脉：中台为什么这么火？ 1.1 2008~2015 关键词：孕育 中台的兴起，是趋势使然。但中台这个概念，最早被大家关注，一定要算是阿里巴巴提出的中台战略。这</description>
+    </item>
+    
+    <item>
+      <title>Java性能调优5</title>
+      <link>https://zhenyu0324.github.io/post/javaoptimize5/</link>
+      <pubDate>Wed, 03 Mar 2021 12:06:28 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/javaoptimize5/</guid>
+      <description>1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系</description>
+    </item>
+    
+    <item>
       <title>Java性能调优4</title>
       <link>https://zhenyu0324.github.io/post/javaoptimize4/</link>
-      <pubDate>Mon, 01 Mar 2021 12:51:07 +0800</pubDate>
+      <pubDate>Tue, 02 Mar 2021 12:51:07 +0800</pubDate>
       
       <guid>https://zhenyu0324.github.io/post/javaoptimize4/</guid>
       <description>1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字</description>

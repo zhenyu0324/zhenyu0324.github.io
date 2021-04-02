@@ -6,15 +6,24 @@
     <description>Recent content in java调优 on 超级阵雨的乌托邦星球</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Mar 2021 12:51:07 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 03 Mar 2021 12:06:28 +0800</lastBuildDate>
     
 	<atom:link href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Java性能调优5</title>
+      <link>https://zhenyu0324.github.io/post/javaoptimize5/</link>
+      <pubDate>Wed, 03 Mar 2021 12:06:28 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/javaoptimize5/</guid>
+      <description>1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系</description>
+    </item>
+    
+    <item>
       <title>Java性能调优4</title>
       <link>https://zhenyu0324.github.io/post/javaoptimize4/</link>
-      <pubDate>Mon, 01 Mar 2021 12:51:07 +0800</pubDate>
+      <pubDate>Tue, 02 Mar 2021 12:51:07 +0800</pubDate>
       
       <guid>https://zhenyu0324.github.io/post/javaoptimize4/</guid>
       <description>1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字</description>
