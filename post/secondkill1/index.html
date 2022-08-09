@@ -1,198 +1,184 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何设计秒杀系统(上) - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>如何设计秒杀系统(上) | 超级阵雨的乌托邦星球</title>
-    <meta property="og:title" content="如何设计秒杀系统(上) - 超级阵雨的乌托邦星球">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2021-02-22T14:10:48&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2021-02-22T14:10:48&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="如何设计秒杀系统(上)">
-        <meta name="author" content="超级阵雨">
-        
-    <meta property="og:url" content="https://zhenyu0324.github.io/post/secondkill1/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
-    
-    
-    
-    
+<meta name="author" content="超级阵雨" /><meta name="description" content="1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/secondkill1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何设计秒杀系统(上)" />
+<meta property="og:description" content="1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/secondkill1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-02-22T14:10:48+08:00" />
+<meta property="article:modified_time" content="2021-02-22T14:10:48+08:00" />
+
+<meta itemprop="name" content="如何设计秒杀系统(上)">
+<meta itemprop="description" content="1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”"><meta itemprop="datePublished" content="2021-02-22T14:10:48+08:00" />
+<meta itemprop="dateModified" content="2021-02-22T14:10:48+08:00" />
+<meta itemprop="wordCount" content="10343">
+<meta itemprop="keywords" content="秒杀," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何设计秒杀系统(上)"/>
+<meta name="twitter:description" content="1.引言 秒杀系统架构设计都有哪些关键点？ 秒杀其实主要解决两个问题： 一个是并发读 一个是并发写 并发读的核心优化理念是尽量减少用户到服务端来“读”"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://zhenyu0324.github.io/">
-                        超级阵雨的乌托邦星球
-                    </a>
-                
-                
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何设计秒杀系统(上)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    
-                    
-                    <a  href="https://zhenyu0324.github.io/" title="Home">Home</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/post/" title="Archives">Archives</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/tags/" title="Tags">Tags</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/categories/" title="Categories">Categories</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/about/" title="About">About</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-
-    <article class="post">
-        <header>
-            <h1 class="post-title">如何设计秒杀系统(上)</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月22日
-        </date>
+          <span class="more-meta"> 10343 words </span>
+          <span class="more-meta"> 21 mins read </span>
         
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0'>学习笔记</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="1引言">1.引言</h1>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1引言">1.引言</a></li>
+    <li><a href="#2-设计秒杀系统时应该注意的5个架构原则">2. 设计秒杀系统时应该注意的5个架构原则</a></li>
+    <li><a href="#3如何才能做好动静分离有哪些方案可选">3.如何才能做好动静分离？有哪些方案可选？</a>
+      <ul>
+        <li><a href="#31-何为动静数据">3.1 何为动静数据</a></li>
+        <li><a href="#32-如何做动静分离的改造">3.2 如何做动静分离的改造</a></li>
+        <li><a href="#33-动静分离的几种架构方案">3.3 动静分离的几种架构方案</a>
+          <ul>
+            <li><a href="#331-方案-1实体机单机部署">3.3.1 方案 1：实体机单机部署</a></li>
+            <li><a href="#332-方案-2统一-cache-层">3.3.2 方案 2：统一 Cache 层</a></li>
+            <li><a href="#333-方案-3上-cdn">3.3.3 方案 3：上 CDN</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4二八原则有针对性地处理好系统的热点数据">4.二八原则：有针对性地处理好系统的“热点数据”</a>
+      <ul>
+        <li><a href="#41-为什么要关注热点">4.1 为什么要关注热点</a></li>
+        <li><a href="#42-什么是热点">4.2 什么是“热点”</a></li>
+        <li><a href="#43-发现热点数据">4.3 发现热点数据</a>
+          <ul>
+            <li><a href="#431-发现静态热点数据">4.3.1 发现静态热点数据</a></li>
+            <li><a href="#432-发现动态热点数据">4.3.2 发现动态热点数据</a></li>
+          </ul>
+        </li>
+        <li><a href="#44-处理热点数据">4.4 处理热点数据</a></li>
+      </ul>
+    </li>
+    <li><a href="#5流量削峰这事应该怎么做">5.流量削峰这事应该怎么做？</a>
+      <ul>
+        <li><a href="#51-为什么要削峰">5.1 为什么要削峰</a></li>
+        <li><a href="#52-排队">5.2 排队</a></li>
+        <li><a href="#53-答题">5.3 答题</a></li>
+        <li><a href="#54-分层过滤">5.4 分层过滤</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1引言">1.引言</h1>
 <p><strong>秒杀系统架构设计都有哪些关键点？</strong></p>
 <p>秒杀其实主要解决两个问题：</p>
 <ul>
@@ -265,11 +251,7 @@
 <p>那么，怎样对静态数据做缓存呢？我在这里总结了几个重点。</p>
 <p>第一，你应该把静态数据缓存到离用户最近的地方。静态数据就是那些相对不会变化的数据，因此我们可以把它们缓存起来。缓存到哪里呢？常见的就三种，用户浏览器里、CDN 上或者在服务端的 Cache 中。你应该根据情况，把它们尽量缓存到离用户最近的地方。</p>
 <p>第二，静态化改造就是要直接缓存 HTTP 连接。相较于普通的数据缓存而言，你肯定还听过系统的静态化改造。静态化改造是直接缓存 HTTP 连接而不是仅仅缓存数据，如下图所示，Web 代理服务器根据请求 URL，直接取出对应的 HTTP 响应头和响应体然后直接返回，这个响应过程简单得连 HTTP 协议都不用重新组装，甚至连 HTTP 请求头也不需要解析。
-
-        <a data-fancybox="gallery" href="00.jpeg">
-            <img class="mx-auto" alt="" src="00.jpeg" />
-        </a>
-    </p>
+<img src="00.jpeg" alt=""></p>
 <p>第三，让谁来缓存静态数据也很重要。不同语言写的 Cache 软件处理缓存数据的效率也各不相同。以 Java 为例，因为 Java 系统本身也有其弱点（比如不擅长处理大量连接请求，每个连接消耗的内存较多，Servlet 容器解析 HTTP 协议较慢），所以你可以不在 Java 层做缓存，而是直接在 Web 服务器层上做，这样你就可以屏蔽 Java 语言层面的一些弱点；而相比起来，Web 服务器（如 Nginx、Apache、Varnish）也更擅长处理大并发的静态文件请求。</p>
 <h2 id="32-如何做动静分离的改造">3.2 如何做动静分离的改造</h2>
 <p>我以典型的商品详情系统为例来详细介绍。这里，你可以先打开京东或者淘宝的商品详情页，看看这个页面里都有哪些动静数据。我们从以下 5 个方面来分离出动态内容。</p>
@@ -310,11 +292,7 @@
 </ul>
 <h3 id="331-方案-1实体机单机部署">3.3.1 方案 1：实体机单机部署</h3>
 <p>这种方案是将虚拟机改为实体机，以增大 Cache 的容量，并且采用了一致性 Hash 分组的方式来提升命中率。这里将 Cache 分成若干组，是希望能达到命中率和访问热点的平衡。Hash 分组越少，缓存的命中率肯定就会越高，但短板是也会使单个商品集中在一个分组中，容易导致 Cache 被击穿，所以我们应该适当增加多个相同的分组，来平衡访问热点和命中率的问题。</p>
-<p>
-        <a data-fancybox="gallery" href="01.jpeg">
-            <img class="mx-auto" alt="" src="01.jpeg" />
-        </a>
-    </p>
+<p><img src="01.jpeg" alt=""></p>
 <p>实体机单机部署有以下几个优点：</p>
 <ul>
 <li>没有网络瓶颈，而且能使用大内存；</li>
@@ -325,11 +303,7 @@
 <p>另外就是，一个实体机上部署了 Java 应用又作为 Cache 来使用，这造成了运维上的高复杂度，所以这是一个折中的方案。如果你的公司里，没有更多的系统有类似需求，那么这样做也比较合适，如果你们有多个业务系统都有静态化改造的需求，那还是建议把 Cache 层单独抽出来公用比较合理。</p>
 <h3 id="332-方案-2统一-cache-层">3.3.2 方案 2：统一 Cache 层</h3>
 <p>所谓统一 Cache 层，就是将单机的 Cache 统一分离出来，形成一个单独的 Cache 集群。统一 Cache 层是个更理想的可推广方案，该方案的结构图如下：</p>
-<p>
-        <a data-fancybox="gallery" href="02.jpeg">
-            <img class="mx-auto" alt="" src="02.jpeg" />
-        </a>
-    
+<p><img src="02.jpeg" alt="">
 将 Cache 层单独拿出来统一管理可以减少运维成本，同时也方便接入其他静态化系统。此外，它还有一些优点。</p>
 <ol>
 <li>单独一个 Cache 层，可以减少多个应用接入时使用 Cache 的成本。这样接入的应用只要维护自己的 Java 系统就好，不需要单独维护 Cache，而只关心如何使用即可。</li>
@@ -365,11 +339,7 @@
 </ol>
 <p>最后，还有一点也很重要，那就是：节点不要太多。</p>
 <p>基于上面几个因素，选择 CDN 的二级 Cache 比较合适，因为二级 Cache 数量偏少，容量也更大，让用户的请求先回源的 CDN 的二级 Cache 中，如果没命中再回源站获取数据，部署方式如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="03.jpeg">
-            <img class="mx-auto" alt="" src="03.jpeg" />
-        </a>
-    </p>
+<p><img src="03.jpeg" alt=""></p>
 <p>除此之外，CDN 化部署方案还有以下几个特点：</p>
 <ol>
 <li>把整个页面缓存在用户浏览器中；</li>
@@ -410,11 +380,7 @@
 <p>将上游系统收集的热点数据发送到热点服务台，然后下游系统（如交易系统）就会知道哪些商品会被频繁调用，然后做热点保护。</p>
 </li>
 </ol>
-<p>
-        <a data-fancybox="gallery" href="04.jpeg">
-            <img class="mx-auto" alt="" src="04.jpeg" />
-        </a>
-    </p>
+<p><img src="04.jpeg" alt=""></p>
 <p>我们通过部署在每台机器上的 Agent 把日志汇总到聚合和分析集群中，然后把符合一定规则的热点数据，通过订阅分发系统再推送到相应的系统中。你可以是把热点数据填充到 Cache 中，或者直接推送到应用服务器的内存中，还可以对这些数据进行拦截，总之下游系统可以订阅这些数据，然后根据自己的需求决定如何处理这些数据。</p>
 <h2 id="44-处理热点数据">4.4 处理热点数据</h2>
 <p>处理热点数据通常有几种思路：一是优化，二是限制，三是隔离。</p>
@@ -439,11 +405,7 @@
 </ul>
 <h2 id="52-排队">5.2 排队</h2>
 <p>要对流量进行削峰，最容易想到的解决方案就是用消息队列来缓冲瞬时流量，把同步的直接调用转换成异步的间接推送，中间通过一个队列在一端承接瞬时的流量洪峰，在另一端平滑地将消息推送出去。在这里，消息队列就像“水库”一样， 拦蓄上游的洪水，削减进入下游河道的洪峰流量，从而达到减免洪水灾害的目的。</p>
-<p>
-        <a data-fancybox="gallery" href="05.jpeg">
-            <img class="mx-auto" alt="" src="05.jpeg" />
-        </a>
-    </p>
+<p><img src="05.jpeg" alt=""></p>
 <p>但是，如果流量峰值持续一段时间达到了消息队列的处理上限，例如本机的消息积压达到了存储空间的上限，消息队列同样也会被压垮，这样虽然保护了下游的系统，但是和直接把请求丢弃也没多大的区别。就像遇到洪水爆发时，即使是有水库恐怕也无济于事。</p>
 <p>除了消息队列，类似的排队方式还有很多，例如：</p>
 <ul>
@@ -458,11 +420,7 @@
 <p>第一个目的是防止部分买家使用秒杀器在参加秒杀时作弊。2011 年秒杀非常火的时候，秒杀器也比较猖獗，因而没有达到全民参与和营销的目的，所以系统增加了答题来限制秒杀器。</p>
 <p>第二个目的其实就是延缓请求，起到对请求流量进行削峰的作用，从而让系统能够更好地支持瞬时的流量高峰。这个重要的功能就是把峰值的下单请求拉长，从以前的 1s 之内延长到 2s~10s。这样一来，请求峰值基于时间分片了。这个时间的分片对服务端处理并发非常重要，会大大减轻压力。而且，由于请求具有先后顺序，靠后的请求到来时自然也就没有库存了，因此根本到不了最后的下单步骤，所以真正的并发写就非常有限了。这种设计思路目前用得非常普遍，如当年支付宝的“咻一咻”、微信的“摇一摇”都是类似的方式。</p>
 <p>这里，我重点说一下秒杀答题的设计思路。</p>
-<p>
-        <a data-fancybox="gallery" href="06.jpeg">
-            <img class="mx-auto" alt="" src="06.jpeg" />
-        </a>
-    </p>
+<p><img src="06.jpeg" alt=""></p>
 <p>如上图所示，整个秒杀答题的逻辑主要分为 3 部分。</p>
 <ul>
 <li>题库生成模块，这个部分主要就是生成一个个问题和答案，其实题目和答案本身并不需要很复杂，重要的是能够防止由机器来算出结果，即防止秒杀器来答题。</li>
@@ -470,20 +428,12 @@
 <li>题目的图片生成模块，用于把题目生成为图片格式，并且在图片里增加一些干扰因素。这也同样是为防止机器直接来答题，它要求只有人才能理解题目本身的含义。这里还要注意一点，由于答题时网络比较拥挤，我们应该把题目的图片提前推送到 CDN 上并且要进行预热，不然的话当用户真正请求题目时，图片可能加载比较慢，从而影响答题的体验。</li>
 </ul>
 <p>验证的逻辑如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="07.jpeg">
-            <img class="mx-auto" alt="" src="07.jpeg" />
-        </a>
-    </p>
+<p><img src="07.jpeg" alt=""></p>
 <p>注意，这里面的验证逻辑，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录、用户的 Cookie 是否完整、用户是否重复频繁提交等。</p>
 <p>除了做正确性验证，我们还可以对提交答案的时间做些限制，例如从开始答题到接受答案要超过 1s，因为小于 1s 是人为操作的可能性很小，这样也能防止机器答题的情况。</p>
 <h2 id="54-分层过滤">5.4 分层过滤</h2>
 <p>前面介绍的排队和答题要么是少发请求，要么对发出来的请求进行缓冲，而针对秒杀场景还有一种方法，就是对请求进行分层过滤，从而过滤掉一些无效的请求。分层过滤其实就是采用“漏斗”式设计来处理请求的，如下图所示。</p>
-<p>
-        <a data-fancybox="gallery" href="08.jpeg">
-            <img class="mx-auto" alt="" src="08.jpeg" />
-        </a>
-    </p>
+<p><img src="08.jpeg" alt=""></p>
 <p>假如请求分别经过 CDN、前台读系统（如商品详情系统）、后台系统（如交易系统）和数据库这几层，那么：</p>
 <ul>
 <li>大部分数据和流量在用户浏览器或者 CDN 上获取，这一层可以拦截大部分数据的读取；</li>
@@ -503,182 +453,103 @@
 </ol>
 <p>分层校验的目的是：在读系统中，尽量减少由于一致性校验带来的系统瓶颈，但是尽量将不影响性能的检查条件提前，如用户是否具有秒杀资格、商品状态是否正常、用户答题是否正确、秒杀是否已经结束、是否非法请求、营销等价物是否充足等；在写数据系统中，主要对写的数据（如“库存”）做一致性检查，最后在数据库层保证数据的最终准确性（如“库存”不能减为负数）。</p>
 
-        </div>
+    </div>
 
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-02-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/secondkill2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">如何设计秒杀系统(下)</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/baihuafalv/">
+            <span class="next-text nav-default">白话法律笔记</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
         
 
+  
 
-        
+  
 
+      </div>
+    </main>
 
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/%E7%A7%92%E6%9D%80'>秒杀</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="https://zhenyu0324.github.io/">超级阵雨的乌托邦星球 By 超级阵雨</a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://zhenyu0324.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/zhongtai1/" title="说透中台--概念篇">说透中台--概念篇</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize5/" title="Java性能调优5">Java性能调优5</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize4/" title="Java性能调优4">Java性能调优4</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize3/" title="Java性能调优3">Java性能调优3</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize2/" title="Java性能调优2">Java性能调优2</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize1/" title="Java性能调优1">Java性能调优1</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill2/" title="如何设计秒杀系统(下)">如何设计秒杀系统(下)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill1/" title="如何设计秒杀系统(上)">如何设计秒杀系统(上)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/baihuafalv/" title="白话法律笔记">白话法律笔记</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/blockchain7/" title="区块链学习--7从业区块链">区块链学习--7从业区块链</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/">中文 (1)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记 (16)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/leetcode/">LeetCode</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E4%B8%AD%E6%96%87/">中文</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%99%BD%E8%AF%9D%E6%B3%95%E5%BE%8B/">白话法律</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0/">说透中台</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E9%93%BE%E8%A1%A8/">链表</a>
-    
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
 </div>
-    </section>
 
-    
+    </footer>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://zhenyu0324.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

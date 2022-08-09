@@ -1,204 +1,254 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java性能调优2 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Java性能调优2 | 超级阵雨的乌托邦星球</title>
-    <meta property="og:title" content="Java性能调优2 - 超级阵雨的乌托邦星球">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2021-02-24T19:51:41&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2021-02-24T19:51:41&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Java性能调优2">
-        <meta name="author" content="超级阵雨">
-        
-    <meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize2/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
-    
-    
-    
-    
+<meta name="author" content="超级阵雨" /><meta name="description" content="Java性能调优2 &amp;mdash;- Java编程性能调优 1. 字符串性能优化 String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/javaoptimize2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java性能调优2" />
+<meta property="og:description" content="Java性能调优2 &mdash;- Java编程性能调优 1. 字符串性能优化 String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-02-24T19:51:41+08:00" />
+<meta property="article:modified_time" content="2021-02-24T19:51:41+08:00" />
+
+<meta itemprop="name" content="Java性能调优2">
+<meta itemprop="description" content="Java性能调优2 &mdash;- Java编程性能调优 1. 字符串性能优化 String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String"><meta itemprop="datePublished" content="2021-02-24T19:51:41+08:00" />
+<meta itemprop="dateModified" content="2021-02-24T19:51:41+08:00" />
+<meta itemprop="wordCount" content="24914">
+<meta itemprop="keywords" content="java调优," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java性能调优2"/>
+<meta name="twitter:description" content="Java性能调优2 &mdash;- Java编程性能调优 1. 字符串性能优化 String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://zhenyu0324.github.io/">
-                        超级阵雨的乌托邦星球
-                    </a>
-                
-                
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java性能调优2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    
-                    
-                    <a  href="https://zhenyu0324.github.io/" title="Home">Home</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/post/" title="Archives">Archives</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/tags/" title="Tags">Tags</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/categories/" title="Categories">Categories</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/about/" title="About">About</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-
-    <article class="post">
-        <header>
-            <h1 class="post-title">Java性能调优2</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月24日
-        </date>
+          <span class="more-meta"> 24914 words </span>
+          <span class="more-meta"> 50 mins read </span>
         
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0'>学习笔记</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="java性能调优2------java编程性能调优">Java性能调优2 &mdash;- Java编程性能调优</h1>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#java性能调优2------java编程性能调优">Java性能调优2 &mdash;- Java编程性能调优</a></li>
+    <li><a href="#1-字符串性能优化">1. 字符串性能优化</a>
+      <ul>
+        <li><a href="#11-string-对象是如何实现的">1.1 String 对象是如何实现的？</a></li>
+        <li><a href="#12-string-对象的不可变性">1.2 String 对象的不可变性</a>
+          <ul>
+            <li><a href="#121-java-这样做的好处在哪里呢">1.2.1 Java 这样做的好处在哪里呢？</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-string-对象的优化">1.3 String 对象的优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-正则表达式">2. 正则表达式</a>
+      <ul>
+        <li><a href="#21什么是正则表达式">2.1什么是正则表达式？</a></li>
+        <li><a href="#22-正则表达式引擎">2.2 正则表达式引擎</a></li>
+        <li><a href="#23-nfa-自动机的回溯">2.3 NFA 自动机的回溯</a></li>
+        <li><a href="#24-如何避免回溯问题">2.4 如何避免回溯问题？</a>
+          <ul>
+            <li><a href="#241-贪婪模式greedy">2.4.1 贪婪模式（Greedy）</a></li>
+            <li><a href="#242-懒惰模式reluctant">2.4.2 懒惰模式（Reluctant）</a></li>
+            <li><a href="#243--独占模式possessive">2.4.3  独占模式（Possessive）</a></li>
+          </ul>
+        </li>
+        <li><a href="#25-正则表达式的优化">2.5 正则表达式的优化</a>
+          <ul>
+            <li><a href="#251-1-少用贪婪模式多用独占模式">2.5.1 1. 少用贪婪模式，多用独占模式</a></li>
+            <li><a href="#252-减少分支选择">2.5.2 减少分支选择</a></li>
+            <li><a href="#253-减少捕获嵌套">2.5.3 减少捕获嵌套</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-arraylist还是linkedlist使用不当性能差千倍">3. ArrayList还是LinkedList？使用不当性能差千倍</a>
+      <ul>
+        <li><a href="#31-初识-list-接口">3.1 初识 List 接口</a></li>
+        <li><a href="#32-arraylist-是如何实现的">3.2 ArrayList 是如何实现的？</a>
+          <ul>
+            <li><a href="#321-arraylist-实现类">3.2.1 ArrayList 实现类</a></li>
+            <li><a href="#322-arraylist-属性">3.2.2 ArrayList 属性</a></li>
+            <li><a href="#323-arraylist-构造函数">3.2.3 ArrayList 构造函数</a></li>
+            <li><a href="#324-arraylist-新增元素">3.2.4 ArrayList 新增元素</a></li>
+            <li><a href="#325-arraylist-删除元素">3.2.5 ArrayList 删除元素</a></li>
+            <li><a href="#326-arraylist-遍历元素">3.2.6 ArrayList 遍历元素</a></li>
+          </ul>
+        </li>
+        <li><a href="#33-linkedlist-是如何实现的">3.3 LinkedList 是如何实现的？</a>
+          <ul>
+            <li><a href="#331-linkedlist-实现类">3.3.1 LinkedList 实现类</a></li>
+            <li><a href="#332-linkedlist-属性">3.3.2 LinkedList 属性</a></li>
+            <li><a href="#333-linkedlist-新增元素">3.3.3 LinkedList 新增元素</a></li>
+            <li><a href="#334-linkedlist-删除元素">3.3.4 LinkedList 删除元素</a></li>
+            <li><a href="#335-linkedlist-遍历元素">3.3.5 LinkedList 遍历元素</a></li>
+          </ul>
+        </li>
+        <li><a href="#34-stream如何提高遍历集合效率">3.4 Stream如何提高遍历集合效率？</a>
+          <ul>
+            <li><a href="#341-stream-如何优化遍历">3.4.1 Stream 如何优化遍历？</a></li>
+          </ul>
+        </li>
+        <li><a href="#35-深入浅出hashmap的设计与优化">3.5 深入浅出HashMap的设计与优化</a>
+          <ul>
+            <li><a href="#351-常用的数据结构">3.5.1 常用的数据结构</a></li>
+            <li><a href="#352-hashmap-的实现结构">3.5.2 HashMap 的实现结构</a></li>
+            <li><a href="#353-hashmap-的重要属性">3.5.3 HashMap 的重要属性</a></li>
+            <li><a href="#354-hashmap-添加元素优化">3.5.4 HashMap 添加元素优化</a></li>
+            <li><a href="#355-hashmap-获取元素优化">3.5.5 HashMap 获取元素优化</a></li>
+            <li><a href="#356-hashmap-扩容优化">3.5.6 HashMap 扩容优化</a></li>
+          </ul>
+        </li>
+        <li><a href="#36-网络通信优化之i-o模型">3.6 网络通信优化之I-O模型</a>
+          <ul>
+            <li><a href="#361-什么是-io">3.6.1 什么是 I/O</a></li>
+            <li><a href="#362-传统-io-的性能问题">3.6.2 传统 I/O 的性能问题</a></li>
+            <li><a href="#363-如何优化-io-操作">3.6.3 如何优化 I/O 操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#37-网络通信优化之序列化">3.7 网络通信优化之序列化</a>
+          <ul>
+            <li><a href="#371-java-序列化">3.7.1 Java 序列化</a></li>
+            <li><a href="#372-java-序列化的缺陷">3.7.2 Java 序列化的缺陷</a></li>
+            <li><a href="#373-使用-protobuf-序列化替换-java-序列化">3.7.3 使用 Protobuf 序列化替换 Java 序列化</a></li>
+          </ul>
+        </li>
+        <li><a href="#38-网络通信优化之通信协议">3.8 网络通信优化之通信协议</a>
+          <ul>
+            <li><a href="#381-rpc-通信是大型服务框架的核心">3.8.1 RPC 通信是大型服务框架的核心</a></li>
+            <li><a href="#382-什么是-rpc-通信">3.8.2 什么是 RPC 通信</a></li>
+            <li><a href="#383-一个高并发场景下的-rpc-通信优化路径">3.8.3 一个高并发场景下的 RPC 通信优化路径</a></li>
+          </ul>
+        </li>
+        <li><a href="#39-常用的性能测试工具">3.9 常用的性能测试工具</a>
+          <ul>
+            <li><a href="#391ab">3.9.1.ab</a></li>
+            <li><a href="#392-jmeter">3.9.2 JMeter</a></li>
+            <li><a href="#393-loadrunner">3.9.3 LoadRunner</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="java性能调优2------java编程性能调优">Java性能调优2 &mdash;- Java编程性能调优</h1>
 <h1 id="1-字符串性能优化">1. 字符串性能优化</h1>
 <p>String 对象是我们使用最频繁的一个对象类型，但它的性能问题却是最容易被忽略的。String 对象作为 Java 语言中重要的数据类型，是内存中占据空间最大的一个对象。高效地使用字符串，可以提升系统的整体性能。</p>
 <p><strong>思考题</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -207,7 +257,7 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">String str1= &#34;abc&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">String str1= &#34;abc&#34;;
 String str2= new String(&#34;abc&#34;);
 String str3= str2.intern();
 assertSame(str1==str2); //false
@@ -218,11 +268,7 @@ assertSame(str1==str3)//true
 </div>
 </div><h2 id="11-string-对象是如何实现的">1.1 String 对象是如何实现的？</h2>
 <p>在 Java 语言中，Sun 公司的工程师们对 String 对象做了大量的优化，来节约内存空间，提升 String 对象在系统中的性能。一起来看看优化过程，如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="01.jpeg">
-            <img class="mx-auto" alt="" src="01.jpeg" />
-        </a>
-    </p>
+<p><img src="01.jpeg" alt=""></p>
 <ol>
 <li>在 Java6 以及之前的版本中，String 对象是对 char 数组进行了封装实现的对象，主要有四个成员变量：char 数组、偏移量 offset、字符数量 count、哈希值 hash。</li>
 </ol>
@@ -254,33 +300,33 @@ assertSame(str1==str3)//true
 <p>编程过程中，字符串的拼接很常见。前面我讲过 String 对象是不可变的，如果我们使用 String 对象相加，拼接我们想要的字符串，是不是就会产生多个对象呢？例如以下代码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">String str= &#34;ab&#34; + &#34;cd&#34; + &#34;ef&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">String str= &#34;ab&#34; + &#34;cd&#34; + &#34;ef&#34;;
 </code></pre></td></tr></table>
 </div>
 </div><p>分析代码可知：首先会生成 ab 对象，再生成 abcd 对象，最后生成 abcdef 对象，从理论上来说，这段代码是低效的。</p>
 <p>但实际运行中，我们发现只有一个对象生成，这是为什么呢？难道我们的理论判断错了？我们再来看编译后的代码，你会发现编译器自动优化了这行代码，如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">String str= &#34;abcdef&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">String str= &#34;abcdef&#34;;
 </code></pre></td></tr></table>
 </div>
 </div><p>上面我介绍的是字符串常量的累计，我们再来看看字符串变量的累计又是怎样的呢？</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">String str = &#34;abcdef&#34;;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">String str = &#34;abcdef&#34;;
  
 for(int i=0; i&lt;1000; i++) {
       str = str + i;
@@ -290,7 +336,7 @@ for(int i=0; i&lt;1000; i++) {
 </div><p>上面的代码编译后，你可以看到编译器同样对这段代码进行了优化。不难发现，Java 在进行字符串的拼接时，偏向使用 StringBuilder，这样可以提高程序的效率。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -299,11 +345,11 @@ for(int i=0; i&lt;1000; i++) {
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 String str = &#34;abcdef&#34;;
 
 for(int i=0; i&lt;1000; i++) {
-             str = (new StringBuilder(String.valueOf(str))).append(i).toString();
+       	  str = (new StringBuilder(String.valueOf(str))).append(i).toString();
 }
 
 </code></pre></td></tr></table>
@@ -318,7 +364,7 @@ for(int i=0; i&lt;1000; i++) {
 <p>Twitter 每次发布消息状态的时候，都会产生一个地址信息，以当时 Twitter 用户的规模预估，服务器需要 32G 的内存来存储地址信息。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -328,7 +374,7 @@ for(int i=0; i&lt;1000; i++) {
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class Location {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class Location {
     private String city;
     private String region;
     private String countryCode;
@@ -341,7 +387,7 @@ for(int i=0; i&lt;1000; i++) {
 </div><p>考虑到其中有很多用户在地址信息上是有重合的，比如，国家、省份、城市等，这时就可以将这部分信息单独列出一个类，以减少重复，代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -356,7 +402,7 @@ for(int i=0; i&lt;1000; i++) {
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class SharedLocation {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class SharedLocation {
  
 	private String city;
 	private String region;
@@ -376,7 +422,7 @@ public class Location {
 <p>具体做法就是，在每次赋值的时候使用 String 的 intern 方法，如果常量池中有相同值，就会重复使用该对象，返回对象引用，这样一开始的对象就可以被回收掉。这种方式可以使重复性非常高的地址信息存储大小从 20G 降到几百兆。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -387,7 +433,7 @@ public class Location {
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">SharedLocation sharedLocation = new SharedLocation();
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SharedLocation sharedLocation = new SharedLocation();
  
 sharedLocation.setCity(messageInfo.getCity().intern());		sharedLocation.setCountryCode(messageInfo.getRegion().intern());
 sharedLocation.setRegion(messageInfo.getCountryCode().intern());
@@ -401,7 +447,7 @@ location.set(messageInfo.getLatitude());
 </div><p>为了更好地理解，我们再来通过一个简单的例子，回顾下其中的原理：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -409,7 +455,7 @@ location.set(messageInfo.getLatitude());
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">String a =new String(&#34;abc&#34;).intern();
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">String a =new String(&#34;abc&#34;).intern();
 String b = new String(&#34;abc&#34;).intern();
     	  
 if(a==b) {
@@ -420,11 +466,11 @@ if(a==b) {
 </div><p>输出结果：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">a==b
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">a==b
 
 </code></pre></td></tr></table>
 </div>
@@ -439,11 +485,7 @@ if(a==b) {
 <h2 id="21什么是正则表达式">2.1什么是正则表达式？</h2>
 <p>正则表达式是计算机科学的一个概念，很多语言都实现了它。正则表达式使用一些特定的元字符来检索、匹配以及替换符合规则的字符串。</p>
 <p>构造正则表达式语法的元字符，由普通字符、标准字符、限定字符（量词）、定位字符（边界字符）组成。详情可见下图：</p>
-<p>
-        <a data-fancybox="gallery" href="02.jpeg">
-            <img class="mx-auto" alt="" src="02.jpeg" />
-        </a>
-    </p>
+<p><img src="02.jpeg" alt=""></p>
 <h2 id="22-正则表达式引擎">2.2 正则表达式引擎</h2>
 <p>正则表达式是一个用正则符号写出的公式，程序对这个公式进行语法分析，建立一个语法分析树，再根据这个分析树结合正则表达式的引擎生成执行程序（这个执行程序我们把它称作状态机，也叫状态自动机），用于字符匹配。</p>
 <p>而这里的正则表达式引擎就是一套核心算法，用于建立状态机。</p>
@@ -458,45 +500,21 @@ regex=“bc”</p>
 <p>首先，读取正则表达式的第一个匹配符和字符串的第一个字符进行比较，b 对 a，不匹配；继续换字符串的下一个字符，也是 a，不匹配；继续换下一个，是 b，匹配。</p>
 <p>然后，同理，读取正则表达式的第二个匹配符和字符串的第四个字符进行比较，c 对 c，匹配；继续读取正则表达式的下一个字符，然而后面已经没有可匹配的字符了，结束。</p>
 <p>这就是 NFA 自动机的匹配过程，虽然在实际应用中，碰到的正则表达式都要比这复杂，但匹配方法是一样的。</p>
-<p>
-        <a data-fancybox="gallery" href="03.jpeg">
-            <img class="mx-auto" alt="" src="03.jpeg" />
-        </a>
-    </p>
-<p>
-        <a data-fancybox="gallery" href="04.jpeg">
-            <img class="mx-auto" alt="" src="04.jpeg" />
-        </a>
-    </p>
+<p><img src="03.jpeg" alt=""></p>
+<p><img src="04.jpeg" alt=""></p>
 <h2 id="23-nfa-自动机的回溯">2.3 NFA 自动机的回溯</h2>
 <p>用 NFA 自动机实现的比较复杂的正则表达式，在匹配过程中经常会引起回溯问题。大量的回溯会长时间地占用 CPU，从而带来系统性能开销。我来举例说明。</p>
 <p>text=“abbc”
 regex=“ab{1,3}c”</p>
 <p>这个例子，匹配目的比较简单。匹配以 a 开头，以 c 结尾，中间有 1-3 个 b 字符的字符串。NFA 自动机对其解析的过程是这样的：</p>
 <p>首先，读取正则表达式第一个匹配符 a 和字符串第一个字符 a 进行比较，a 对 a，匹配。</p>
-<p>
-        <a data-fancybox="gallery" href="05.jpeg">
-            <img class="mx-auto" alt="" src="05.jpeg" />
-        </a>
-    
+<p><img src="05.jpeg" alt="">
 然后，读取正则表达式第二个匹配符 b{1,3} 和字符串的第二个字符 b 进行比较，匹配。但因为 b{1,3} 表示 1-3 个 b 字符串，NFA 自动机又具有贪婪特性，所以此时不会继续读取正则表达式的下一个匹配符，而是依旧使用 b{1,3} 和字符串的第三个字符 b 进行比较，结果还是匹配。</p>
-<p>
-        <a data-fancybox="gallery" href="06.jpeg">
-            <img class="mx-auto" alt="" src="06.jpeg" />
-        </a>
-    </p>
+<p><img src="06.jpeg" alt=""></p>
 <p>接着继续使用 b{1,3} 和字符串的第四个字符 c 进行比较，发现不匹配了，此时就会发生回溯，已经读取的字符串第四个字符 c 将被吐出去，指针回到第三个字符 b 的位置。</p>
-<p>
-        <a data-fancybox="gallery" href="07.jpeg">
-            <img class="mx-auto" alt="" src="07.jpeg" />
-        </a>
-    </p>
+<p><img src="07.jpeg" alt=""></p>
 <p>那么发生回溯以后，匹配过程怎么继续呢？程序会读取正则表达式的下一个匹配符 c，和字符串中的第四个字符 c 进行比较，结果匹配，结束。</p>
-<p>
-        <a data-fancybox="gallery" href="08.jpeg">
-            <img class="mx-auto" alt="" src="08.jpeg" />
-        </a>
-    </p>
+<p><img src="08.jpeg" alt=""></p>
 <h2 id="24-如何避免回溯问题">2.4 如何避免回溯问题？</h2>
 <p>既然回溯会给系统带来性能开销，那我们如何应对呢？如果你有仔细看上面那个案例的话，你会发现 NFA 自动机的贪婪特性就是导火索，这和正则表达式的匹配模式息息相关，一起来了解一下。</p>
 <h3 id="241-贪婪模式greedy">2.4.1 贪婪模式（Greedy）</h3>
@@ -534,7 +552,7 @@ regex=“ab{1,3}+bc”</p>
 <p>在正则表达式中，每个捕获组都有一个编号，编号 0 代表整个匹配到的内容。我们可以看下面的例子：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -549,7 +567,7 @@ regex=“ab{1,3}+bc”</p>
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public static void main( String[] args )
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public static void main( String[] args )
 {
 	String text = &#34;&lt;input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;&#34;;
 	String reg=&#34;(&lt;input.*?&gt;)(.*?)(&lt;/input&gt;)&#34;;
@@ -567,13 +585,13 @@ regex=“ab{1,3}+bc”</p>
 </div><p>运行结果：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;
 &lt;input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;
 test
 &lt;/input&gt;
@@ -582,7 +600,7 @@ test
 </div><p>如果你并不需要获取某一个分组内的文本，那么就使用非捕获分组。例如，使用“(?:X)”代替“(X)”，我们再看下面的例子：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -595,7 +613,7 @@ test
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public static void main( String[] args )
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public static void main( String[] args )
 {
 	String text = &#34;&lt;input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;&#34;;
 	String reg=&#34;(?:&lt;input.*?&gt;)(.*?)(?:&lt;/input&gt;)&#34;;
@@ -611,11 +629,11 @@ test
 </div><p>运行结果：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;input high=\&#34;20\&#34; weight=\&#34;70\&#34;&gt;test&lt;/input&gt;
 test
 </code></pre></td></tr></table>
 </div>
@@ -627,11 +645,7 @@ test
 <p>而在回答使用场景的时候，我发现大部分同学的答案是：“ArrayList 和 LinkedList 在新增、删除元素时，LinkedList 的效率要高于 ArrayList，而在遍历的时候，ArrayList 的效率要高于 LinkedList。”这个回答是否准确呢？今天这一讲就带你验证。</p>
 <h2 id="31-初识-list-接口">3.1 初识 List 接口</h2>
 <p>在学习 List 集合类之前，我们先来通过这张图，看下 List 集合类的接口和类的实现关系：</p>
-<p>
-        <a data-fancybox="gallery" href="09.jpeg">
-            <img class="mx-auto" alt="" src="09.jpeg" />
-        </a>
-    </p>
+<p><img src="09.jpeg" alt=""></p>
 <p>我们可以看到 ArrayList、Vector、LinkedList 集合类继承了 AbstractList 抽象类，而 AbstractList 实现了 List 接口，同时也继承了 AbstractCollection 抽象类。ArrayList、Vector、LinkedList 又根据自我定位，分别实现了各自的功能。</p>
 <p>ArrayList 和 Vector 使用了数组实现，这两者的实现原理差不多，LinkedList 使用了双向链表实现。基础铺垫就到这里，接下来，我们就详细地分析下 ArrayList 和 LinkedList 的源码实现。</p>
 <h2 id="32-arraylist-是如何实现的">3.2 ArrayList 是如何实现的？</h2>
@@ -649,7 +663,7 @@ test
 <p>ArrayList 属性主要由数组长度 size、对象数组 elementData、初始化容量 default_capacity 等组成， 其中初始化容量默认大小为 10。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -657,7 +671,7 @@ test
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  // 默认初始化容量
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">  // 默认初始化容量
     private static final int DEFAULT_CAPACITY = 10;
     // 对象数组
     transient Object[] elementData; 
@@ -674,7 +688,7 @@ test
 <p>当 ArrayList 新增元素时，如果所存储的元素已经超过其已有大小，它会计算元素大小后再进行动态扩容，数组的扩容会导致整个数组进行一次内存复制。因此，我们在初始化 ArrayList 时，可以通过第一个构造函数合理指定数组初始大小，这样有助于减少数组的扩容次数，从而提高系统性能。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -692,7 +706,7 @@ test
 </span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public ArrayList(int initialCapacity) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public ArrayList(int initialCapacity) {
         // 初始化容量不为零时，将根据初始化值创建数组大小
         if (initialCapacity &gt; 0) {
             this.elementData = new Object[initialCapacity];
@@ -714,7 +728,7 @@ test
 <p>ArrayList 新增元素的方法有两种，一种是直接将元素加到数组的末尾，另外一种是添加元素到任意位置。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -731,7 +745,7 @@ test
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public boolean add(E e) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public boolean add(E e) {
         ensureCapacityInternal(size + 1);  // Increments modCount!!
         elementData[size++] = e;
         return true;
@@ -751,7 +765,7 @@ test
 </div><p>两个方法的相同之处是在添加元素之前，都会先确认容量大小，如果容量够大，就不用进行扩容；如果容量不够大，就会按照原来数组的 1.5 倍大小进行扩容，在扩容之后需要将数组复制到新分配的内存地址。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -773,7 +787,7 @@ test
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">private void ensureExplicitCapacity(int minCapacity) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">private void ensureExplicitCapacity(int minCapacity) {
         modCount++;
  
         // overflow-conscious code
@@ -801,7 +815,7 @@ test
 <p>ArrayList 的删除方法和添加任意位置元素的方法是有些相同的。ArrayList 在每一次有效的删除元素操作之后，都要进行数组的重组，并且删除的元素位置越靠前，数组重组的开销就越大。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -818,7 +832,7 @@ test
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 public E remove(int index) {
         rangeCheck(index);
  
@@ -839,7 +853,7 @@ public E remove(int index) {
 <p>由于 ArrayList 是基于数组实现的，所以在获取元素的时候是非常快捷的。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -850,7 +864,7 @@ public E remove(int index) {
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public E get(int index) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public E get(int index) {
         rangeCheck(index);
  
         return elementData(index);
@@ -866,7 +880,7 @@ public E remove(int index) {
 <p>LinkedList 是基于双向链表数据结构实现的，LinkedList 定义了一个 Node 结构，Node 结构中包含了 3 个部分：元素内容 item、前指针 prev 以及后指针 next，代码如下。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -880,7 +894,7 @@ public E remove(int index) {
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
  private static class Node&lt;E&gt; {
         E item;
         Node&lt;E&gt; next;
@@ -913,13 +927,13 @@ public E remove(int index) {
 <p>由于 LinkedList 存储数据的内存地址是不连续的，而是通过指针来定位不连续地址，因此，LinkedList 不支持随机快速访问，LinkedList 也就不能实现 RandomAccess 接口。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class LinkedList&lt;E&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class LinkedList&lt;E&gt;
     extends AbstractSequentialList&lt;E&gt;
     implements List&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable
 
@@ -929,13 +943,13 @@ public E remove(int index) {
 <p>我们前面讲到了 LinkedList 的两个重要属性 first/last 属性，其实还有一个 size 属性。我们可以看到这三个属性都被 transient 修饰了，原因很简单，我们在序列化的时候不会只对头尾进行序列化，所以 LinkedList 也是自行实现 readObject 和 writeObject 进行序列化与反序列化。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">transient int size = 0;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">transient int size = 0;
     transient Node&lt;E&gt; first;
     transient Node&lt;E&gt; last;
 
@@ -945,7 +959,7 @@ public E remove(int index) {
 <p>LinkedList 添加元素的实现很简洁，但添加的方式却有很多种。默认的 add (Ee) 方法是将添加的元素加到队尾，首先是将 last 元素置换到临时变量中，生成一个新的 Node 节点对象，然后将 last 引用指向新节点对象，之前的 last 对象的前指针指向新节点对象。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -963,7 +977,7 @@ public E remove(int index) {
 </span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback"> public boolean add(E e) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"> public boolean add(E e) {
         linkLast(e);
         return true;
     }
@@ -984,7 +998,7 @@ public E remove(int index) {
 </div><p>LinkedList 也有添加元素到任意位置的方法，如果我们是将元素添加到任意两个元素的中间位置，添加元素操作只会改变前后元素的前后指针，指针将会指向添加的新元素，所以相比 ArrayList 的添加操作来说，LinkedList 的性能优势明显。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1008,7 +1022,7 @@ public E remove(int index) {
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 public void add(int index, E element) {
         checkPositionIndex(index);
  
@@ -1044,7 +1058,7 @@ public void add(int index, E element) {
 <p>这个 Demo 的需求是过滤分组一所中学里身高在 160cm 以上的男女同学，我们先用传统的迭代方式来实现，代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1058,7 +1072,7 @@ public void add(int index, E element) {
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = new HashMap&lt;String, List&lt;Student&gt;&gt;();
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = new HashMap&lt;String, List&lt;Student&gt;&gt;();
         for (Student stu: studentsList) {
             if (stu.getHeight() &gt; 160) { // 如果身高大于 160
                 if (stuMap.get(stu.getSex()) == null) { // 该性别还没分类
@@ -1078,11 +1092,11 @@ public void add(int index, E element) {
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = stuList.stream().filter((Student s) -&gt; s.getHeight() &gt; 160) .collect(Collectors.groupingBy(Student ::getSex)); 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = stuList.stream().filter((Student s) -&gt; s.getHeight() &gt; 160) .collect(Collectors.groupingBy(Student ::getSex)); 
 
 </code></pre></td></tr></table>
 </div>
@@ -1091,11 +1105,11 @@ public void add(int index, E element) {
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = stuList.parallelStream().filter((Student s) -&gt; s.getHeight() &gt; 160) .collect(Collectors.groupingBy(Student ::getSex)); 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Map&lt;String, List&lt;Student&gt;&gt; stuMap = stuList.parallelStream().filter((Student s) -&gt; s.getHeight() &gt; 160) .collect(Collectors.groupingBy(Student ::getSex)); 
 
 </code></pre></td></tr></table>
 </div>
@@ -1104,19 +1118,11 @@ public void add(int index, E element) {
 <p>官方将 Stream 中的操作分为两大类：中间操作（Intermediate operations）和终结操作（Terminal operations）。中间操作只对操作进行了记录，即只会返回一个流，不会进行计算操作，而终结操作是实现了计算操作。</p>
 <p>中间操作又可以分为无状态（Stateless）与有状态（Stateful）操作，前者是指元素的处理不受之前元素的影响，后者是指该操作只有拿到所有元素之后才能继续下去。</p>
 <p>终结操作又可以分为短路（Short-circuiting）与非短路（Unshort-circuiting）操作，前者是指遇到某些符合条件的元素就可以得到最终结果，后者是指必须处理完所有元素才能得到最终结果。操作分类详情如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="10.jpeg">
-            <img class="mx-auto" alt="" src="10.jpeg" />
-        </a>
-    </p>
+<p><img src="10.jpeg" alt=""></p>
 <p>我们通常还会将中间操作称为懒操作，也正是由这种懒操作结合终结操作、数据源构成的处理管道（Pipeline），实现了 Stream 的高效。</p>
 <h4 id="3412stream-源码实现">3.4.1.2.Stream 源码实现</h4>
 <p>在了解 Stream 如何工作之前，我们先来了解下 Stream 包是由哪些主要结构类组合而成的，各个类的职责是什么。参照下图：</p>
-<p>
-        <a data-fancybox="gallery" href="11.jpeg">
-            <img class="mx-auto" alt="" src="11.jpeg" />
-        </a>
-    </p>
+<p><img src="11.jpeg" alt=""></p>
 <p>BaseStream 和 Stream 为最顶端的接口类。BaseStream 主要定义了流的基本接口方法，例如，spliterator、isParallel 等；Stream 则定义了一些流的常用操作方法，例如，map、filter 等。</p>
 <p>ReferencePipeline 是一个结构类，他通过定义内部类组装了各种操作流。他定义了 Head、StatelessOp、StatefulOp 三个内部类，实现了 BaseStream 与 Stream 的接口方法。</p>
 <p>Sink 接口是定义每个 Stream 操作之间关系的协议，他包含 begin()、end()、cancellationRequested()、accpt() 四个方法。ReferencePipeline 最终会将整个 Stream 流操作组装成一个调用链，而这条调用链上的各个 Stream 操作的上下关系就是通过 Sink 接口协议来定义实现的。</p>
@@ -1128,7 +1134,7 @@ public void add(int index, E element) {
 <p>下面我们再通过一个例子来感受下 Stream 的操作分类是如何实现高效迭代大数据集合的。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1137,7 +1143,7 @@ public void add(int index, E element) {
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">List&lt;String&gt; names = Arrays.asList(&#34; 张三 &#34;, &#34; 李四 &#34;, &#34; 王老五 &#34;, &#34; 李三 &#34;, &#34; 刘老四 &#34;, &#34; 王小二 &#34;, &#34; 张四 &#34;, &#34; 张五六七 &#34;);
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">List&lt;String&gt; names = Arrays.asList(&#34; 张三 &#34;, &#34; 李四 &#34;, &#34; 王老五 &#34;, &#34; 李三 &#34;, &#34; 刘老四 &#34;, &#34; 王小二 &#34;, &#34; 张四 &#34;, &#34; 张五六七 &#34;);
  
 String maxLenStartWithZ = names.stream()
     	            .filter(name -&gt; name.startsWith(&#34; 张 &#34;))
@@ -1151,7 +1157,7 @@ String maxLenStartWithZ = names.stream()
 <p>Stream 处理数据的方式有两种，串行处理和并行处理。要实现并行处理，我们只需要在例子的代码中新增一个 Parallel() 方法，</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1162,7 +1168,7 @@ String maxLenStartWithZ = names.stream()
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 List&lt;String&gt; names = Arrays.asList(&#34; 张三 &#34;, &#34; 李四 &#34;, &#34; 王老五 &#34;, &#34; 李三 &#34;, &#34; 刘老四 &#34;, &#34; 王小二 &#34;, &#34; 张四 &#34;, &#34; 张五六七 &#34;);
  
 String maxLenStartWithZ = names.stream()
@@ -1176,7 +1182,7 @@ String maxLenStartWithZ = names.stream()
 </div><p>Stream 的并行处理在执行终结操作之前，跟串行处理的实现是一样的。而在调用终结方法之后，实现的方式就有点不太一样，会调用 TerminalOp 的 evaluateParallel 方法进行并行处理。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1188,7 +1194,7 @@ String maxLenStartWithZ = names.stream()
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">final &lt;R&gt; R evaluate(TerminalOp&lt;E_OUT, R&gt; terminalOp) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">final &lt;R&gt; R evaluate(TerminalOp&lt;E_OUT, R&gt; terminalOp) {
         assert getOutputShape() == terminalOp.inputShape();
         if (linkedOrConsumed)
             throw new IllegalStateException(MSG_STREAM_LINKED);
@@ -1220,18 +1226,18 @@ String maxLenStartWithZ = names.stream()
 <p>从 HashMap 的源码中，我们可以发现，HashMap 是由一个 Node 数组构成，每个 Node 包含了一个 key-value 键值对。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">transient Node&lt;K,V&gt;[] table;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">transient Node&lt;K,V&gt;[] table;
 
 </code></pre></td></tr></table>
 </div>
 </div><p>Node 类作为 HashMap 中的一个内部类，除了 key、value 两个属性外，还定义了一个 next 指针。当有哈希冲突时，HashMap 会用之前数组当中相同哈希值对应存储的 Node 对象，通过指针指向新增的相同哈希值的 Node 对象的引用。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1246,7 +1252,7 @@ String maxLenStartWithZ = names.stream()
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
         final int hash;
         final K key;
         V value;
@@ -1264,13 +1270,13 @@ String maxLenStartWithZ = names.stream()
 </div><p>ashMap 还有两个重要的属性：加载因子（loadFactor）和边界值（threshold）。在初始化 HashMap 时，就会涉及到这两个关键初始化参数。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">int threshold;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int threshold;
  
 final float loadFactor;
 
@@ -1283,7 +1289,7 @@ final float loadFactor;
 <p>初始化完成后，HashMap 就可以使用 put() 方法添加键值对了。从下面源码可以看出，当程序将一个 key-value 对添加到 HashMap 中，程序首先会根据该 key 的 hashCode() 返回值，再通过 hash() 方法计算出 hash 值，再通过 putVal 方法中的 (n - 1) &amp; hash 决定该 Node 的存储位置。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1305,7 +1311,7 @@ final float loadFactor;
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 public V put(K key, V value) {
         return putVal(hash(key), key, value, false, true);
     }
@@ -1345,27 +1351,15 @@ if ((tab = table) == null || (n = tab.length) == 0)
 <p>Java 的 I/O 操作类在包 java.io 下，其中 InputStream、OutputStream 以及 Reader、Writer 类是 I/O 包中的 4 个基本类，它们分别处理字节流和字符流。</p>
 <h4 id="3611-字节流">3.6.1.1 字节流</h4>
 <p>InputStream/OutputStream 是字节流的抽象类，这两个抽象类又派生出了若干子类，不同的子类分别处理不同的操作类型。如果是文件的读写操作，就使用 FileInputStream/FileOutputStream；如果是数组的读写操作，就使用 ByteArrayInputStream/ByteArrayOutputStream；如果是普通字符串的读写操作，就使用 BufferedInputStream/BufferedOutputStream。具体内容如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="12.jpeg">
-            <img class="mx-auto" alt="" src="12.jpeg" />
-        </a>
-    </p>
+<p><img src="12.jpeg" alt=""></p>
 <h4 id="3612-字符流">3.6.1.2 字符流</h4>
 <p>Reader/Writer 是字符流的抽象类，这两个抽象类也派生出了若干子类，不同的子类分别处理不同的操作类型，具体内容如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="13.jpeg">
-            <img class="mx-auto" alt="" src="13.jpeg" />
-        </a>
-    </p>
+<p><img src="13.jpeg" alt=""></p>
 <h3 id="362-传统-io-的性能问题">3.6.2 传统 I/O 的性能问题</h3>
 <p>我们知道，I/O 操作分为磁盘 I/O 操作和网络 I/O 操作。前者是从磁盘中读取数据源输入到内存中，之后将读取的信息持久化输出在物理磁盘上；后者是从网络中读取信息输入到内存，最终将信息输出到网络中。但不管是磁盘 I/O 还是网络 I/O，在传统 I/O 中都存在严重的性能问题。</p>
 <h4 id="3621--多次内存复制">3.6.2.1  多次内存复制</h4>
 <p>在传统 I/O 中，我们可以通过 InputStream 从源数据中读取数据流输入到缓冲区里，通过 OutputStream 将数据输出到外部设备（包括磁盘、网络）。你可以先看下输入操作在操作系统中的具体流程，如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="14.jpeg">
-            <img class="mx-auto" alt="" src="14.jpeg" />
-        </a>
-    </p>
+<p><img src="14.jpeg" alt=""></p>
 <ul>
 <li>JVM 会发出 read() 系统调用，并通过 read 系统调用向内核发起读请求；</li>
 <li>内核向硬件发送读指令，并等待读就绪；</li>
@@ -1444,7 +1438,7 @@ Selector 是 Java NIO 编程的基础。用于检查一个或多个 NIO Channel 
 <p>我们可以通过一个简单的例子来验证下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1456,7 +1450,7 @@ Selector 是 Java NIO 编程的基础。用于检查一个或多个 NIO Channel 
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">User user = new User();
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">User user = new User();
     	user.setUserName(&#34;test&#34;);
     	user.setPassword(&#34;test&#34;);
     	
@@ -1470,7 +1464,7 @@ Selector 是 Java NIO 编程的基础。用于检查一个或多个 NIO Channel 
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1486,7 +1480,7 @@ Selector 是 Java NIO 编程的基础。用于检查一个或多个 NIO Channel 
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 ByteBuffer byteBuffer = ByteBuffer.allocate( 2048);
  
         byte[] userName = user.getUserName().getBytes();
@@ -1518,11 +1512,7 @@ ByteBuffer 字节编码长度：16</p>
 <p>Protocol Buffers 是一种轻便高效的结构化数据存储格式。它使用 T-L-V（标识 - 长度 - 字段值）的数据格式来存储数据，T 代表字段的正数序列 (tag)，Protocol Buffers 将对象中的每个字段和正数序列对应起来，对应关系的信息是由生成的代码来保证的。在序列化的时候用整数值来代替字段名称，于是传输流量就可以大幅缩减；L 代表 Value 的字节长度，一般也只占一个字节；V 则代表字段值经过编码后的值。这种数据格式不需要分隔符，也不需要空格，同时减少了冗余字段名。</p>
 <p>Protobuf 定义了一套自己的编码方式，几乎可以映射 Java/Python 等语言的所有基础数据类型。不同的编码方式对应不同的数据类型，还能采用不同的存储格式。
 如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="15.jpeg">
-            <img class="mx-auto" alt="" src="15.jpeg" />
-        </a>
-    </p>
+<p><img src="15.jpeg" alt=""></p>
 <p>对于存储 Varint 编码数据，由于数据占用的存储空间是固定的，就不需要存储字节长度 Length，所以实际上 Protocol Buffers 的存储方式是 T - V，这样就又减少了一个字节的存储空间。</p>
 <p>Protobuf 定义的 Varint 编码方式是一种变长的编码方式，每个数据类型一个字节的最后一位是一个标志位 (msb)，用 0 和 1 来表示，0 表示当前字节已经是最后一个字节，1 表示这个数字后面还有一个字节。</p>
 <p>对于 int32 类型数字，一般需要 4 个字节表示，若采用 Varint 编码方式，对于很小的 int32 类型数字，就可以用 1 个字节来表示。对于大部分整数类型数据来说，一般都是小于 256，所以这种操作可以起到很好地压缩数据的效果。</p>
@@ -1546,11 +1536,7 @@ ByteBuffer 字节编码长度：16</p>
 <li>选择合适的通信协议</li>
 </ol>
 <p>要实现不同机器间的网络通信，我们先要了解计算机系统网络通信的基本原理。网络通信是两台设备之间实现数据流交换的过程，是基于网络传输协议和传输数据的编解码来实现的。其中网络传输协议有 TCP、UDP 协议，这两个协议都是基于 Socket 编程接口之上，为某类应用场景而扩展出的传输协议。通过以下的图，我们可以大概了解到基于 TCP 和 UDP 协议实现的 Socket 网络通信是怎样的一个流程。</p>
-<p>
-        <a data-fancybox="gallery" href="16.jpeg">
-            <img class="mx-auto" alt="" src="16.jpeg" />
-        </a>
-    </p>
+<p><img src="16.jpeg" alt=""></p>
 <p>基于 TCP 协议实现的 Socket 通信是有连接的，而传输数据是要通过三次握手来实现数据传输的可靠性，且传输数据是没有边界的，采用的是字节流模式。</p>
 <p>基于 UDP 协议实现的 Socket 通信，客户端不需要建立连接，只需要创建一个套接字发送数据报给服务端，这样就不能保证数据报一定会达到服务端，所以在传输数据方面，基于 UDP 协议实现的 Socket 通信具有不可靠性。UDP 发送的数据采用的是数据报模式，每个 UDP 的数据报都有一个长度，该长度将与数据一起发送到服务端。</p>
 <p>通过对比，我们可以得出优化方法：为了保证数据传输的可靠性，通常情况下我们会采用 TCP 协议。如果在局域网且对数据传输的可靠性没有要求的情况下，我们也可以考虑使用 UDP 协议，毕竟这种协议的效率要比 TCP 协议高。</p>
@@ -1589,11 +1575,7 @@ ByteBuffer 字节编码长度：16</p>
 </li>
 </ol>
 <p>我们可以通过 sysctl -a | grep net.xxx 命令运行查看 Linux 系统默认的的 TCP 参数设置，如果需要修改某项配置，可以通过编辑 vim/etc/sysctl.conf，加入需要修改的配置项， 并通过 sysctl -p 命令运行生效修改后的配置项设置。通常我们会通过修改以下几个配置项来提高网络吞吐量和降低延时。</p>
-<p>
-        <a data-fancybox="gallery" href="17.jpeg">
-            <img class="mx-auto" alt="" src="17.jpeg" />
-        </a>
-    </p>
+<p><img src="17.jpeg" alt=""></p>
 <p>以上就是我们从不同层次对 RPC 优化的详解，除了最后的 Linux 系统中 TCP 的配置项设置调优，其它的调优更多是从代码编程优化的角度出发，最终实现了一套 RPC 通信框架的优化路径。</p>
 <p>弄懂了这些，你就可以根据自己的业务场景去做技术选型了，还能很好地解决过程中出现的一些性能问题。</p>
 <h2 id="39-常用的性能测试工具">3.9 常用的性能测试工具</h2>
@@ -1605,20 +1587,20 @@ ByteBuffer 字节编码长度：16</p>
 <p>ab 工具用来测试 post get 接口请求非常便捷，可以通过参数指定请求数、并发数、请求参数等。例如，一个测试并发用户数为 10、请求数量为 100 的的 post 请求输入如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">ab -n 100  -c 10 -p &#39;post.txt&#39; -T &#39;application/x-www-form-urlencoded&#39; &#39;http://test.api.com/test/register&#39;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ab -n 100  -c 10 -p &#39;post.txt&#39; -T &#39;application/x-www-form-urlencoded&#39; &#39;http://test.api.com/test/register&#39;
 </code></pre></td></tr></table>
 </div>
 </div><p>post.txt 为存放 post 参数的文档，存储格式如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">usernanme=test&amp;password=test&amp;sex=1
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">usernanme=test&amp;password=test&amp;sex=1
 
 </code></pre></td></tr></table>
 </div>
@@ -1631,10 +1613,10 @@ ByteBuffer 字节编码长度：16</p>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">ab -c 10 -n 100 http://www.test.api.com/test/login?userName=test&amp;password=test
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ab -c 10 -n 100 http://www.test.api.com/test/login?userName=test&amp;password=test
 </code></pre></td></tr></table>
 </div>
 </div><p>以上输出中，有几项性能指标可以提供给你参考使用：</p>
@@ -1653,198 +1635,106 @@ ByteBuffer 字节编码长度：16</p>
 <p>LoadRunner 是一款商业版的测试工具，并且 License 的售价不低。</p>
 <p>作为一款专业的性能测试工具，LoadRunner 在性能压测时，表现得非常稳定和高效。相比 JMeter，LoadRunner 可以模拟出不同的内网 IP 地址，通过分配不同的 IP 地址给测试的用户，模拟真实环境下的用户。这里我就不展开详述了。</p>
 <p>三种常用的性能测试工具就介绍完了，最后我把今天的主要内容为你总结了一张图。
-
-        <a data-fancybox="gallery" href="18.jpeg">
-            <img class="mx-auto" alt="" src="18.jpeg" />
-        </a>
-    </p>
+<img src="18.jpeg" alt=""></p>
 <p>现在测试工具非常多，包括阿里云的 PTS 测试工具也很好用，但每款测试工具其实都有自己的优缺点。个人建议，还是在熟练掌握其中一款测试工具的前提下，再去探索其他测试工具的使用方法会更好。</p>
 
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/javaoptimize1/">Java性能调优1</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/java%E8%B0%83%E4%BC%98'>java调优</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="https://zhenyu0324.github.io/">超级阵雨的乌托邦星球 By 超级阵雨</a>
-        
     </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-02-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/javaoptimize3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java性能调优3</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/javaoptimize1/">
+            <span class="next-text nav-default">Java性能调优1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+      </div>
+    </main>
 
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://zhenyu0324.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/zhongtai1/" title="说透中台--概念篇">说透中台--概念篇</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize5/" title="Java性能调优5">Java性能调优5</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize4/" title="Java性能调优4">Java性能调优4</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize3/" title="Java性能调优3">Java性能调优3</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize2/" title="Java性能调优2">Java性能调优2</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize1/" title="Java性能调优1">Java性能调优1</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill2/" title="如何设计秒杀系统(下)">如何设计秒杀系统(下)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill1/" title="如何设计秒杀系统(上)">如何设计秒杀系统(上)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/baihuafalv/" title="白话法律笔记">白话法律笔记</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/blockchain7/" title="区块链学习--7从业区块链">区块链学习--7从业区块链</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/">中文 (1)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记 (16)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/leetcode/">LeetCode</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E4%B8%AD%E6%96%87/">中文</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%99%BD%E8%AF%9D%E6%B3%95%E5%BE%8B/">白话法律</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0/">说透中台</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E9%93%BE%E8%A1%A8/">链表</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://zhenyu0324.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

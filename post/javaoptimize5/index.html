@@ -1,198 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java性能调优5 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Java性能调优5 | 超级阵雨的乌托邦星球</title>
-    <meta property="og:title" content="Java性能调优5 - 超级阵雨的乌托邦星球">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2021-03-03T12:06:28&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2021-03-03T12:06:28&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Java性能调优5">
-        <meta name="author" content="超级阵雨">
-        
-    <meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize5/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
-    
-    
-    
-    
+<meta name="author" content="超级阵雨" /><meta name="description" content="1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/javaoptimize5/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java性能调优5" />
+<meta property="og:description" content="1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-03-03T12:06:28+08:00" />
+<meta property="article:modified_time" content="2021-03-03T12:06:28+08:00" />
+
+<meta itemprop="name" content="Java性能调优5">
+<meta itemprop="description" content="1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系"><meta itemprop="datePublished" content="2021-03-03T12:06:28+08:00" />
+<meta itemprop="dateModified" content="2021-03-03T12:06:28+08:00" />
+<meta itemprop="wordCount" content="14422">
+<meta itemprop="keywords" content="java调优," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java性能调优5"/>
+<meta name="twitter:description" content="1.如何写出高性能SQL语句 我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://zhenyu0324.github.io/">
-                        超级阵雨的乌托邦星球
-                    </a>
-                
-                
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java性能调优5</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-03 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    
-                    
-                    <a  href="https://zhenyu0324.github.io/" title="Home">Home</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/post/" title="Archives">Archives</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/tags/" title="Tags">Tags</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/categories/" title="Categories">Categories</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/about/" title="About">About</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-
-    <article class="post">
-        <header>
-            <h1 class="post-title">Java性能调优5</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年3月3日
-        </date>
+          <span class="more-meta"> 14422 words </span>
+          <span class="more-meta"> 29 mins read </span>
         
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0'>学习笔记</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="1如何写出高性能sql语句">1.如何写出高性能SQL语句</h1>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1如何写出高性能sql语句">1.如何写出高性能SQL语句</a>
+      <ul>
+        <li><a href="#11-慢-sql-语句的几种常见诱因">1.1 慢 SQL 语句的几种常见诱因</a></li>
+        <li><a href="#12-优化-sql-语句的步骤">1.2 优化 SQL 语句的步骤</a></li>
+        <li><a href="#13-常用的-sql-优化">1.3 常用的 SQL 优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-高并发场景下的数据库事务调优">2. 高并发场景下的数据库事务调优</a>
+      <ul>
+        <li><a href="#21-并发事务带来的问题">2.1 并发事务带来的问题</a></li>
+        <li><a href="#22-事务隔离解决并发问题">2.2 事务隔离解决并发问题</a></li>
+        <li><a href="#23-锁具体实现算法">2.3 锁具体实现算法</a></li>
+        <li><a href="#24-优化高并发事务">2.4 优化高并发事务</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-索引的失效与优化">3. 索引的失效与优化</a>
+      <ul>
+        <li><a href="#31-mysql-索引存储结构">3.1 MySQL 索引存储结构</a></li>
+        <li><a href="#32-索引调优建议">3.2 索引调优建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-什么时候需要分表分库">4. 什么时候需要分表分库？</a>
+      <ul>
+        <li><a href="#41-什么时候要分表分库">4.1 什么时候要分表分库？</a></li>
+        <li><a href="#42-如何分表分库">4.2 如何分表分库？</a></li>
+        <li><a href="#43-分表分库之后面临的问题">4.3 分表分库之后面临的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-mysql中innodb的知识点串讲">5. MySQL中InnoDB的知识点串讲</a>
+      <ul>
+        <li><a href="#51-innodb-体系架构">5.1 InnoDB 体系架构</a></li>
+        <li><a href="#52-innodb-逻辑存储结构">5.2 InnoDB 逻辑存储结构</a></li>
+        <li><a href="#53-innodb-事务之-redo-log-工作原理">5.3 InnoDB 事务之 redo log 工作原理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1如何写出高性能sql语句">1.如何写出高性能SQL语句</h1>
 <p>我们知道，应用服务与数据库的交互主要是通过 SQL 语句来实现的。在开发初期，我们更加关注的是使用 SQL 实现业务功能，然而系统上线后，随着生产环境数据的快速增长，之前写的很多 SQL 语句就开始暴露出性能问题。</p>
 <p>在这个阶段中，我们应该尽量避免一些慢 SQL 语句的实现。但话说回来，SQL 语句慢的原因千千万，除了一些常规的慢 SQL 语句可以直接规避，其它的一味去规避也不是办法，我们还要学会如何去分析、定位到其根本原因，并总结一些常用的 SQL 调优方法，以备不时之需。</p>
 <p>那么今天我们就重点看看慢 SQL 语句的几种常见诱因，从这点出发，找到最佳方法，开启高性能 SQL 语句的大门。</p>
@@ -221,11 +206,7 @@
 <li>通过 EXPLAIN 分析 SQL 执行计划</li>
 </ol>
 <p>假设现在我们使用 EXPLAIN 命令查看当前 SQL 是否使用了索引，先通过 SQL EXPLAIN 导出相应的执行计划如下：
-
-        <a data-fancybox="gallery" href="01.jpeg">
-            <img class="mx-auto" alt="" src="01.jpeg" />
-        </a>
-    </p>
+<img src="01.jpeg" alt=""></p>
 <p>下面对图示中的每一个字段进行一个说明，从中你也能收获到很多零散的知识点。</p>
 <ul>
 <li>id：每个执行计划都有一个 id，如果是一个联合查询，这里还将有多个 id。</li>
@@ -234,47 +215,23 @@
 <li>partitions：访问的分区表信息。</li>
 <li>type：表示从表中查询到行所执行的方式，查询方式是 SQL 优化中一个很重要的指标，结果值从好到差依次是：system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL。</li>
 </ul>
-<p>
-        <a data-fancybox="gallery" href="02.jpeg">
-            <img class="mx-auto" alt="" src="02.jpeg" />
-        </a>
-    </p>
+<p><img src="02.jpeg" alt=""></p>
 <ul>
 <li>system/const：表中只有一行数据匹配，此时根据索引查询一次就能找到对应的数据。如果是 B + 树索引，我们知道此时索引构造成了多个层级的树，当查询的索引在树的底层时，查询效率就越低。const 表示此时索引在第一层，只需访问一层便能得到数据。</li>
 </ul>
-<p>
-        <a data-fancybox="gallery" href="03.jpeg">
-            <img class="mx-auto" alt="" src="03.jpeg" />
-        </a>
-    </p>
+<p><img src="03.jpeg" alt=""></p>
 <ul>
 <li>eq_ref：使用唯一索引扫描，常见于多表连接中使用主键和唯一索引作为关联条件。</li>
 </ul>
-<p>
-        <a data-fancybox="gallery" href="04.jpeg">
-            <img class="mx-auto" alt="" src="04.jpeg" />
-        </a>
-    </p>
+<p><img src="04.jpeg" alt=""></p>
 <ul>
 <li>ref：非唯一索引扫描，还可见于唯一索引最左原则匹配扫描。
-
-        <a data-fancybox="gallery" href="05.jpeg">
-            <img class="mx-auto" alt="" src="05.jpeg" />
-        </a>
-    </li>
+<img src="05.jpeg" alt=""></li>
 </ul>
 <p>range：索引范围扫描，比如，&lt;，&gt;，between 等操作。
-
-        <a data-fancybox="gallery" href="06.jpeg">
-            <img class="mx-auto" alt="" src="06.jpeg" />
-        </a>
-    
+<img src="06.jpeg" alt="">
 index：索引全表扫描，此时遍历整个索引树。</p>
-<p>
-        <a data-fancybox="gallery" href="07.jpeg">
-            <img class="mx-auto" alt="" src="07.jpeg" />
-        </a>
-    </p>
+<p><img src="07.jpeg" alt=""></p>
 <ul>
 <li>ALL：表示全表扫描，需要遍历全表来找到对应的行。</li>
 <li>possible_keys：可能使用到的索引。</li>
@@ -292,7 +249,7 @@ index：索引全表扫描，此时遍历整个索引树。</p>
 <p>Profile 除了可以分析执行线程的状态和时间，还支持进一步选择 ALL、CPU、MEMORY、BLOCK IO、CONTEXT SWITCHES 等类型来查询 SQL 语句在不同系统资源上所消耗的时间。以下是相关命令的注释：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -308,7 +265,7 @@ index：索引全表扫描，此时遍历整个索引树。</p>
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">SHOW PROFILE [type [, type] ... ]
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SHOW PROFILE [type [, type] ... ]
 [FOR QUERY n]
 [LIMIT row_count [OFFSET offset]]
  
@@ -336,23 +293,15 @@ type 参数：
 <p>以上分页查询的问题在于，我们查询获取的 10020 行数据结果都返回给我们了，我们能否先查询出所需要的 20 行数据中的最小 ID 值，然后通过偏移量返回所需要的 20 行数据给我们呢？我们可以通过索引覆盖扫描，使用子查询的方式来实现分页查询：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">select * from `demo`.`order` where id&gt; (select id from `demo`.`order` order by order_no limit 10000, 1)  limit 20;
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">`</span><span class="n">demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="k">order</span><span class="o">`</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">`</span><span class="n">demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="k">order</span><span class="o">`</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">order_no</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="k">limit</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
 </div>
 </div><p>通过 EXPLAIN 分析可知：子查询遍历索引的范围跟上一个查询差不多，而主查询扫描了更多的行数，但执行时间却减少了，只有 0.004s。这就是因为返回行数只有 20 行了，执行效率得到了明显的提升。</p>
-<p>
-        <a data-fancybox="gallery" href="08.jpeg">
-            <img class="mx-auto" alt="" src="08.jpeg" />
-        </a>
-    
-
-        <a data-fancybox="gallery" href="09.jpeg">
-            <img class="mx-auto" alt="" src="09.jpeg" />
-        </a>
-    </p>
+<p><img src="08.jpeg" alt="">
+<img src="09.jpeg" alt=""></p>
 <ol start="2">
 <li>优化 SELECT COUNT(*)</li>
 </ol>
@@ -374,8 +323,8 @@ type 参数：
 <p>我曾经看过很多同事习惯在只查询一两个字段时，都使用 select * from table where xxx 这样的 SQL 语句，这种写法在特定的环境下会存在一定的性能损耗。</p>
 <p>MySQL 常用的存储引擎有 MyISAM 和 InnoDB，其中 InnoDB 在默认创建主键时会创建主键索引，而主键索引属于聚族索引，即在存储数据时，索引是基于 B + 树构成的，具体的行数据则存储在叶子节点。</p>
 <p>而 MyISAM 默认创建的主键索引、二级索引以及 InnoDB 的二级索引都属于非聚族索引，即在存储数据时，索引是基于 B + 树构成的，而叶子节点存储的是主键值。</p>
-<p>假设我们的订单表是基于 InnoDB 存储引擎创建的，且存在 order_no、status 两列组成的组合索引。此时，我们需要根据订单号查询一张订单表的 status，如果我们使用 select * from order where order_no='xxx’来查询，则先会查询组合索引，通过组合索引获取到主键 ID，再通过主键 ID 去主键索引中获取对应行所有列的值。</p>
-<p>如果我们使用 select order_no, status from order where order_no='xxx’来查询，则只会查询组合索引，通过组合索引获取到对应的 order_no 和 status 的值。</p>
+<p>假设我们的订单表是基于 InnoDB 存储引擎创建的，且存在 order_no、status 两列组成的组合索引。此时，我们需要根据订单号查询一张订单表的 status，如果我们使用 select * from order where order_no=&lsquo;xxx’来查询，则先会查询组合索引，通过组合索引获取到主键 ID，再通过主键 ID 去主键索引中获取对应行所有列的值。</p>
+<p>如果我们使用 select order_no, status from order where order_no=&lsquo;xxx’来查询，则只会查询组合索引，通过组合索引获取到对应的 order_no 和 status 的值。</p>
 <h1 id="2-高并发场景下的数据库事务调优">2. 高并发场景下的数据库事务调优</h1>
 <p>数据库事务是数据库系统执行过程中的一个逻辑处理单元，保证一个数据库操作要么成功，要么失败。谈到他，就不得不提 ACID 属性了。数据库事务具有以下四个基本属性：原子性（Atomicity）、一致性（Consistent）、隔离性（Isolation）以及持久性（Durable）。正是这些特性，才保证了数据库事务的安全性。而在 MySQL 中，鉴于 MyISAM 存储引擎不支持事务，所以接下来的内容都是在 InnoDB 存储引擎的基础上进行讲解的。</p>
 <p>我们知道，在 Java 并发编程中，可以多线程并发执行程序，然而并发虽然提高了程序的执行效率，却给程序带来了线程安全问题。事务跟多线程一样，为了提高数据库处理事务的吞吐量，数据库同样支持并发事务，而在并发运行中，同样也存在着安全性问题，例如，修改数据丢失，读取数据不一致等。</p>
@@ -385,33 +334,17 @@ type 参数：
 <ol>
 <li>
 <p>数据丢失
-
-        <a data-fancybox="gallery" href="10.jpeg">
-            <img class="mx-auto" alt="" src="10.jpeg" />
-        </a>
-    </p>
+<img src="10.jpeg" alt=""></p>
 </li>
 <li>
 <p>脏读</p>
 </li>
 </ol>
-<p>
-        <a data-fancybox="gallery" href="11.jpeg">
-            <img class="mx-auto" alt="" src="11.jpeg" />
-        </a>
-    
+<p><img src="11.jpeg" alt="">
 3. 不可重复读</p>
-<p>
-        <a data-fancybox="gallery" href="12.jpeg">
-            <img class="mx-auto" alt="" src="12.jpeg" />
-        </a>
-    
+<p><img src="12.jpeg" alt="">
 4. 幻读</p>
-<p>
-        <a data-fancybox="gallery" href="13.jpeg">
-            <img class="mx-auto" alt="" src="13.jpeg" />
-        </a>
-    </p>
+<p><img src="13.jpeg" alt=""></p>
 <h2 id="22-事务隔离解决并发问题">2.2 事务隔离解决并发问题</h2>
 <p>以上 4 个并发事务带来的问题，其中，数据丢失可以基于数据库中的悲观锁来避免发生，即在查询时通过在事务中使用 select xx for update 语句来实现一个排他锁，保证在该事务结束之前其他事务无法更新该数据。</p>
 <p>当然，我们也可以基于乐观锁来避免，即将某一字段作为版本号，如果更新时的版本号跟之前的版本一致，则更新，否则更新失败。剩下 3 个问题，其实是数据库读一致性造成的，需要数据库提供一定的事务隔离机制来解决。</p>
@@ -450,11 +383,11 @@ type 参数：
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">MySQLQueryInterruptedException: Query execution was interrupted
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">MySQLQueryInterruptedException: Query execution was interrupted
 
 </code></pre></td></tr></table>
 </div>
@@ -462,11 +395,7 @@ type 参数：
 <p>又因为锁的竞争是不公平的，当多个事务同时对一条记录进行更新时，极端情况下，一个更新操作进去排队系统后，可能会一直拿不到锁，最后因超时被系统打断踢出。</p>
 <p>在用户购买商品时，首先我们需要查询库存余额，再新建一个订单，并扣除相应的库存。这一系列操作是处于同一个事务的。</p>
 <p>以上业务若是在两种不同的执行顺序下，其结果都是一样的，但在事务性能方面却不一样：</p>
-<p>
-        <a data-fancybox="gallery" href="14.jpeg">
-            <img class="mx-auto" alt="" src="14.jpeg" />
-        </a>
-    </p>
+<p><img src="14.jpeg" alt=""></p>
 <p>这是因为，虽然这些操作在同一个事务，但锁的申请在不同时间，只有当其他操作都执行完，才会释放所有锁。因为扣除库存是更新操作，属于行锁，这将会影响到其他操作该数据的事务，所以我们应该尽量避免长时间地持有该锁，尽快释放该锁。</p>
 <p>又因为先新建订单和先扣除库存都不会影响业务，所以我们可以将扣除库存操作放到最后，也就是使用执行顺序 1，以此尽量减小锁的持有时间。</p>
 <h1 id="3-索引的失效与优化">3. 索引的失效与优化</h1>
@@ -474,20 +403,16 @@ type 参数：
 <p>记得之前有一次迭代一个业务模块的开发，涉及到了一个新的查询业务，需要根据商品类型、订单状态筛选出需要的订单，并以订单时间进行排序。由于 sku 的索引已经存在了，我在完成业务开发之后，提交了一个创建 status 的索引的需求，理由是 SQL 查询需要使用到这两个索引：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">select * from order where status =1 and sku=10001 order by create_time asc
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">select * from order where status =1 and sku=10001 order by create_time asc
 </code></pre></td></tr></table>
 </div>
 </div><p>然而，DBA 很快就将这个需求驳回了，并给出了重建一个 sku、status 以及 create_time 组合索引的建议，查询顺序也改成了 sku=10001 and status=1。</p>
 <h2 id="31-mysql-索引存储结构">3.1 MySQL 索引存储结构</h2>
 <p>索引是优化数据库查询最重要的方式之一，它是在 MySQL 的存储引擎层中实现的，所以每一种存储引擎对应的索引不一定相同。我们可以通过下面这张表格，看看不同的存储引擎分别支持哪种索引类型：</p>
-<p>
-        <a data-fancybox="gallery" href="15.jpeg">
-            <img class="mx-auto" alt="" src="15.jpeg" />
-        </a>
-    </p>
+<p><img src="15.jpeg" alt=""></p>
 <p>B+Tree 索引和 Hash 索引是我们比较常用的两个索引数据存储结构，B+Tree 索引是通过 B+ 树实现的，是有序排列存储，所以在排序和范围查找方面都比较有优势。</p>
 <p>Hash 索引相对简单些，只有 Memory 存储引擎支持 Hash 索引。Hash 索引适合 key-value 键值对查询，无论表数据多大，查询数据的复杂度都是 O(1)，且直接通过 Hash 索引查询的性能比其它索引都要优越。</p>
 <p>在创建表时，无论使用 InnoDB 还是 MyISAM 存储引擎，默认都会创建一个主键索引，而创建的主键索引默认使用的是 B+Tree 索引。不过虽然这两个存储引擎都支持 B+Tree 索引，但它们在具体的数据存储结构方面却有所不同。</p>
@@ -587,11 +512,7 @@ type 参数：
 <h1 id="5-mysql中innodb的知识点串讲">5. MySQL中InnoDB的知识点串讲</h1>
 <h2 id="51-innodb-体系架构">5.1 InnoDB 体系架构</h2>
 <p>InnoDB 主要包括了内存池、后台线程以及存储文件。内存池又是由多个内存块组成的，主要包括缓存磁盘数据、redo log 缓冲等；后台线程则包括了 Master Thread、IO Thread 以及 Purge Thread 等；由 InnoDB 存储引擎实现的表的存储结构文件一般包括表结构文件（.frm）、共享表空间文件（ibdata1）、独占表空间文件（ibd）以及日志文件（redo 文件等）等。</p>
-<p>
-        <a data-fancybox="gallery" href="16.jpeg">
-            <img class="mx-auto" alt="" src="16.jpeg" />
-        </a>
-    </p>
+<p><img src="16.jpeg" alt=""></p>
 <ol>
 <li>内存池
 我们知道，如果客户端从数据库中读取数据是直接从磁盘读取的话，无疑会带来一定的性能瓶颈，缓冲池的作用就是提高整个数据库的读写性能。</li>
@@ -610,11 +531,7 @@ Master Thread 主要负责将缓冲池中的数据异步刷新到磁盘中，除
 <p>在 InnoDB 中，存储数据都是按表空间进行存放的，默认为共享表空间，存储的文件即为共享表空间文件（ibdata1）。若设置了参数 innodb_file_per_table 为 1，则会将存储的数据、索引等信息单独存储在一个独占表空间，因此也会产生一个独占表空间文件（ibd）。如果你对共享表空间和独占表空间的理解还不够透彻，接下来我会详解。</p>
 <h2 id="52-innodb-逻辑存储结构">5.2 InnoDB 逻辑存储结构</h2>
 <p>InnoDB 逻辑存储结构分为表空间（Tablespace）、段 (Segment)、区 (Extent)、页 Page) 以及行 (row)。</p>
-<p>
-        <a data-fancybox="gallery" href="17.jpeg">
-            <img class="mx-auto" alt="" src="17.jpeg" />
-        </a>
-    </p>
+<p><img src="17.jpeg" alt=""></p>
 <ol>
 <li>表空间（Tablespace）
 InnoDB 提供了两种表空间存储数据的方式，一种是共享表空间，一种是独占表空间。 InnoDB 默认会将其所有的表数据存储在一个共享表空间中，即 ibdata1。</li>
@@ -656,197 +573,103 @@ InnoDB 存储引擎是面向列的（row-oriented)，也就是说数据是按行
 <p>这种策略主要是为了避免一些不常查询的操作突然将热点数据淘汰出去，而热点数据被再次查询时，需要再次从磁盘中获取，从而影响数据库的查询性能。</p>
 <p>如果我们的热点数据比较多，我们可以通过调整 midpoint 值来增加热点数据的存储量，从而降低热点数据的淘汰率。</p>
 
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/javaoptimize4/">Java性能调优4</a></li>
-        
-        <li><a href="/post/javaoptimize3/">Java性能调优3</a></li>
-        
-        <li><a href="/post/javaoptimize2/">Java性能调优2</a></li>
-        
-        <li><a href="/post/javaoptimize1/">Java性能调优1</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/java%E8%B0%83%E4%BC%98'>java调优</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="https://zhenyu0324.github.io/">超级阵雨的乌托邦星球 By 超级阵雨</a>
-        
     </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-03-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/zhongtai1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">说透中台--概念篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/javaoptimize4/">
+            <span class="next-text nav-default">Java性能调优4</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+      </div>
+    </main>
 
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://zhenyu0324.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/zhongtai1/" title="说透中台--概念篇">说透中台--概念篇</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize5/" title="Java性能调优5">Java性能调优5</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize4/" title="Java性能调优4">Java性能调优4</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize3/" title="Java性能调优3">Java性能调优3</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize2/" title="Java性能调优2">Java性能调优2</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize1/" title="Java性能调优1">Java性能调优1</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill2/" title="如何设计秒杀系统(下)">如何设计秒杀系统(下)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill1/" title="如何设计秒杀系统(上)">如何设计秒杀系统(上)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/baihuafalv/" title="白话法律笔记">白话法律笔记</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/blockchain7/" title="区块链学习--7从业区块链">区块链学习--7从业区块链</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/">中文 (1)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记 (16)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/leetcode/">LeetCode</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E4%B8%AD%E6%96%87/">中文</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%99%BD%E8%AF%9D%E6%B3%95%E5%BE%8B/">白话法律</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0/">说透中台</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E9%93%BE%E8%A1%A8/">链表</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://zhenyu0324.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

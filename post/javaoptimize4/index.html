@@ -1,198 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java性能调优4 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Java性能调优4 | 超级阵雨的乌托邦星球</title>
-    <meta property="og:title" content="Java性能调优4 - 超级阵雨的乌托邦星球">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2021-03-02T12:51:07&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2021-03-02T12:51:07&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Java性能调优4">
-        <meta name="author" content="超级阵雨">
-        
-    <meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize4/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
-    
-    
-    
-    
+<meta name="author" content="超级阵雨" /><meta name="description" content="1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/javaoptimize4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java性能调优4" />
+<meta property="og:description" content="1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize4/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-03-02T12:51:07+08:00" />
+<meta property="article:modified_time" content="2021-03-02T12:51:07+08:00" />
+
+<meta itemprop="name" content="Java性能调优4">
+<meta itemprop="description" content="1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字"><meta itemprop="datePublished" content="2021-03-02T12:51:07+08:00" />
+<meta itemprop="dateModified" content="2021-03-02T12:51:07+08:00" />
+<meta itemprop="wordCount" content="11593">
+<meta itemprop="keywords" content="java调优," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java性能调优4"/>
+<meta name="twitter:description" content="1. 了解JVM内存结构 1.1 为什么 JVM 在 Java 中如此重要？ 首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://zhenyu0324.github.io/">
-                        超级阵雨的乌托邦星球
-                    </a>
-                
-                
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java性能调优4</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-02 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    
-                    
-                    <a  href="https://zhenyu0324.github.io/" title="Home">Home</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/post/" title="Archives">Archives</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/tags/" title="Tags">Tags</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/categories/" title="Categories">Categories</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/about/" title="About">About</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-
-    <article class="post">
-        <header>
-            <h1 class="post-title">Java性能调优4</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年3月2日
-        </date>
+          <span class="more-meta"> 11593 words </span>
+          <span class="more-meta"> 24 mins read </span>
         
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0'>学习笔记</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="1-了解jvm内存结构">1. 了解JVM内存结构</h1>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-了解jvm内存结构">1. 了解JVM内存结构</a>
+      <ul>
+        <li><a href="#11-为什么-jvm-在-java-中如此重要">1.1 为什么 JVM 在 Java 中如此重要？</a></li>
+        <li><a href="#12-从了解内存结构开始">1.2 从了解内存结构开始</a></li>
+        <li><a href="#13-jvm-内存结构的具体设计">1.3 JVM 内存结构的具体设计</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-深入jvm即时编译器jit优化java编译">2. 深入JVM即时编译器JIT，优化Java编译</a>
+      <ul>
+        <li><a href="#21-类编译加载执行过程">2.1 类编译加载执行过程</a></li>
+        <li><a href="#22-类编译">2.2 类编译</a></li>
+        <li><a href="#23-类加载">2.3 类加载</a></li>
+        <li><a href="#24-类连接">2.4 类连接</a></li>
+        <li><a href="#25-类初始化">2.5 类初始化</a></li>
+        <li><a href="#26-即时编译">2.6 即时编译</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-如何优化垃圾回收机制">3. 如何优化垃圾回收机制？</a>
+      <ul>
+        <li><a href="#31-垃圾回收机制">3.1 垃圾回收机制</a></li>
+        <li><a href="#32-gc-算法">3.2 GC 算法</a></li>
+        <li><a href="#33-gc-性能衡量指标">3.3 GC 性能衡量指标</a></li>
+        <li><a href="#34-查看--分析-gc-日志">3.4 查看 &amp; 分析 GC 日志</a></li>
+        <li><a href="#35-gc-调优策略">3.5 GC 调优策略</a></li>
+        <li><a href="#36-选择合适的-gc-回收器">3.6 选择合适的 GC 回收器</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-如何优化jvm内存分配">4. 如何优化JVM内存分配？</a>
+      <ul>
+        <li><a href="#41-jvm-内存分配性能问题">4.1 JVM 内存分配性能问题</a></li>
+        <li><a href="#42-对象在堆中的生存周期">4.2 对象在堆中的生存周期</a></li>
+        <li><a href="#43-查看-jvm-堆内存分配">4.3 查看 JVM 堆内存分配</a></li>
+        <li><a href="#44-jvm-内存分配的调优过程">4.4 JVM 内存分配的调优过程</a>
+          <ul>
+            <li><a href="#441-ab-压测">4.4.1 AB 压测</a></li>
+          </ul>
+        </li>
+        <li><a href="#45-参考指标">4.5 参考指标</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-内存持续上升我该如何排查问题">5. 内存持续上升，我该如何排查问题？</a>
+      <ul>
+        <li><a href="#51-linux-命令行工具">5.1 Linux 命令行工具</a>
+          <ul>
+            <li><a href="#511-top命令">5.1.1 top命令</a></li>
+            <li><a href="#512-vmstat-命令">5.1.2 vmstat 命令</a></li>
+            <li><a href="#513-pidstat-命令">5.1.3 pidstat 命令</a></li>
+          </ul>
+        </li>
+        <li><a href="#52-jdk-工具">5.2 JDK 工具</a>
+          <ul>
+            <li><a href="#521-jstat-命令">5.2.1 jstat 命令</a></li>
+            <li><a href="#522-jstack-命令">5.2.2 jstack 命令</a></li>
+            <li><a href="#523-jmap-命令">5.2.3 jmap 命令</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1-了解jvm内存结构">1. 了解JVM内存结构</h1>
 <h2 id="11-为什么-jvm-在-java-中如此重要">1.1 为什么 JVM 在 Java 中如此重要？</h2>
 <p>首先你应该知道，运行一个 Java 应用程序，我们必须要先安装 JDK 或者 JRE 包。这是因为 Java 应用在编译后会变成字节码，然后通过字节码运行在 JVM 中，而 JVM 是 JRE 的核心组成部分。</p>
 <p>JVM 不仅承担了 Java 字节码的分析（JIT compiler）和执行（Runtime），同时也内置了自动内存分配管理机制。这个机制可以大大降低手动分配回收机制可能带来的内存泄露和内存溢出风险，使 Java 开发人员不需要关注每个对象的内存分配以及回收，从而更专注于业务本身。</p>
@@ -208,21 +216,13 @@
 <li>虚拟机栈</li>
 <li>本地方法栈</li>
 </ul>
-<p>
-        <a data-fancybox="gallery" href="01.jpeg">
-            <img class="mx-auto" alt="" src="01.jpeg" />
-        </a>
-    </p>
+<p><img src="01.jpeg" alt=""></p>
 <ol>
 <li>堆（Heap）</li>
 </ol>
 <p>堆是 JVM 内存中最大的一块内存空间，该内存被所有线程共享，几乎所有对象和数组都被分配到了堆内存中。堆被划分为新生代和老年代，新生代又被进一步划分为 Eden 和 Survivor 区，最后 Survivor 由 From Survivor 和 To Survivor 组成。</p>
 <p>在 Java6 版本中，永久代在非堆内存区；到了 Java7 版本，永久代的静态变量和运行时常量池被合并到了堆中；而到了 Java8，永久代被元空间取代了。 结构如下图所示：
-
-        <a data-fancybox="gallery" href="02.jpeg">
-            <img class="mx-auto" alt="" src="02.jpeg" />
-        </a>
-    </p>
+<img src="02.jpeg" alt=""></p>
 <ol start="2">
 <li>程序计数器（Program Counter Register）</li>
 </ol>
@@ -262,11 +262,7 @@
 <p>类文件在运行时被进一步编译，它们可以变成高度优化的机器代码，由于 C/C++ 编译器的所有优化都是在编译期间完成的，运行期间的性能监控仅作为基础的优化措施则无法进行，例如，调用频率预测、分支频率预测、裁剪未被选择的分支等，而 Java 在运行时的再次编译，就可以进行基础的优化措施。因此，JIT 编译器可以说是 JVM 中运行时编译最重要的部分之一。</p>
 <h2 id="21-类编译加载执行过程">2.1 类编译加载执行过程</h2>
 <p>在这之前，我们先了解下 Java 从编译到运行的整个过程，为后面的学习打下基础。请看下图：</p>
-<p>
-        <a data-fancybox="gallery" href="03.jpeg">
-            <img class="mx-auto" alt="" src="03.jpeg" />
-        </a>
-    </p>
+<p><img src="03.jpeg" alt=""></p>
 <h2 id="22-类编译">2.2 类编译</h2>
 <p>在编写好代码之后，我们需要将 .java 文件编译成 .class 文件，才能在虚拟机上正常运行代码。文件的编译通常是由 JDK 中自带的 Javac 工具完成，一个简单的 .java 文件，我们可以通过 javac 命令来生成 .class 文件。</p>
 <p>编译后的字节码文件主要包括常量池和方法表集合这两部分。</p>
@@ -286,7 +282,7 @@
 <p>初始化类的静态变量和静态代码块为用户自定义的值，初始化的顺序和 Java 源码从上到下的顺序一致。例如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -296,7 +292,7 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">private static int i=1；
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">private static int i=1；
 static{
   i=0;
 }
@@ -311,7 +307,7 @@ public static void main(String [] args){
 <p>再来看看以下代码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -322,7 +318,7 @@ public static void main(String [] args){
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 tatic{
   i=0;
 }
@@ -358,11 +354,7 @@ public static void main(String [] args){
 <p>引用计数算法：这种算法是通过一个对象的引用计数器来判断该对象是否被引用了。每当对象被引用，引用计数器就会加 1；每当引用失效，计数器就会减 1。当对象的引用计数器的值为 0 时，就说明该对象不再被引用，可以被回收了。这里强调一点，虽然引用计数算法的实现简单，判断效率也很高，但它存在着对象之间相互循环引用的问题。</p>
 <p>可达性分析算法：GC Roots 是该算法的基础，GC Roots 是所有对象的根对象，在 JVM 加载时，会创建一些普通对象引用正常对象。这些对象作为正常对象的起始点，在垃圾回收时，会从这些 GC Roots 开始向下搜索，当一个对象到 GC Roots 没有任何引用链相连时，就证明此对象是不可用的。目前 HotSpot 虚拟机采用的就是这种算法。</p>
 <p>以上两种算法都是通过引用来判断对象是否可以被回收。在 JDK 1.2 之后，Java 对引用的概念进行了扩充，将引用分为了以下四种：</p>
-<p>
-        <a data-fancybox="gallery" href="04.jpeg">
-            <img class="mx-auto" alt="" src="04.jpeg" />
-        </a>
-    </p>
+<p><img src="04.jpeg" alt=""></p>
 <ol start="3">
 <li>如何回收这些对象？</li>
 </ol>
@@ -372,17 +364,9 @@ public static void main(String [] args){
 <p>垃圾回收线程在 JVM 中是自动执行的，Java 程序无法强制执行。我们唯一能做的就是通过调用 System.gc 方法来&quot;建议&quot;执行垃圾收集器，但是否可执行，什么时候执行？仍然不可预期。</p>
 <h2 id="32-gc-算法">3.2 GC 算法</h2>
 <p>JVM 提供了不同的回收算法来实现这一套回收机制，通常垃圾收集器的回收算法可以分为以下几种：</p>
-<p>
-        <a data-fancybox="gallery" href="05.jpeg">
-            <img class="mx-auto" alt="" src="05.jpeg" />
-        </a>
-    </p>
+<p><img src="05.jpeg" alt=""></p>
 <p>如果说收集算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现，JDK1.7 update14 之后 Hotspot 虚拟机所有的回收器整理如下（以下为服务端垃圾收集器）：</p>
-<p>
-        <a data-fancybox="gallery" href="06.jpeg">
-            <img class="mx-auto" alt="" src="06.jpeg" />
-        </a>
-    </p>
+<p><img src="06.jpeg" alt=""></p>
 <p>其实在 JVM 规范中并没有明确 GC 的运作方式，各个厂商可以采用不同的方式实现垃圾收集器。我们可以通过 JVM 工具查询当前 JVM 使用的垃圾收集器类型，首先通过 ps 命令查询出进程 ID，再通过 jmap -heap ID 查询出 JVM 的配置信息，其中就包括垃圾收集器的设置类型。</p>
 <h2 id="33-gc-性能衡量指标">3.3 GC 性能衡量指标</h2>
 <p>一个垃圾收集器在不同场景下表现出的性能也不一样，那么如何评价一个垃圾收集器的性能好坏呢？我们可以借助一些指标。</p>
@@ -393,7 +377,7 @@ public static void main(String [] args){
 <p>已知了性能衡量指标，现在我们需要通过工具查询 GC 相关日志，统计各项指标的信息。首先，我们需要通过 JVM 参数预先设置 GC 日志，通常有以下几种 JVM 参数设置：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -403,7 +387,7 @@ public static void main(String [] args){
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 -XX:+PrintGC 输出 GC 日志
 -XX:+PrintGCDetails 输出 GC 的详细日志
 -XX:+PrintGCTimeStamps 输出 GC 的时间戳（以基准时间的形式）
@@ -416,20 +400,16 @@ public static void main(String [] args){
 </div><p>这里使用如下参数来打印日志：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+PrintGCDateStamps -XX:+PrintGCDetails -Xloggc:./gclogs
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+PrintGCDateStamps -XX:+PrintGCDetails -Xloggc:./gclogs
 
 </code></pre></td></tr></table>
 </div>
 </div><p>打印后的日志为：</p>
-<p>
-        <a data-fancybox="gallery" href="07.png">
-            <img class="mx-auto" alt="" src="07.png" />
-        </a>
-    </p>
+<p><img src="07.png" alt=""></p>
 <p>上图是运行很短时间的 GC 日志，如果是长时间的 GC 日志，我们很难通过文本形式去查看整体的 GC 性能。</p>
 <p>这里我再推荐一个比较好用的 GC 日志分析工具，GCeasy是一款非常直观的 GC 日志分析工具，我们可以将日志文件压缩之后，上传到 GCeasy 官网即可看到非常清楚的 GC 日志分析结果。</p>
 <h2 id="35-gc-调优策略">3.5 GC 调优策略</h2>
@@ -470,24 +450,16 @@ public static void main(String [] args){
 <p>我们知道了一个对象从创建至回收到堆中的过程，接下来我们再来了解下 JVM 堆内存是如何分配的。在默认不配置 JVM 堆内存大小的情况下，JVM 根据默认值来配置当前内存大小。我们可以通过以下命令来查看堆内存配置的默认值</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">java -XX:+PrintFlagsFinal -version | grep HeapSize
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">java -XX:+PrintFlagsFinal -version | grep HeapSize
 jmap -heap 17284
 </code></pre></td></tr></table>
 </div>
-</div><p>
-        <a data-fancybox="gallery" href="08.png">
-            <img class="mx-auto" alt="" src="08.png" />
-        </a>
-    
-
-        <a data-fancybox="gallery" href="09.png">
-            <img class="mx-auto" alt="" src="09.png" />
-        </a>
-    </p>
+</div><p><img src="08.png" alt="">
+<img src="09.png" alt=""></p>
 <p>通过命令，我们可以获得在这台机器上启动的 JVM 默认最大堆内存为 1953MB，初始化大小为 124MB。</p>
 <p>在 JDK1.7 中，默认情况下年轻代和老年代的比例是 1:2，我们可以通过–XX:NewRatio 重置该配置项。年轻代中的 Eden 和 To Survivor、From Survivor 的比例是 8:1:1，我们可以通过 -XX:SurvivorRatio 重置该配置项。</p>
 <p>在 JDK1.7 中如果开启了 -XX:+UseAdaptiveSizePolicy 配置项，JVM 将会动态调整 Java 堆中各个区域的大小以及进入老年代的年龄，–XX:NewRatio 和 -XX:SurvivorRatio 将会失效，而 JDK1.8 是默认开启 -XX:+UseAdaptiveSizePolicy 配置项的。</p>
@@ -496,7 +468,7 @@ jmap -heap 17284
 <p>我们先使用 JVM 的默认配置，观察应用服务的运行情况，下面我将结合一个实际案例来讲述。现模拟一个抢购接口，假设需要满足一个 5W 的并发请求，且每次请求会产生 20KB 对象，我们可以通过千级并发创建一个 1MB 对象的接口来模拟万级并发请求产生大量对象的场景，具体代码如下</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -507,7 +479,7 @@ jmap -heap 17284
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">@RequestMapping(value = &#34;/test1&#34;)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">@RequestMapping(value = &#34;/test1&#34;)
 	public String test1(HttpServletRequest request) {
 		List&lt;Byte[]&gt; temp = new ArrayList&lt;Byte[]&gt;();
 
@@ -520,21 +492,17 @@ jmap -heap 17284
 </div>
 </div><h3 id="441-ab-压测">4.4.1 AB 压测</h3>
 <p>分别对应用服务进行压力测试，以下是请求接口的吞吐量和响应时间在不同并发用户数下的变化情况：</p>
-<p>
-        <a data-fancybox="gallery" href="10.jpeg">
-            <img class="mx-auto" alt="" src="10.jpeg" />
-        </a>
-    </p>
+<p><img src="10.jpeg" alt=""></p>
 <p>可以看到，当并发数量到了一定值时，吞吐量就上不去了，响应时间也迅速增加。那么，在 JVM 内部运行又是怎样的呢？</p>
 <p><strong>分析 GC 日志</strong></p>
 <p>此时我们可以通过 GC 日志查看具体的回收日志。我们可以通过设置 VM 配置参数，将运行期间的 GC 日志 dump 下来，具体配置参数如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:/log/heapTest.log
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:/log/heapTest.log
 
 </code></pre></td></tr></table>
 </div>
@@ -554,24 +522,12 @@ jmap -heap 17284
 <h2 id="51-linux-命令行工具">5.1 Linux 命令行工具</h2>
 <h3 id="511-top命令">5.1.1 top命令</h3>
 <p>top 命令是我们在 Linux 下最常用的命令之一，它可以实时显示正在执行进程的 CPU 使用率、内存使用率以及系统负载等信息。其中上半部分显示的是系统的统计信息，下半部分显示的是进程的使用率统计信息。</p>
-<p>
-        <a data-fancybox="gallery" href="11.jpeg">
-            <img class="mx-auto" alt="" src="11.jpeg" />
-        </a>
-    </p>
+<p><img src="11.jpeg" alt=""></p>
 <p>除了简单的 top 之外，我们还可以通过 top -Hp pid 查看具体线程使用系统资源情况：</p>
-<p>
-        <a data-fancybox="gallery" href="12.jpeg">
-            <img class="mx-auto" alt="" src="12.jpeg" />
-        </a>
-    </p>
+<p><img src="12.jpeg" alt=""></p>
 <h3 id="512-vmstat-命令">5.1.2 vmstat 命令</h3>
 <p>vmstat 是一款指定采样周期和次数的功能性监测工具，我们可以看到，它不仅可以统计内存的使用情况，还可以观测到 CPU 的使用率、swap 的使用情况。但 vmstat 一般很少用来查看内存的使用情况，而是经常被用来观察进程的上下文切换。</p>
-<p>
-        <a data-fancybox="gallery" href="13.jpeg">
-            <img class="mx-auto" alt="" src="13.jpeg" />
-        </a>
-    </p>
+<p><img src="13.jpeg" alt=""></p>
 <ul>
 <li>r：等待运行的进程数；</li>
 <li>b：处于非中断睡眠状态的进程数；</li>
@@ -592,11 +548,7 @@ jmap -heap 17284
 </ul>
 <h3 id="513-pidstat-命令">5.1.3 pidstat 命令</h3>
 <p>pidstat 是 Sysstat 中的一个组件，也是一款功能强大的性能监测工具，我们可以通过命令：yum install sysstat 安装该监控组件。之前的 top 和 vmstat 两个命令都是监测进程的内存、CPU 以及 I/O 使用情况，而 pidstat 命令则是深入到线程级别。</p>
-<p>
-        <a data-fancybox="gallery" href="14.jpeg">
-            <img class="mx-auto" alt="" src="14.jpeg" />
-        </a>
-    </p>
+<p><img src="14.jpeg" alt=""></p>
 <p>通过 pidstat -help 命令，我们可以查看到有以下几个常用的参数来监测线程的性能：</p>
 <p>常用参数：</p>
 <ul>
@@ -617,26 +569,14 @@ jmap -heap 17284
 <li>RSS：常驻集合大小，非交换区内存使用 KB。</li>
 </ul>
 <p>如果我们需要继续查看该进程下的线程内存使用率，则在后面添加 -t 指令即可：</p>
-<p>
-        <a data-fancybox="gallery" href="15.jpeg">
-            <img class="mx-auto" alt="" src="15.jpeg" />
-        </a>
-    </p>
+<p><img src="15.jpeg" alt=""></p>
 <p>我们知道，Java 是基于 JVM 上运行的，大部分内存都是在 JVM 的用户内存中创建的，所以除了通过以上 Linux 命令来监控整个服务器内存的使用情况之外，我们更需要知道 JVM 中的内存使用情况。JDK 中就自带了很多命令工具可以监测到 JVM 的内存分配以及使用情况。</p>
 <h2 id="52-jdk-工具">5.2 JDK 工具</h2>
 <h3 id="521-jstat-命令">5.2.1 jstat 命令</h3>
 <p>jstat 可以监测 Java 应用程序的实时运行情况，包括堆内存信息以及垃圾回收信息。我们可以运行 jstat -help 查看一些关键参数信息：</p>
-<p>
-        <a data-fancybox="gallery" href="16.jpeg">
-            <img class="mx-auto" alt="" src="16.jpeg" />
-        </a>
-    </p>
+<p><img src="16.jpeg" alt=""></p>
 <p>再通过 jstat -option 查看 jstat 有哪些操作：</p>
-<p>
-        <a data-fancybox="gallery" href="17.jpeg">
-            <img class="mx-auto" alt="" src="17.jpeg" />
-        </a>
-    </p>
+<p><img src="17.jpeg" alt=""></p>
 <ul>
 <li>-class：显示 ClassLoad 的相关信息；</li>
 <li>-compiler：显示 JIT 编译的相关信息；</li>
@@ -652,11 +592,7 @@ jmap -heap 17284
 <li>-printcompilation：输出 JIT 编译的方法信息。
 它的功能比较多，在这里我例举一个常用功能，如何使用 jstat 查看堆内存的使用情况。我们可以用 jstat -gc pid 查看：</li>
 </ul>
-<p>
-        <a data-fancybox="gallery" href="18.jpeg">
-            <img class="mx-auto" alt="" src="18.jpeg" />
-        </a>
-    </p>
+<p><img src="18.jpeg" alt=""></p>
 <ul>
 <li>S0C：年轻代中 To Survivor 的容量（单位 KB）；</li>
 <li>S1C：年轻代中 From Survivor 的容量（单位 KB）；</li>
@@ -676,221 +612,113 @@ jmap -heap 17284
 </ul>
 <h3 id="522-jstack-命令">5.2.2 jstack 命令</h3>
 <p>它是一种线程堆栈分析工具，最常用的功能就是使用 jstack pid 命令查看线程的堆栈信息，通常会结合 top -Hp pid 或 pidstat -p pid -t 一起查看具体线程的状态，也经常用来排查一些死锁的异常。</p>
-<p>
-        <a data-fancybox="gallery" href="19.jpeg">
-            <img class="mx-auto" alt="" src="19.jpeg" />
-        </a>
-    </p>
+<p><img src="19.jpeg" alt=""></p>
 <p>每个线程堆栈的信息中，都可以查看到线程 ID、线程的状态（wait、sleep、running 等状态）以及是否持有锁等。</p>
 <h3 id="523-jmap-命令">5.2.3 jmap 命令</h3>
 <p>我们可以用 jmap 来查看堆内存初始化配置信息以及堆内存的使用情况：</p>
-<p>
-        <a data-fancybox="gallery" href="20.jpeg">
-            <img class="mx-auto" alt="" src="20.jpeg" />
-        </a>
-    </p>
+<p><img src="20.jpeg" alt=""></p>
 <p>我们可以使用 jmap -histo[:live] pid 查看堆内存中的对象数目、大小统计直方图，如果带上 live 则只统计活对象：</p>
-<p>
-        <a data-fancybox="gallery" href="21.jpeg">
-            <img class="mx-auto" alt="" src="21.jpeg" />
-        </a>
-    </p>
+<p><img src="21.jpeg" alt=""></p>
 <p>我们可以通过 jmap 命令把堆内存的使用情况 dump 到文件中：</p>
-<p>
-        <a data-fancybox="gallery" href="22.jpeg">
-            <img class="mx-auto" alt="" src="22.jpeg" />
-        </a>
-    </p>
+<p><img src="22.jpeg" alt=""></p>
 
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/javaoptimize3/">Java性能调优3</a></li>
-        
-        <li><a href="/post/javaoptimize2/">Java性能调优2</a></li>
-        
-        <li><a href="/post/javaoptimize1/">Java性能调优1</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/java%E8%B0%83%E4%BC%98'>java调优</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="https://zhenyu0324.github.io/">超级阵雨的乌托邦星球 By 超级阵雨</a>
-        
     </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-03-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/javaoptimize5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java性能调优5</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/javaoptimize3/">
+            <span class="next-text nav-default">Java性能调优3</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+      </div>
+    </main>
 
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://zhenyu0324.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/zhongtai1/" title="说透中台--概念篇">说透中台--概念篇</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize5/" title="Java性能调优5">Java性能调优5</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize4/" title="Java性能调优4">Java性能调优4</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize3/" title="Java性能调优3">Java性能调优3</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize2/" title="Java性能调优2">Java性能调优2</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize1/" title="Java性能调优1">Java性能调优1</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill2/" title="如何设计秒杀系统(下)">如何设计秒杀系统(下)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill1/" title="如何设计秒杀系统(上)">如何设计秒杀系统(上)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/baihuafalv/" title="白话法律笔记">白话法律笔记</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/blockchain7/" title="区块链学习--7从业区块链">区块链学习--7从业区块链</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/">中文 (1)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记 (16)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/leetcode/">LeetCode</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E4%B8%AD%E6%96%87/">中文</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%99%BD%E8%AF%9D%E6%B3%95%E5%BE%8B/">白话法律</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0/">说透中台</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E9%93%BE%E8%A1%A8/">链表</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://zhenyu0324.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

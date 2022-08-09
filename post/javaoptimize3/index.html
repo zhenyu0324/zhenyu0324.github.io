@@ -1,198 +1,225 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java性能调优3 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Java性能调优3 | 超级阵雨的乌托邦星球</title>
-    <meta property="og:title" content="Java性能调优3 - 超级阵雨的乌托邦星球">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2021-02-26T10:17:05&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2021-02-26T10:17:05&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Java性能调优3">
-        <meta name="author" content="超级阵雨">
-        
-    <meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize3/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
-    
-    
-    
-    
+<meta name="author" content="超级阵雨" /><meta name="description" content="1.多线程之锁优化 1.1 深入了解Synchronized同步锁的优化方法 在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/javaoptimize3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java性能调优3" />
+<meta property="og:description" content="1.多线程之锁优化 1.1 深入了解Synchronized同步锁的优化方法 在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/javaoptimize3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-02-26T10:17:05+08:00" />
+<meta property="article:modified_time" content="2021-02-26T10:17:05+08:00" />
+
+<meta itemprop="name" content="Java性能调优3">
+<meta itemprop="description" content="1.多线程之锁优化 1.1 深入了解Synchronized同步锁的优化方法 在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原"><meta itemprop="datePublished" content="2021-02-26T10:17:05+08:00" />
+<meta itemprop="dateModified" content="2021-02-26T10:17:05+08:00" />
+<meta itemprop="wordCount" content="23590">
+<meta itemprop="keywords" content="java调优," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java性能调优3"/>
+<meta name="twitter:description" content="1.多线程之锁优化 1.1 深入了解Synchronized同步锁的优化方法 在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://zhenyu0324.github.io/">
-                        超级阵雨的乌托邦星球
-                    </a>
-                
-                
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java性能调优3</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    
-                    
-                    <a  href="https://zhenyu0324.github.io/" title="Home">Home</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/post/" title="Archives">Archives</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/tags/" title="Tags">Tags</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/categories/" title="Categories">Categories</a>
-                    
-                    <a  href="https://zhenyu0324.github.io/about/" title="About">About</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-
-    <article class="post">
-        <header>
-            <h1 class="post-title">Java性能调优3</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月26日
-        </date>
+          <span class="more-meta"> 23590 words </span>
+          <span class="more-meta"> 48 mins read </span>
         
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0'>学习笔记</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="1多线程之锁优化">1.多线程之锁优化</h1>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1多线程之锁优化">1.多线程之锁优化</a>
+      <ul>
+        <li><a href="#11-深入了解synchronized同步锁的优化方法">1.1 深入了解Synchronized同步锁的优化方法</a>
+          <ul>
+            <li><a href="#111-synchronized-同步锁实现原理">1.1.1 Synchronized 同步锁实现原理</a></li>
+            <li><a href="#112-锁升级优化">1.1.2 锁升级优化</a></li>
+            <li><a href="#113-动态编译实现锁消除--锁粗化">1.1.3 动态编译实现锁消除 / 锁粗化</a></li>
+            <li><a href="#114-本节问题">1.1.4 本节问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#12-深入了解lock同步锁的优化方法">1.2 深入了解Lock同步锁的优化方法</a>
+          <ul>
+            <li><a href="#121-lock-锁的实现原理">1.2.1 Lock 锁的实现原理</a></li>
+            <li><a href="#122-锁分离优化-lock-同步锁">1.2.2 锁分离优化 Lock 同步锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-使用乐观锁优化并行操作">1.3 使用乐观锁优化并行操作</a>
+          <ul>
+            <li><a href="#131-什么是乐观锁">1.3.1 什么是乐观锁</a></li>
+            <li><a href="#132-乐观锁的实现原理">1.3.2 乐观锁的实现原理</a></li>
+            <li><a href="#133-优化-cas-乐观锁">1.3.3 优化 CAS 乐观锁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#2-多线程调优">2. 多线程调优</a>
+      <ul>
+        <li><a href="#21-哪些操作导致了上下文切换">2.1 哪些操作导致了上下文切换？</a>
+          <ul>
+            <li><a href="#211-初识上下文切换">2.1.1 初识上下文切换</a></li>
+            <li><a href="#212-多线程上下文切换诱因">2.1.2 多线程上下文切换诱因</a></li>
+            <li><a href="#213-发现上下文切换">2.1.3 发现上下文切换</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-如何优化多线程上下文切换">2.2 如何优化多线程上下文切换？</a>
+          <ul>
+            <li><a href="#221-竞争锁优化">2.2.1 竞争锁优化</a></li>
+            <li><a href="#222-waitnotify-优化">2.2.2 wait/notify 优化</a></li>
+            <li><a href="#223-合理地设置线程池大小避免创建过多线程">2.2.3 合理地设置线程池大小，避免创建过多线程</a></li>
+            <li><a href="#224-使用协程实现非阻塞等待">2.2.4 使用协程实现非阻塞等待</a></li>
+            <li><a href="#225-减少-java-虚拟机的垃圾回收">2.2.5 减少 Java 虚拟机的垃圾回收</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-并发容器的使用识别不同场景下最优容器">3. 并发容器的使用：识别不同场景下最优容器</a>
+      <ul>
+        <li><a href="#31-并发场景下的-map-容器">3.1 并发场景下的 Map 容器</a>
+          <ul>
+            <li><a href="#311-hashtable--concurrenthashmap">3.1.1 Hashtable 🆚 ConcurrentHashMap</a></li>
+            <li><a href="#312-concurrenthashmap--concurrentskiplistmap">3.1.2 ConcurrentHashMap 🆚 ConcurrentSkipListMap</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-并发场景下的-list-容器">3.2 并发场景下的 List 容器</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-如何设置线程池大小">4. 如何设置线程池大小？</a>
+      <ul>
+        <li><a href="#41-线程池原理">4.1 线程池原理</a></li>
+        <li><a href="#42-线程池框架-executor">4.2 线程池框架 Executor</a></li>
+        <li><a href="#43-计算线程数量">4.3 计算线程数量</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-如何用协程来优化多线程业务">5. 如何用协程来优化多线程业务？</a>
+      <ul>
+        <li><a href="#51-线程实现模型">5.1 线程实现模型</a></li>
+        <li><a href="#52-协程的实现原理">5.2 协程的实现原理</a></li>
+        <li><a href="#53-kilim-协程框架">5.3 Kilim 协程框架</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-什么是数据的强弱一致性">6. 什么是数据的强、弱一致性？</a>
+      <ul>
+        <li><a href="#61-java-内存模型">6.1 Java 内存模型</a></li>
+        <li><a href="#62-重排序">6.2 重排序</a></li>
+        <li><a href="#63-happens-before-规则">6.3 Happens-before 规则</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1多线程之锁优化">1.多线程之锁优化</h1>
 <h2 id="11-深入了解synchronized同步锁的优化方法">1.1 深入了解Synchronized同步锁的优化方法</h2>
 <p>在并发编程中，多个线程访问同一个共享资源时，我们必须考虑如何维护数据的原子性。在 JDK1.5 之前，Java 是依靠 Synchronized 关键字实现锁功能来做到这点的。Synchronized 是 JVM 实现的一种内置锁，锁的获取和释放是由 JVM 隐式实现。</p>
 <p>到了 JDK1.5 版本，并发包中新增了 Lock 接口来实现锁功能，它提供了与 Synchronized 关键字类似的同步功能，只是在使用时需要显示获取和释放锁。</p>
@@ -204,7 +231,7 @@
 <p>通常 Synchronized 实现同步锁的方式有两种，一种是修饰方法，一种是修饰方法块。以下就是通过 Synchronized 实现的两种同步方法加锁的方式：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -218,7 +245,7 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 关键字在实例方法上，锁为当前实例
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">// 关键字在实例方法上，锁为当前实例
 	public synchronized void method1() {
 	    // code
 	}
@@ -235,12 +262,12 @@
 </div><p>下面我们可以通过反编译看下具体字节码的实现，运行以下反编译命令，就可以输出我们想要的字节码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">javac -encoding UTF-8 SyncTest.java  // 先运行编译 class 文件命令
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">javac -encoding UTF-8 SyncTest.java  // 先运行编译 class 文件命令
 
 javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </code></pre></td></tr></table>
@@ -248,7 +275,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </div><p>通过输出的字节码，你会发现：Synchronized 在修饰同步代码块时，是由 monitorenter 和 monitorexit 指令来实现同步的。进入 monitorenter 指令后，线程将持有 Monitor 对象，退出 monitorenter 指令后，线程将释放该 Monitor 对象。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -335,7 +362,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">85
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 12 | 多线程之锁优化（上）：深入了解Synchronized同步锁的优化方法
 2019-06-15 刘超
 Java性能调优实战
@@ -426,7 +453,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>这是因为 JVM 使用了 ACC_SYNCHRONIZED 访问标志来区分一个方法是否是同步方法。当方法调用时，调用指令将会检查该方法是否被设置 ACC_SYNCHRONIZED 访问标志。如果设置了该标志，执行线程将先持有 Monitor 对象，然后再执行方法。在该方法运行期间，其它线程将无法获取到该 Mointor 对象，当方法执行完成后，再释放该 Monitor 对象。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -437,7 +464,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public synchronized void method1();
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public synchronized void method1();
     descriptor: ()V
     flags: ACC_PUBLIC, ACC_SYNCHRONIZED // ACC_SYNCHRONIZED 标志
     Code:
@@ -452,7 +479,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>JVM 中的同步是基于进入和退出管程（Monitor）对象实现的。每个对象实例都会有一个 Monitor，Monitor 可以和对象一起创建、销毁。Monitor 是由 ObjectMonitor 实现，而 ObjectMonitor 是由 C++ 的 ObjectMonitor.hpp 文件实现，如下所示：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -472,7 +499,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">ObjectMonitor() {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ObjectMonitor() {
    _header = NULL;
    _count = 0; // 记录个数
    _waiters = 0,
@@ -494,11 +521,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </div>
 </div><p>当多个线程同时访问一段同步代码时，多个线程会先被存放在 EntryList 集合中，处于 block 状态的线程，都会被加入到该列表。接下来当线程获取到对象的 Monitor 时，Monitor 是依靠底层操作系统的 Mutex Lock 来实现互斥的，线程申请 Mutex 成功，则持有该 Mutex，其它线程将无法获取到该 Mutex。</p>
 <p>如果线程调用 wait() 方法，就会释放当前持有的 Mutex，并且该线程会进入 WaitSet 集合中，等待下一次被唤醒。如果当前线程顺利执行完方法，也将释放 Mutex。</p>
-<p>
-        <a data-fancybox="gallery" href="01.jpeg">
-            <img class="mx-auto" alt="" src="01.jpeg" />
-        </a>
-    </p>
+<p><img src="01.jpeg" alt=""></p>
 <p>看完上面的讲解，相信你对同步锁的实现原理已经有个深入的了解了。总结来说就是，同步锁在这种实现方式中，因 Monitor 是依赖于底层的操作系统实现，存在用户态与内核态之间的切换，所以增加了性能开销。</p>
 <h3 id="112-锁升级优化">1.1.2 锁升级优化</h3>
 <p>为了提升性能，JDK1.6 引入了<strong>偏向锁、轻量级锁、重量级</strong>锁概念，来减少锁竞争带来的上下文切换，而正是新增的 Java 对象头实现了锁升级功能。</p>
@@ -506,11 +529,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <h4 id="1121-java-对象头">1.1.2.1 Java 对象头</h4>
 <p>在 JDK1.6 JVM 中，对象实例在堆内存中被分为了三个部分：对象头、实例数据和对齐填充。其中 Java 对象头由 Mark Word、指向类的指针以及数组长度三部分组成。</p>
 <p>Mark Word 记录了对象和锁有关的信息。Mark Word 在 64 位 JVM 中的长度是 64bit，我们可以一起看下 64 位 JVM 的存储结构是怎么样的。如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="02.jpeg">
-            <img class="mx-auto" alt="" src="02.jpeg" />
-        </a>
-    </p>
+<p><img src="02.jpeg" alt=""></p>
 <p>锁升级功能主要依赖于 Mark Word 中的锁标志位和释放偏向锁标志位，Synchronized 同步锁就是从偏向锁开始的，随着竞争越来越激烈，偏向锁升级到轻量级锁，最终升级到重量级锁。</p>
 <ol>
 <li>偏向锁
@@ -520,28 +539,24 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>偏向锁的作用就是，当一个线程再次访问这个同步代码或方法时，该线程只需去对象头的 Mark Word 中去判断一下是否有偏向锁指向它的 ID，无需再进入 Monitor 去竞争对象了。当对象被当做同步锁并有一个线程抢到了锁时，锁标志位还是 01，“是否偏向锁”标志位设置为 1，并且记录抢到锁的线程 ID，表示进入偏向锁状态。</p>
 <p>一旦出现其它线程竞争锁资源时，偏向锁就会被撤销。偏向锁的撤销需要等待全局安全点，暂停持有该锁的线程，同时检查该线程是否还在执行该方法，如果是，则升级锁，反之则被其它线程抢占。</p>
 <p>下图中红线流程部分为偏向锁获取和撤销流程：</p>
-<p>
-        <a data-fancybox="gallery" href="03.jpeg">
-            <img class="mx-auto" alt="" src="03.jpeg" />
-        </a>
-    </p>
+<p><img src="03.jpeg" alt=""></p>
 <p>因此，在高并发场景下，当大量线程同时竞争同一个锁资源时，偏向锁就会被撤销，发生 stop the word 后， 开启偏向锁无疑会带来更大的性能开销，这时我们可以通过添加 JVM 参数关闭偏向锁来调优系统性能，示例代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-XX:-UseBiasedLocking // 关闭偏向锁（默认打开）
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-XX:-UseBiasedLocking // 关闭偏向锁（默认打开）
 </code></pre></td></tr></table>
 </div>
 </div><p>或</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+UseHeavyMonitors  // 设置重量级锁
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-XX:+UseHeavyMonitors  // 设置重量级锁
 
 </code></pre></td></tr></table>
 </div>
@@ -551,11 +566,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>当有另外一个线程竞争获取这个锁时，由于该锁已经是偏向锁，当发现对象头 Mark Word 中的线程 ID 不是自己的线程 ID，就会进行 CAS 操作获取锁，如果获取成功，直接替换 Mark Word 中的线程 ID 为自己的 ID，该锁会保持偏向锁状态；如果获取锁失败，代表当前锁有一定的竞争，偏向锁将升级为轻量级锁。</p>
 <p>轻量级锁适用于线程交替执行同步块的场景，绝大部分的锁在整个同步周期内都不存在长时间的竞争。</p>
 <p>下图中红线流程部分为升级轻量级锁及操作流程：</p>
-<p>
-        <a data-fancybox="gallery" href="04.jpeg">
-            <img class="mx-auto" alt="" src="04.jpeg" />
-        </a>
-    </p>
+<p><img src="04.jpeg" alt=""></p>
 <ol start="3">
 <li>自旋锁与重量级锁</li>
 </ol>
@@ -564,21 +575,17 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>从 JDK1.7 开始，自旋锁默认启用，自旋次数由 JVM 设置决定，这里我不建议设置的重试次数过多，因为 CAS 重试操作意味着长时间地占用 CPU。</p>
 <p>自旋锁重试之后如果抢锁依然失败，同步锁就会升级至重量级锁，锁标志位改为 10。在这个状态下，未抢到锁的线程都会进入 Monitor，之后会被阻塞在 _WaitSet 队列中。</p>
 <p>下图中红线流程部分为自旋后升级为重量级锁的流程：</p>
-<p>
-        <a data-fancybox="gallery" href="05.jpeg">
-            <img class="mx-auto" alt="" src="05.jpeg" />
-        </a>
-    </p>
+<p><img src="05.jpeg" alt=""></p>
 <p>在锁竞争不激烈且锁占用时间非常短的场景下，自旋锁可以提高系统性能。一旦锁竞争激烈或锁占用的时间过长，自旋锁将会导致大量的线程一直处于 CAS 重试状态，占用 CPU 资源，反而会增加系统性能开销。所以自旋锁和重量级锁的使用都要结合实际场景。</p>
 <p>在高负载、高并发的场景下，我们可以通过设置 JVM 参数来关闭自旋锁，优化系统性能，示例代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">-XX:-UseSpinning // 参数关闭自旋锁优化 (默认打开) 
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-XX:-UseSpinning // 参数关闭自旋锁优化 (默认打开) 
 -XX:PreBlockSpin // 参数修改默认的自旋次数。JDK1.7 后，去掉此参数，由 jvm 控制
 
 </code></pre></td></tr></table>
@@ -591,17 +598,13 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>除了锁内部优化和编译器优化之外，我们还可以通过代码层来实现锁优化，减小锁粒度就是一种惯用的方法。</p>
 <p>当我们的锁对象是一个数组或队列时，集中竞争一个对象的话会非常激烈，锁也会升级为重量级锁。我们可以考虑将一个数组和队列对象拆成多个小对象，来降低锁竞争，提升并行度。</p>
 <p>最经典的减小锁粒度的案例就是 JDK1.8 之前实现的 ConcurrentHashMap 版本。我们知道，HashTable 是基于一个数组 + 链表实现的，所以在并发读写操作集合时，存在激烈的锁资源竞争，也因此性能会存在瓶颈。而 ConcurrentHashMap 就很很巧妙地使用了分段锁 Segment 来降低锁资源竞争，如下图所示：</p>
-<p>
-        <a data-fancybox="gallery" href="06.jpeg">
-            <img class="mx-auto" alt="" src="06.jpeg" />
-        </a>
-    </p>
+<p><img src="06.jpeg" alt=""></p>
 <p><strong>减少锁竞争，是优化 Synchronized 同步锁的关键。</strong></p>
 <h3 id="114-本节问题">1.1.4 本节问题</h3>
 <p>请问以下 Synchronized 同步锁对普通方法和静态方法的修饰有什么区别？</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -612,7 +615,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">/ 修饰普通方法
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/ 修饰普通方法
 	public synchronized void method1() {
 	    // code
 	}
@@ -626,21 +629,13 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </div><h2 id="12-深入了解lock同步锁的优化方法">1.2 深入了解Lock同步锁的优化方法</h2>
 <p>在 JDK1.5 之后，Java 还提供了 Lock 同步锁。那么它有什么优势呢？</p>
 <p>相对于需要 JVM 隐式获取和释放锁的 Synchronized 同步锁，Lock 同步锁（以下简称 Lock 锁）需要的是显示获取和释放锁，这就为获取和释放锁提供了更多的灵活性。Lock 锁的基本操作是通过乐观锁来实现的，但由于 Lock 锁也会在阻塞时被挂起，因此它依然属于悲观锁。我们可以通过一张图来简单对比下两个同步锁，了解下各自的特点：</p>
-<p>
-        <a data-fancybox="gallery" href="07.jpeg">
-            <img class="mx-auto" alt="" src="07.jpeg" />
-        </a>
-    </p>
+<p><img src="07.jpeg" alt=""></p>
 <p>从性能方面上来说，在并发量不高、竞争不激烈的情况下，Synchronized 同步锁由于具有分级锁的优势，性能上与 Lock 锁差不多；但在高负载、高并发的情况下，Synchronized 同步锁由于竞争激烈会升级到重量级锁，性能则没有 Lock 锁稳定。</p>
 <h3 id="121-lock-锁的实现原理">1.2.1 Lock 锁的实现原理</h3>
 <p>Lock 锁是基于 Java 实现的锁，Lock 是一个接口类，常用的实现类有 ReentrantLock、ReentrantReadWriteLock（RRW），它们都是依赖 AbstractQueuedSynchronizer（AQS）类实现的。</p>
 <p>AQS 类结构中包含一个基于链表实现的等待队列（CLH 队列），用于存储所有阻塞的线程，AQS 中还有一个 state 变量，该变量对 ReentrantLock 来说表示加锁状态。</p>
 <p>该队列的操作均通过 CAS 操作实现，我们可以通过一张图来看下整个获取锁的流程。
-
-        <a data-fancybox="gallery" href="08.jpeg">
-            <img class="mx-auto" alt="" src="08.jpeg" />
-        </a>
-    </p>
+<img src="08.jpeg" alt=""></p>
 <h3 id="122-锁分离优化-lock-同步锁">1.2.2 锁分离优化 Lock 同步锁</h3>
 <p>虽然 Lock 锁的性能稳定，但也并不是所有的场景下都默认使用 ReentrantLock 独占锁来实现线程同步。</p>
 <p>我们知道，对于同一份数据进行读写，如果一个线程在读数据，而另一个线程在写数据，那么读到的数据和最终的数据就会不一致；如果一个线程在写数据，而另一个线程也在写数据，那么线程前后看到的数据也会不一致。这个时候我们可以在读写方法中加入互斥锁，来保证任何时候只能有一个线程进行读或写操作。</p>
@@ -653,18 +648,10 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>RRW 也是基于 AQS 实现的，它的自定义同步器（继承 AQS）需要在同步状态 state 上维护多个读线程和一个写线程的状态，该状态的设计成为实现读写锁的关键。RRW 很好地使用了高低位，来实现一个整型控制两种状态的功能，读写锁将变量切分成了两个部分，高 16 位表示读，低 16 位表示写。</p>
 <p>一个线程尝试获取写锁时，会先判断同步状态 state 是否为 0。如果 state 等于 0，说明暂时没有其它线程获取锁；如果 state 不等于 0，则说明有其它线程获取了锁。</p>
 <p>此时再判断同步状态 state 的低 16 位（w）是否为 0，如果 w 为 0，则说明其它线程获取了读锁，此时进入 CLH 队列进行阻塞等待；如果 w 不为 0，则说明其它线程获取了写锁，此时要判断获取了写锁的是不是当前线程，若不是就进入 CLH 队列进行阻塞等待；若是，就应该判断当前线程获取写锁是否超过了最大次数，若超过，抛异常，反之更新同步状态。</p>
-<p>
-        <a data-fancybox="gallery" href="09.jpeg">
-            <img class="mx-auto" alt="" src="09.jpeg" />
-        </a>
-    </p>
+<p><img src="09.jpeg" alt=""></p>
 <p>一个线程尝试获取读锁时，同样会先判断同步状态 state 是否为 0。如果 state 等于 0，说明暂时没有其它线程获取锁，此时判断是否需要阻塞，如果需要阻塞，则进入 CLH 队列进行阻塞等待；如果不需要阻塞，则 CAS 更新同步状态为读状态。</p>
 <p>如果 state 不等于 0，会判断同步状态低 16 位，如果存在写锁，则获取读锁失败，进入 CLH 阻塞队列；反之，判断当前线程是否应该被阻塞，如果不应该阻塞则尝试 CAS 同步状态，获取成功更新同步锁为读状态。</p>
-<p>
-        <a data-fancybox="gallery" href="10.jpeg">
-            <img class="mx-auto" alt="" src="10.jpeg" />
-        </a>
-    </p>
+<p><img src="10.jpeg" alt=""></p>
 <ol start="2">
 <li>读写锁再优化之 StampedLock</li>
 </ol>
@@ -673,7 +660,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>我们先通过一个官方的例子来了解下 StampedLock 是如何使用的，代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -710,7 +697,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">35
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class Point {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class Point {
     private double x, y;
     private final StampedLock s1 = new StampedLock();
  
@@ -765,7 +752,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>我们可以看到 AtomicInteger 的自增方法 getAndIncrement 是用了 Unsafe 的 getAndAddInt 方法，显然 AtomicInteger 依赖于本地方法 Unsafe 类，Unsafe 类中的操作方法会调用 CPU 底层指令实现原子操作。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -780,7 +767,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 // 基于 CAS 操作更新值
     public final boolean compareAndSet(int expect, int update) {
         return unsafe.compareAndSwapInt(this, valueOffset, expect, update);
@@ -800,11 +787,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </ol>
 <p>CAS 是调用处理器底层指令来实现原子操作，那么处理器底层又是如何实现原子操作的呢？</p>
 <p>处理器和物理内存之间的通信速度要远慢于处理器间的处理速度，所以处理器有自己的内部缓存。如下图所示，在执行操作时，频繁使用的内存数据会缓存在处理器的 L1、L2 和 L3 高速缓存中，以加快频繁读取的速度。</p>
-<p>
-        <a data-fancybox="gallery" href="11.jepg">
-            <img class="mx-auto" alt="" src="11.jepg" />
-        </a>
-    </p>
+<p><img src="11.jepg" alt=""></p>
 <p>一般情况下，一个单核处理器能自我保证基本的内存操作是原子性的，当一个线程读取一个字节时，所有进程和线程看到的字节都是同一个缓存里的字节，其它线程不能访问这个字节的内存地址。</p>
 <p>但现在的服务器通常是多处理器，并且每个处理器都是多核的。每个处理器维护了一块字节的内存，每个内核维护了一块字节的缓存，这时候多线程并发就会存在缓存不一致的问题，从而导致数据不一致。</p>
 <p>这个时候，处理器提供了总线锁定和缓存锁定两个机制来保证复杂内存操作的原子性。</p>
@@ -815,7 +798,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>在 Java7 中，通过以下代码我们可以看到：AtomicInteger 的 getAndSet 方法中使用了 for 循环不断重试 CAS 操作，如果长时间不成功，就会给 CPU 带来非常大的执行开销。到了 Java8，for 循环虽然被去掉了，但我们反编译 Unsafe 类时就可以发现该循环其实是被封装在了 Unsafe 类中，CPU 的执行开销依然存在。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -825,7 +808,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  public final int getAndSet(int newValue) {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">  public final int getAndSet(int newValue) {
         for (;;) {
             int current = get();
             if (compareAndSet(current, newValue))
@@ -838,11 +821,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </div><p>在 JDK1.8 中，Java 提供了一个新的原子类 LongAdder。LongAdder 在高并发场景下会比 AtomicInteger 和 AtomicLong 的性能更好，代价就是会消耗更多的内存空间。</p>
 <p>LongAdder 的原理就是降低操作共享变量的并发数，也就是将对单一共享变量的操作压力分散到多个变量值上，将竞争的每个写线程的 value 值分散到一个数组中，不同线程会命中到数组的不同槽中，各个线程只对自己槽中的 value 值进行 CAS 操作，最后在读取值的时候会将原子操作的共享变量与各个分散在数组的 value 值相加，返回一个近似准确的数值。</p>
 <p>LongAdder 内部由一个 base 变量和一个 cell[] 数组组成。当只有一个写线程，没有竞争的情况下，LongAdder 会直接使用 base 变量作为原子操作变量，通过 CAS 操作修改变量；当有多个写线程竞争的情况下，除了占用 base 变量的一个写线程之外，其它各个线程会将修改的变量写入到自己的槽 cell[] 数组中，最终结果可通过以下公式计算得出：</p>
-<p>
-        <a data-fancybox="gallery" href="12.jpeg">
-            <img class="mx-auto" alt="" src="12.jpeg" />
-        </a>
-    </p>
+<p><img src="12.jpeg" alt=""></p>
 <p>我们可以发现，LongAdder 在操作后的返回值只是一个近似准确的数值，但是 LongAdder 最终返回的是一个准确的数值， 所以在一些对实时性要求比较高的场景下，LongAdder 并不能取代 AtomicInteger 或 AtomicLong。</p>
 <blockquote>
 <p>在日常开发中，使用乐观锁最常见的场景就是数据库的更新操作了。为了保证操作数据库的原子性，我们常常会为每一条数据定义一个版本号，并在更新前获取到它，到了更新数据库的时候，还要判断下已经获取的版本号是否被更新过，如果没有，则执行该操作。</p>
@@ -862,11 +841,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>在当前 CPU 数量远远不止一个的情况下，操作系统将 CPU 轮流分配给线程任务，此时的上下文切换就变得更加频繁了，并且存在跨 CPU 上下文切换，比起单核上下文切换，跨核切换更加昂贵。</p>
 <h3 id="212-多线程上下文切换诱因">2.1.2 多线程上下文切换诱因</h3>
 <p>在操作系统中，上下文切换的类型还可以分为进程间的上下文切换和线程间的上下文切换。而在多线程编程中，我们主要面对的就是线程间的上下文切换导致的性能问题，下面我们就重点看看究竟是什么原因导致了多线程的上下文切换。开始之前，先看下 Java 线程的生命周期状态。</p>
-<p>
-        <a data-fancybox="gallery" href="13.jpeg">
-            <img class="mx-auto" alt="" src="13.jpeg" />
-        </a>
-    </p>
+<p><img src="13.jpeg" alt=""></p>
 <p>结合图示可知，线程主要有“新建”（NEW）、“就绪”（RUNNABLE）、“运行”（RUNNING）、“阻塞”（BLOCKED）、“死亡”（DEAD）五种状态。</p>
 <p>在这个运行过程中，线程由 RUNNABLE 转为非 RUNNABLE 的过程就是线程上下文切换。</p>
 <p>一个线程的状态由 RUNNING 转为 BLOCKED ，再由 BLOCKED 转为 RUNNABLE ，然后再被调度器选中执行，这就是一个上下文切换的过程。</p>
@@ -891,7 +866,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>我们总说上下文切换会带来系统开销，那它带来的性能问题是不是真有这么糟糕呢？我们又该怎么去监测到上下文切换？上下文切换到底开销在哪些环节？接下来我将给出一段代码，来对比串联执行和并发执行的速度，然后一一解答这些问题。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -971,7 +946,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">78
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class DemoApplication {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class DemoApplication {
        public static void main(String[] args) {
               // 运行多线程
               MultiThreadTester test1 = new MultiThreadTester();
@@ -1052,24 +1027,12 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </code></pre></td></tr></table>
 </div>
 </div><p>执行之后，看一下两者的时间测试结果：</p>
-<p>
-        <a data-fancybox="gallery" href="14.jpeg">
-            <img class="mx-auto" alt="" src="14.jpeg" />
-        </a>
-    </p>
+<p><img src="14.jpeg" alt=""></p>
 <p>通过数据对比我们可以看到：串联的执行速度比并发的执行速度要快。这就是因为线程的上下文切换导致了额外的开销，使用 Synchronized 锁关键字，导致了资源竞争，从而引起了上下文切换，但即使不使用 Synchronized 锁关键字，并发的执行速度也无法超越串联的执行速度，这是因为多线程同样存在着上下文切换。Redis、NodeJS 的设计就很好地体现了单线程串行的优势。</p>
 <p>在 Linux 系统下，可以使用 Linux 内核提供的 vmstat 命令，来监视 Java 程序运行过程中系统的上下文切换频率，cs 如下图所示</p>
-<p>
-        <a data-fancybox="gallery" href="15.jpeg">
-            <img class="mx-auto" alt="" src="15.jpeg" />
-        </a>
-    </p>
+<p><img src="15.jpeg" alt=""></p>
 <p>如果是监视某个应用的上下文切换，就可以使用 pidstat 命令监控指定进程的 Context Switch 上下文切换。</p>
-<p>
-        <a data-fancybox="gallery" href="16.jpeg">
-            <img class="mx-auto" alt="" src="16.jpeg" />
-        </a>
-    </p>
+<p><img src="16.jpeg" alt=""></p>
 <p>至于系统开销具体发生在切换过程中的哪些具体环节，总结如下：</p>
 <ul>
 <li>操作系统保存和恢复上下文；</li>
@@ -1090,14 +1053,14 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public synchronized void mySyncMethod(){  
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public synchronized void mySyncMethod(){  
         businesscode1();  
         mutextMethod();  
         businesscode2();
@@ -1109,7 +1072,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1119,7 +1082,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public void mySyncMethod(){  
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public void mySyncMethod(){  
         businesscode1();  
         synchronized(this)
         {
@@ -1155,7 +1118,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 <p>下面我们通过 wait() / notify() 来实现一个简单的生产者和消费者的案例，代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1246,7 +1209,7 @@ javap -v SyncTest.class // 再通过 javap 打印出字节文件
 </span><span class="lnt">89
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
 public class WaitNotifyTest {
     public static void main(String[] args) {
         Vector&lt;Integer&gt; pool=new Vector&lt;Integer&gt;();
@@ -1342,11 +1305,7 @@ public class WaitNotifyTest {
 <p>当生产者获取到锁并执行 notifyAll() 之后，会唤醒处于阻塞状态的消费者线程，此时这里又发生了一次上下文切换。</p>
 <p>被唤醒的等待线程在继续运行时，需要再次申请相应对象的内部锁，此时等待线程可能需要和其它新来的活跃线程争用内部锁，这也可能会导致上下文切换。</p>
 <p>如果有多个消费者线程同时被阻塞，用 notifyAll() 方法，将会唤醒所有阻塞的线程。而某些商品依然没有库存，过早地唤醒这些没有库存的商品的消费线程，可能会导致线程再次进入阻塞状态，从而引起不必要的上下文切换。</p>
-<p>
-        <a data-fancybox="gallery" href="17.jpeg">
-            <img class="mx-auto" alt="" src="17.jpeg" />
-        </a>
-    </p>
+<p><img src="17.jpeg" alt=""></p>
 <ul>
 <li>优化 wait/notify 的使用，减少上下文切换</li>
 </ul>
@@ -1388,29 +1347,13 @@ public class WaitNotifyTest {
 <p>一个跳跃表由若干层链表组成，每一层都实现了一个有序链表索引，只有最底层包含了所有数据，每一层由下往上依次通过一个指针指向上层相同值的元素，每层数据依次减少，等到了最顶层就只会保留部分数据了。</p>
 <p>跳跃表的这种结构，是利用了空间换时间的方法来提高了查询效率。程序总是从最顶层开始查询访问，通过判断元素值来缩小查询范围。我们可以通过以下几张图来了解下跳跃表的具体实现原理。</p>
 <p>首先是一个初始化的跳跃表：
-
-        <a data-fancybox="gallery" href="18.jepg">
-            <img class="mx-auto" alt="" src="18.jepg" />
-        </a>
-    </p>
+<img src="18.jepg" alt=""></p>
 <p>当查询 key 值为 9 的节点时，此时查询路径为：
-
-        <a data-fancybox="gallery" href="19.jepg">
-            <img class="mx-auto" alt="" src="19.jepg" />
-        </a>
-    </p>
+<img src="19.jepg" alt=""></p>
 <p>当新增一个 key 值为 8 的节点时，首先新增一个节点到最底层的链表中，根据概率算出 level 值，再根据 level 值新建索引层，最后链接索引层的新节点。新增节点和链接索引都是基于 CAS 操作实现。
-
-        <a data-fancybox="gallery" href="20.jepg">
-            <img class="mx-auto" alt="" src="20.jepg" />
-        </a>
-    </p>
+<img src="20.jepg" alt=""></p>
 <p>当删除一个 key 值为 7 的结点时，首先找到待删除结点，将其 value 值设置为 null；之后再向待删除结点的 next 位置新增一个标记结点，以便减少并发冲突；然后让待删结点的前驱节点直接越过本身指向的待删结点，直接指向后继结点，中间要被删除的结点最终将会被 JVM 垃圾回收处理掉；最后判断此次删除后是否导致某一索引层没有其它节点了，并视情况删除该层索引 。
-
-        <a data-fancybox="gallery" href="21.jepg">
-            <img class="mx-auto" alt="" src="21.jepg" />
-        </a>
-    </p>
+<img src="21.jepg" alt=""></p>
 <p>通过以上两个案例，我想你应该清楚了 Hashtable、ConcurrentHashMap 以及 ConcurrentSkipListMap 这三种容器的适用场景了。</p>
 <p><strong>如果对数据有强一致要求，则需使用 Hashtable；在大部分场景通常都是弱一致性的情况下，使用 ConcurrentHashMap 即可；如果数据量在千万级别，且存在大量增删改操作，则可以考虑使用 ConcurrentSkipListMap。</strong></p>
 <h2 id="32-并发场景下的-list-容器">3.2 并发场景下的 List 容器</h2>
@@ -1422,11 +1365,7 @@ public class WaitNotifyTest {
 <p>ArrayList 是非线程安全容器，在并发场景下使用很可能会导致线程安全问题。</p>
 <p>Vector 也是基于 Synchronized 同步锁实现的线程安全，Synchronized 关键字几乎修饰了所有对外暴露的方法，所以在读远大于写的操作场景中，Vector 将会发生大量锁竞争，从而给系统带来性能开销。</p>
 <p>相比之下，CopyOnWriteArrayList 是 java.util.concurrent 包提供的方法，它实现了读操作无锁，写操作则通过操作底层数组的新副本来实现，是一种读写分离的并发策略。</p>
-<p>
-        <a data-fancybox="gallery" href="22.jepg">
-            <img class="mx-auto" alt="" src="22.jepg" />
-        </a>
-    </p>
+<p><img src="22.jepg" alt=""></p>
 <h1 id="4-如何设置线程池大小">4. 如何设置线程池大小？</h1>
 <h2 id="41-线程池原理">4.1 线程池原理</h2>
 <p>在 HotSpot VM 的线程模型中，Java 线程被一对一映射为内核线程。Java 在使用线程执行程序时，需要创建一个内核线程；当该 Java 线程被终止时，这个内核线程也会被回收。因此 Java 线程的创建与销毁将会消耗一定的计算机资源，从而增加系统的性能开销。</p>
@@ -1437,16 +1376,12 @@ public class WaitNotifyTest {
 <p>Java 最开始提供了 ThreadPool 实现了线程池，为了更好地实现用户级的线程调度，更有效地帮助开发人员进行多线程开发，Java 提供了一套 Executor 框架。</p>
 <p>这个框架中包括了 ScheduledThreadPoolExecutor 和 ThreadPoolExecutor 两个核心线程池。前者是用来定时执行任务，后者是用来执行被提交的任务。鉴于这两个线程池的核心原理是一样的，下面我们就重点看看 ThreadPoolExecutor 类是如何实现线程池的。</p>
 <p>Executors 实现了以下四种类型的 ThreadPoolExecutor：</p>
-<p>
-        <a data-fancybox="gallery" href="23.jpeg">
-            <img class="mx-auto" alt="" src="23.jpeg" />
-        </a>
-    </p>
+<p><img src="23.jpeg" alt=""></p>
 <p>Executors 利用工厂模式实现的四种线程池，我们在使用的时候需要结合生产环境下的实际场景。不过我不太推荐使用它们，因为选择使用 Executors 提供的工厂类，将会忽略很多线程池的参数设置，工厂类一旦选择设置默认参数，就很容易导致无法调优参数设置，从而产生性能问题或者资源浪费。</p>
 <p>这里我建议你使用 ThreadPoolExecutor 自我定制一套线程池。进入四种工厂类后，我们可以发现除了 newScheduledThreadPool 类，其它类均使用了 ThreadPoolExecutor 类进行实现，你可以通过以下代码简单看下该方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1456,7 +1391,7 @@ public class WaitNotifyTest {
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">public ThreadPoolExecutor(int corePoolSize,// 线程池的核心线程数量
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public ThreadPoolExecutor(int corePoolSize,// 线程池的核心线程数量
                               int maximumPoolSize,// 线程池的最大线程数
                               long keepAliveTime,// 当线程数大于核心线程数时，多余的空闲线程存活的最长时间
                               TimeUnit unit,// 时间单位
@@ -1467,11 +1402,7 @@ public class WaitNotifyTest {
 </code></pre></td></tr></table>
 </div>
 </div><p>我们还可以通过下面这张图来了解下线程池中各个参数的相互关系：</p>
-<p>
-        <a data-fancybox="gallery" href="24.jpeg">
-            <img class="mx-auto" alt="" src="24.jpeg" />
-        </a>
-    </p>
+<p><img src="24.jpeg" alt=""></p>
 <p>通过上图，我们发现线程池有两个线程数的设置，一个为核心线程数，一个为最大线程数。在创建完线程池之后，默认情况下，线程池中并没有任何线程，等到有任务来才创建线程去执行任务。</p>
 <p>但有一种情况排除在外，就是调用 prestartAllCoreThreads() 或者 prestartCoreThread() 方法的话，可以提前创建等于核心线程数的线程数量，这种方式被称为预热，在抢购系统中就经常被用到。</p>
 <p>当创建的线程数等于 corePoolSize 时，提交的任务会被加入到设置的阻塞队列中。当队列满了，会创建线程执行任务，直到线程池中的数量等于 maximumPoolSize。</p>
@@ -1480,11 +1411,7 @@ public class WaitNotifyTest {
 <p>即使是 corePoolSize 线程，在一些非核心业务的线程池中，如果长时间地占用线程数量，也可能会影响到核心业务的线程池，这个时候就需要把没有分配任务的线程回收掉。</p>
 <p>我们可以通过 allowCoreThreadTimeOut 设置项要求线程池：将包括“核心线程”在内的，没有任务分配的所有线程，在等待 keepAliveTime 时间后全部回收掉。</p>
 <p>我们可以通过下面这张图来了解下线程池的线程分配流程：</p>
-<p>
-        <a data-fancybox="gallery" href="25.jpeg">
-            <img class="mx-auto" alt="" src="25.jpeg" />
-        </a>
-    </p>
+<p><img src="25.jpeg" alt=""></p>
 <h2 id="43-计算线程数量">4.3 计算线程数量</h2>
 <p>我们知道，环境具有多变性，设置一个绝对精准的线程数其实是不大可能的，但我们可以通过一些实际操作因素来计算出一个合理的线程数，避免由于线程池设置不合理而导致的性能问题。下面我们就来看看具体的计算方法。</p>
 <p>一般多线程执行的任务类型可以分为 CPU 密集型和 I/O 密集型，根据不同的任务类型，我们计算线程数的方法也不一样。</p>
@@ -1529,17 +1456,9 @@ $线程数 =N（CPU 核数）*（1+ 0 [WT（线程等待时间）]/36788ms[ST（
 <p>程序调用协程与调用函数不一样的是，协程可以通过暂停或者阻塞的方式将协程的执行挂起，而其它协程可以继续执行。这里的挂起只是在程序中（用户态）的挂起，同时将代码执行权转让给其它协程使用，待获取执行权的协程执行完成之后，将从挂起点唤醒挂起的协程。 协程的挂起和唤醒是通过一个调度器来完成的。</p>
 <p>结合下图，你可以更清楚地了解到基于 N:M 线程模型实现的协程是如何工作的。</p>
 <p>假设程序中默认创建两个线程为协程使用，在主线程中创建协程 ABCD…，分别存储在就绪队列中，调度器首先会分配一个工作线程 A 执行协程 A，另外一个工作线程 B 执行协程 B，其它创建的协程将会放在队列中进行排队等待。</p>
-<p>
-        <a data-fancybox="gallery" href="26.jpeg">
-            <img class="mx-auto" alt="" src="26.jpeg" />
-        </a>
-    </p>
+<p><img src="26.jpeg" alt=""></p>
 <p>当协程 A 调用暂停方法或被阻塞时，协程 A 会进入到挂起队列，调度器会调用等待队列中的其它协程抢占线程 A 执行。当协程 A 被唤醒时，它需要重新进入到就绪队列中，通过调度器抢占线程，如果抢占成功，就继续执行协程 A，失败则继续等待抢占线程。</p>
-<p>
-        <a data-fancybox="gallery" href="27.jpeg">
-            <img class="mx-auto" alt="" src="27.jpeg" />
-        </a>
-    </p>
+<p><img src="27.jpeg" alt=""></p>
 <p>相比线程，协程少了由于同步资源竞争带来的 CPU 上下文切换，I/O 密集型的应用比较适合使用，特别是在网络请求中，有较多的时间在等待后端响应，协程可以保证线程不会阻塞在等待网络响应中，充分利用了多核多线程的能力。而对于 CPU 密集型的应用，由于在多数情况下 CPU 都比较繁忙，协程的优势就不是特别明显了。</p>
 <h2 id="53-kilim-协程框架">5.3 Kilim 协程框架</h2>
 <p>虽然这么多的语言都实现了协程，但目前 Java 原生语言暂时还不支持协程。不过你也不用泄气，我们可以通过协程框架在 Java 中使用协程。</p>
@@ -1558,7 +1477,7 @@ $线程数 =N（CPU 核数）*（1+ 0 [WT（线程等待时间）]/36788ms[ST（
 <p>我先通过一个经典的案例来说明下多线程操作共享变量可能出现的问题，假设我们有两个线程（线程 1 和线程 2）分别执行下面的方法，x 是共享变量：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1568,7 +1487,7 @@ $线程数 =N（CPU 核数）*（1+ 0 [WT（线程等待时间）]/36788ms[ST（
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 代码 1
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">// 代码 1
 public class Example {
     int x = 0;
     public void count() {
@@ -1589,11 +1508,7 @@ public class Example {
 <h2 id="61-java-内存模型">6.1 Java 内存模型</h2>
 <p>2,1 和 1,2 的结果我们很好理解，那为什么会出现以上 1,1 的结果呢？</p>
 <p>我们知道，Java 采用共享内存模型来实现多线程之间的信息交换和数据同步。在解释为什么会出现这样的结果之前，我们先通过下图来简单了解下 Java 的内存模型，程序在运行时，局部变量将会存放在虚拟机栈中，而共享变量将会被保存在堆内存中。</p>
-<p>
-        <a data-fancybox="gallery" href="28.jpeg">
-            <img class="mx-auto" alt="" src="28.jpeg" />
-        </a>
-    </p>
+<p><img src="28.jpeg" alt=""></p>
 <p>由于局部变量是跟随线程的创建而创建，线程的销毁而销毁，所以存放在栈中，由上图我们可知，Java 栈数据不是所有线程共享的，所以不需要关心其数据的一致性。</p>
 <p>共享变量存储在堆内存或方法区中，由上图可知，堆内存和方法区的数据是线程共享的。而堆内存中的共享变量在被不同线程操作时，会被加载到自己的工作内存中，也就是 CPU 中的高速缓存。</p>
 <p>CPU 缓存可以分为一级缓存（L1）、二级缓存（L2）和三级缓存（L3），每一级缓存中所储存的全部数据都是下一级缓存的一部分。当 CPU 要读取一个缓存数据时，首先会从一级缓存中查找；如果没有找到，再从二级缓存中查找；如果还是没有找到，就从三级缓存或内存中查找。</p>
@@ -1607,13 +1522,13 @@ public class Example {
 <p>例如，在以下案例中，编译器为了尽可能地减少寄存器的读取、存储次数，会充分复用寄存器的存储值。如果没有进行重排序优化，正常的执行顺序是步骤 1\2\3，而在编译期间进行了重排序优化之后，执行的步骤有可能就变成了步骤 1/3/2 或者 2/1/3，这样就能减少一次寄存器的存取次数。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">int x = 1;// 步骤 1：加载 x 变量的内存地址到寄存器中，加载 1 到寄存器中，CPU 通过 mov 指令把 1 写入到寄存器指定的内存中
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int x = 1;// 步骤 1：加载 x 变量的内存地址到寄存器中，加载 1 到寄存器中，CPU 通过 mov 指令把 1 写入到寄存器指定的内存中
 boolean flag = true; // 步骤 2 加载 flag 变量的内存地址到寄存器中，加载 true 到寄存器中，CPU 通过 mov 指令把 1 写入到寄存器指定的内存中
 int y = x + 1;// 步骤 3 重新加载 a 变量的内存地址到寄存器中，加载 1 到寄存器中，CPU 通过 mov 指令把 1 写入到寄存器指定的内存中
 
@@ -1637,193 +1552,103 @@ int y = x + 1;// 步骤 3 重新加载 a 变量的内存地址到寄存器中，
 <p>顺序一致性：多个线程的整体执行可能是无序的，但对于单个线程而言执行是有序的，要保证任何一次读都能读到最近一次写入的数据，volatile 可以阻止指令重排序，所以修饰的变量的程序属于顺序一致性；</p>
 <p>弱一致性：不能保证任何一次读都能读到最近一次写入的数据，但能保证最终可以读到写入的数据，单个写锁 + 无锁读，就是弱一致性的一种实现。</p>
 
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/javaoptimize2/">Java性能调优2</a></li>
-        
-        <li><a href="/post/javaoptimize1/">Java性能调优1</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/java%E8%B0%83%E4%BC%98'>java调优</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="https://zhenyu0324.github.io/">超级阵雨的乌托邦星球 By 超级阵雨</a>
-        
     </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-02-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/javaoptimize4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java性能调优4</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/javaoptimize2/">
+            <span class="next-text nav-default">Java性能调优2</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+      </div>
+    </main>
 
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://zhenyu0324.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/zhongtai1/" title="说透中台--概念篇">说透中台--概念篇</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize5/" title="Java性能调优5">Java性能调优5</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize4/" title="Java性能调优4">Java性能调优4</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize3/" title="Java性能调优3">Java性能调优3</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize2/" title="Java性能调优2">Java性能调优2</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/javaoptimize1/" title="Java性能调优1">Java性能调优1</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill2/" title="如何设计秒杀系统(下)">如何设计秒杀系统(下)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/secondkill1/" title="如何设计秒杀系统(上)">如何设计秒杀系统(上)</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/baihuafalv/" title="白话法律笔记">白话法律笔记</a>
-    </li>
-    
-    <li>
-        <a href="https://zhenyu0324.github.io/post/blockchain7/" title="区块链学习--7从业区块链">区块链学习--7从业区块链</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/">中文 (1)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记 (16)</a></li>
-    
-    <li><a href="https://zhenyu0324.github.io/categories/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/">java调优</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/leetcode/">LeetCode</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E4%B8%AD%E6%96%87/">中文</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%99%BD%E8%AF%9D%E6%B3%95%E5%BE%8B/">白话法律</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/">算法之美</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0/">说透中台</a>
-    
-    <a href="https://zhenyu0324.github.io/tags/%E9%93%BE%E8%A1%A8/">链表</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://zhenyu0324.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

@@ -6,10 +6,15 @@
     <description>Recent content in 学习笔记 on 超级阵雨的乌托邦星球</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 02 Apr 2021 10:43:46 +0800</lastBuildDate>
-    
-	<atom:link href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Tue, 09 Aug 2022 16:19:06 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何使用hugo搭建个人静态网站</title>
+      <link>https://zhenyu0324.github.io/post/how_to_build_blog_with_hugo/</link>
+      <pubDate>Tue, 09 Aug 2022 16:19:06 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/how_to_build_blog_with_hugo/</guid>
+      <description>What is Hugo Hugo是由Go语言实现的静态网站生成器。简单、易用、高效、易扩展、快速部署。 Quick Start 1.安装hugo 二进制安装（推荐：简单、快速） 到 Hugo Releases</description>
+    </item>
     
     <item>
       <title>说透中台--概念篇</title>
