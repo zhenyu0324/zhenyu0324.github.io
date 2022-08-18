@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>浅谈网关及其应用 - 超级阵雨的乌托邦星球</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="超级阵雨" /><meta name="description" content="网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.91.2 with theme even" />
+
+
+<link rel="canonical" href="https://zhenyu0324.github.io/post/spring_cloud_gateway_01/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.154ed883776547b0e136be39b3037f61350da06f888d0868d1756a9463cd9520.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="浅谈网关及其应用" />
+<meta property="og:description" content="网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhenyu0324.github.io/post/spring_cloud_gateway_01/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-13T10:59:54+08:00" />
+<meta property="article:modified_time" content="2022-08-13T10:59:54+08:00" />
+
+<meta itemprop="name" content="浅谈网关及其应用">
+<meta itemprop="description" content="网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边"><meta itemprop="datePublished" content="2022-08-13T10:59:54+08:00" />
+<meta itemprop="dateModified" content="2022-08-13T10:59:54+08:00" />
+<meta itemprop="wordCount" content="5841">
+<meta itemprop="keywords" content="spring-cloud-gateway,网关," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="浅谈网关及其应用"/>
+<meta name="twitter:description" content="网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">超级阵雨的乌托邦星球</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">浅谈网关及其应用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-08-13 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 5841 words </span>
+          <span class="more-meta"> 12 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#网关概述">网关概述</a>
+      <ul>
+        <li><a href="#什么是网关">什么是网关</a></li>
+        <li><a href="#业务网关概述">业务网关概述</a>
+          <ul>
+            <li><a href="#什么是业务网关">什么是业务网关</a></li>
+            <li><a href="#为什么需要业务网关">为什么需要业务网关</a></li>
+            <li><a href="#业务网关的职能">业务网关的职能</a></li>
+          </ul>
+        </li>
+        <li><a href="#开源网关介绍">开源网关介绍</a>
+          <ul>
+            <li><a href="#zuulzuul2">Zuul/Zuul2</a></li>
+            <li><a href="#spring-cloud-gateway">Spring Cloud Gateway</a></li>
+          </ul>
+        </li>
+        <li><a href="#spring-cloud-gateway-介绍及使用案例">Spring Cloud Gateway 介绍及使用案例</a>
+          <ul>
+            <li><a href="#spring-cloud-gateway-1">Spring Cloud Gateway</a></li>
+            <li><a href="#spring-cloud-gateway核心概念">Spring Cloud Gateway核心概念</a></li>
+            <li><a href="#spring-cloud-gateway如何工作">Spring Cloud Gateway如何工作</a></li>
+            <li><a href="#使用案例介绍">使用案例介绍</a></li>
+          </ul>
+        </li>
+        <li><a href="#spring-cloud-gateway-窥探技术原理">Spring Cloud Gateway 窥探技术原理</a>
+          <ul>
+            <li><a href="#路由">路由</a></li>
+            <li><a href="#spring-cloud-gateway限流">Spring Cloud Gateway限流</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="网关概述">网关概述</h1>
+<h2 id="什么是网关">什么是网关</h2>
+<p>网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边缘，与外界进行交互的某个物理或逻辑设备，比如你家里的路由器就属于家庭内网与互联网之间的网关。</p>
+<p>在实际使用中，通常把网关分为两类：流量网关与业务网关。</p>
+<ul>
+<li>流量网关</li>
+</ul>
+<p>流量网关,顾名思义就是控制流量进入集群的网关,有很多工作需要在这一步做,对于一个服务集群,势必有很多非法的请求或者无效的请求,这时候要将请求拒之门外,降低集群的流量压力。</p>
+<p>定义全局性的、跟具体的后端业务应用和服务完全无关的策略网关就是上图所示的架构模型——流量网关。流量网关通常只专注于全局的Api管理策略，比如全局流量监控、日志记录、全局限流、黑白名单控制、接入请求到业务系统的负载均衡等，有点类似防火墙。Kong 就是典型的流量网关。</p>
+<ul>
+<li>业务网关</li>
+</ul>
+<blockquote>
+<p>当一个单体应用被拆分成许许多多的微服务应用后，也带来了一些问题。一些与业务非强相关的功能，比如权限控制、日志输出、数据加密、熔断限流等，每个微服务应用都需要，因此存在着大量重复的代码实现。而且由于系统的迭代、人员的更替，各个微服务中这些功能的实现细节出现了较大的差异，导致维护成本变高。另一方面，原先单体应用下非常容易做的接口管理，在服务拆分后没有了一个集中管理的地方，无法统计已存在哪些接口、接口定义是什么、运行状态如何。</p>
+</blockquote>
+<p>网关就是为了解决上述问题。作为微服务体系中的核心基础设施，一般需要具备接口管理、协议适配、熔断限流、安全防护等功能，各种开源的网关产品（比如 zuul）都提供了优秀高可扩展性的架构、可以很方便的实现我们需要的一些功能、比如鉴权、日志监控、熔断限流等。</p>
+<p>与流量网关相对应的就是业务网关,业务网关更靠近我们的业务,也就是与服务器应用层打交道,那么有很多应用层需要考虑的事情就可以依托业务网关,例如在线程模型、协议适配、熔断限流，服务编排等。</p>
+<p>目前业务网关比较成熟的 API 网关框架产品有三个 分别是:Zuul1、Zuul2 和 SpringCloud Gateway</p>
+<p>我们可以通过下图来加深对二者的认知。
+<img src="01.jpeg" alt=""></p>
+<p>这张图展示了一个多层 Gateway 架构，其中有一个总的 Gateway 接入所有的流量(流量网关)，并分发给不同的子系统，还有第二级 Gateway 用于做各个子系统的接入 Gateway(业务网关)。可以看到，网关所管理的服务力度可粗可细。通过网关，我们可以把分布式架构组织成一个星型架构，由网络对服务的请求进行路由和分发。</p>
+<p>有时候我们也会模糊流量网关和业务网关，让一个网关承担所有的工作,所以这两者之间并没有严格的界线。</p>
+<h2 id="业务网关概述">业务网关概述</h2>
+<h3 id="什么是业务网关">什么是业务网关</h3>
+<p>网关的角色是作为一个 API 架构，用来<strong>保护、增强和控制</strong>对于 API 服务的访问。</p>
+<blockquote>
+<p>API 网关是一个处于应用程序或服务（提供 REST API 接口服务）之前的系统，用来管理授权、访问控制和流量限制等，这样 REST API 接口服务就被 API 网关保护起来，对所有的调用者透明。因此，隐藏在 业务网关后面的业务系统就可以专注于创建和管理服务，而不用去处理这些策略性的基础设施。</p>
+</blockquote>
+<blockquote>
+<p>通俗的说业务网关中就是做一些通用的基础设施功能。类似AOP中的横切关注点概念，把业务系统中涉及的一些通用功能（日志分析、鉴权、路由等）抽取到业务网关中统一管理。业务 网关不是一个典型的业务系统， 而是一个为了让业务系统更专注与业务服务本身，给API服务提供更多附加能力的一个中间层。</p>
+</blockquote>
+<h3 id="为什么需要业务网关">为什么需要业务网关</h3>
+<p>在微服务架构中，服务的粒度被进一步细分，各个业务服务可以被独立的设计、开发、测试、部署和管理。各个独立部署单元可以用不同的开发测试团队维护，可以使用不同的编程语言和技术平台进行设计，这就要求必须使用一种语言和平台无关的服务协议作为各个单元间的通讯方式。</p>
+<p>业务网关作为分散在各个业务系统微服务的 API 聚合点和统一接入点，外部请求通过访问这个接入点，即可访问内部所有的 REST API 服务。</p>
+<h3 id="业务网关的职能">业务网关的职能</h3>
+<ul>
+<li>请求接入</li>
+</ul>
+<p>作为所有 API 接口服务请求的接入点，管理所有的接入请求</p>
+<ul>
+<li>业务聚合</li>
+</ul>
+<p>作为所有后端业务服务的聚合点，所有的业务服务都可以在这里被调用</p>
+<ul>
+<li>中介策略</li>
+</ul>
+<p>实现安全、验证、路由、过滤、流控，缓存等策略，进行一些必要的中介处理</p>
+<ul>
+<li>统一管理</li>
+</ul>
+<p>提供配置管理工具，对所有 API 服务的调用生命周期和相应的中介策略进行统一管理。</p>
+<h2 id="开源网关介绍">开源网关介绍</h2>
+<p>目前常见的开源网关大致上按照语言分类有如下几类：</p>
+<ul>
+<li>Nginx+lua</li>
+</ul>
+<p>Open Resty、Kong、Orange、Abtesting gateway</p>
+<ul>
+<li>Go</li>
+</ul>
+<p>Janus、fagongzi、Grpc-gateway</p>
+<ul>
+<li>Java</li>
+</ul>
+<p>Zuul/Zuul2、Spring Cloud Gateway、Kaazing KWG、gravitee、Dromara soul 等</p>
+<ul>
+<li>NodeJS</li>
+</ul>
+<p>Express Gateway、Micro Gateway</p>
+<p>按照使用数量、成熟度等来划分，主流的有 4 个：</p>
+<p>OpenResty 、Kong、 Zuul/Zuul2、 Spring Cloud Gateway</p>
+<h3 id="zuulzuul2">Zuul/Zuul2</h3>
+<p>项目地址：github.com/Netflix/zuul</p>
+<p>Zuul 是 Netflix 开源的 API 网关系统，它的主要设计目标是动态路由、监控、弹性和安全。</p>
+<p>Zuul 的内部原理可以简单看做是很多不同功能 filter 的集合。Zuul 1.x 基于同步 IO，也是 Spring Cloud 全家桶的一部分，可以方便的配合 Spring Boot/Spring Cloud 配置和使用。</p>
+<h3 id="spring-cloud-gateway">Spring Cloud Gateway</h3>
+<p>项目地址：
+github.com/spring-cloud/spring-cloud-gateway/</p>
+<p>Spring Cloud Gateway 基于 Java 8、Spring 5.0、Spring Boot 2.0、Project Reactor，发展的比 Zuul 2 要早，目前也是 Spring Cloud 全家桶的一部分。</p>
+<p>Spring Cloud Gateway 可以看做是一个 Zuul 1.x 的升级版和代替品，比 Zuul 2 更早的使用 Netty 实现异步 IO，从而实现了一个简单、比 Zuul 1.x 更高效的、与 Spring Cloud 紧密配合的 API 网关。</p>
+<p>Spring cloud Gateway 的几个核心概念：</p>
+<ul>
+<li>路由</li>
+</ul>
+<p>网关最基础的部分，路由信息由一个ID、一个目的URL、一组断言和一组Filter组成。当断言为真，则说明请求的URL和配置匹配。</p>
+<ul>
+<li>断言</li>
+</ul>
+<p>作为路由的匹配条件</p>
+<ul>
+<li>过滤器</li>
+</ul>
+<p>过滤器Fliter 会对请求和响应进行修改处理</p>
+<h2 id="spring-cloud-gateway-介绍及使用案例">Spring Cloud Gateway 介绍及使用案例</h2>
+<h3 id="spring-cloud-gateway-1">Spring Cloud Gateway</h3>
+<ul>
+<li>Spring Cloud Gateway 是由 WebFlux + Netty + Reactor 实现的响应式的 API 网关。</li>
+<li>Spring Cloud Gateway 不能在传统的 servlet 容器中工作，也不能构建成 war 包！</li>
+<li>Spring Cloud Gateway 为微服务架构提供一种简单且有效的 API 路由的管理方式，并基于 Filter 的方式提供网关的基本功能，例如说安全认证、监控、限流等等</li>
+</ul>
+<p>注意：Spring Cloud Gateway会和spring-webmvc的依赖冲突，需要排除spring-webmvc</p>
+<h3 id="spring-cloud-gateway核心概念">Spring Cloud Gateway核心概念</h3>
+<h4 id="路由route">路由（route)</h4>
+<p>路由是网关中最基础的部分，路由信息包括一个ID、一个目的URI、一组断言工厂、一组Filter组成。如果断言为真，则说明请求的URL和配置的路由匹配。</p>
+<h4 id="断言predicates">断言(predicates)</h4>
+<p>Java8中的断言函数，SpringCloud Gateway中的断言函数类型是Spring5.0框架中的ServerWebExchange。断言函数允许开发者去定义匹配Http request中的任何信息，比如请求头和参数等。</p>
+<h4 id="过滤器filter">过滤器（Filter)</h4>
+<p>SpringCloud Gateway中的filter分为Gateway FilIer和Global Filter。Filter可以对请求和响应进行处理。</p>
+<h3 id="spring-cloud-gateway如何工作">Spring Cloud Gateway如何工作</h3>
+<p><img src="02.jpeg" alt=""></p>
+<h3 id="使用案例介绍">使用案例介绍</h3>
+<p>我们在本地模拟一个简单的网关使用场景：通过网关查询 微服务【订单服务】的一个接口。业务架构大致如下图所示：</p>
+<p><img src="03.jpeg" alt=""></p>
+<p>需要部署三个服务在本地，分别是：</p>
+<ol>
+<li>eureka负载均衡器[eureka]</li>
+<li>网关[gateway]</li>
+<li>微服务[zhenyu-order]</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>服务名称</th>
+<th>端口号</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>eurka-server</td>
+<td>8761</td>
+<td>eureka服务</td>
+</tr>
+<tr>
+<td>2</td>
+<td>service-gateway</td>
+<td>80</td>
+<td>网关服务</td>
+</tr>
+<tr>
+<td>3</td>
+<td>zhenyu-order</td>
+<td>8081</td>
+<td>微服务-订单</td>
+</tr>
+</tbody>
+</table>
+<p>首先，我们搭建一个Eureka 服务，作为服务注册与发现的负载均衡器。
+其次，分别在本地启动网关服务于微服务应用，启动完毕后，可以在eureka页面发现当前应用如下：</p>
+<p><img src="04.jpeg" alt=""></p>
+<p>网关的配置路由规则如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"> routes:
+        - id: zhenyu-order
+          uri: lb://zhenyu-order
+          predicates:
+            - Path=/zhenyu-order/hello
+          filters:
+            - StripPrefix=1
+
+</code></pre></td></tr></table>
+</div>
+</div><p>在微服务【zhenyu-order】应用中，增加一个接口，实现如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">@GetMapping(&#34;/queryOrder&#34;)
+    public String queryOrder(@RequestParam String orderNo) {
+        return &#34;hello, 当前订单号：&#34; + orderNo;
+    }
+</code></pre></td></tr></table>
+</div>
+</div><p>重新部署服务后，访问网关地址：
+<code>http://localhost/zhenyu-order/queryOrder?orderNo=ABC</code>
+访问结果如下图所示：</p>
+<p><img src="05.jpeg" alt=""></p>
+<h2 id="spring-cloud-gateway-窥探技术原理">Spring Cloud Gateway 窥探技术原理</h2>
+<h3 id="路由">路由</h3>
+<p>在上面的示例中，我们看到一组路由有以下几个组成部分：</p>
+<ul>
+<li>ID、目标URI</li>
+<li>一系列的断言【Predicate】</li>
+<li>过滤器【Filters】</li>
+</ul>
+<p><img src="06.jpeg" alt=""></p>
+<p>web 请求，通过一些匹配条件，定位到真正的服务节点，并在这个转发过程的前后，进行一些精细化控制</p>
+<p>predicate 就是我们的匹配条件</p>
+<p>filter：就可以理解为一个无所不能的拦截器，有了这两个元素，再加上目标的uri，就可以实现一个具体的路由了。</p>
+<h4 id="predicate-断言条件转发规则介绍">Predicate 断言条件(转发规则)介绍</h4>
+<p>Predicate 来源于 Java 8，是 Java 8 中引入的一个函数，Predicate 接受一个输入参数，返回一个布尔值结果。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）。可以用于接口请求参数校验、判断新老数据是否有变化需要进行更新操作。</p>
+<p>在 Spring Cloud Gateway 中 Spring 利用 Predicate 的特性实现了各种路由匹配规则，有通过 Header、请求参数等不同的条件来进行作为条件匹配到对应的路由。网上有一张图总结了 Spring Cloud 内置的几种 Predicate 的实现。</p>
+<p><img src="07.jpeg" alt=""></p>
+<p>从官方文档来看，Spring Cloud GateWay 内置了11种断言方式，具体可见下方链接。</p>
+<p><a href="https://docs.spring.io/spring-cloud-gateway/docs/3.0.1/reference/html/#gateway-request-predicates-factories">spring-cloud-gateway 官方文档</a></p>
+<p><img src="08.jpeg" alt=""></p>
+<p>我们从中选取几种作为示例</p>
+<h5 id="通过请求参数匹配">通过请求参数匹配</h5>
+<p>配置如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">spring:
+  cloud:
+    gateway:
+      routes:
+        - id: query_route
+          predicates:
+            - Query=foo, ba.
+          uri: http://www.csdn.com
+</code></pre></td></tr></table>
+</div>
+</div><p>验证结果如图所示
+<img src="09.jpeg" alt=""></p>
+<h5 id="通过请求路径匹配匹配">通过请求路径匹配匹配</h5>
+<p>配置如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu
+          predicates:
+            - Path=/baidu
+          uri: http://www.baidu.com
+</code></pre></td></tr></table>
+</div>
+</div><p>验证结果如图所示</p>
+<p><img src="10.jpeg" alt=""></p>
+<h4 id="过滤器-globalfilter-vs-gatewayfilter">过滤器 GlobalFilter vs GatewayFilter</h4>
+<p>在Spring Cloud Gateway 网关中，大量的使用Fliters，主要做一些过滤、拦截、校验、转发、日志等工作。</p>
+<p>Global Filters：全局过滤器，不需要配置路由，系统初始化作用到所有路由上。</p>
+<p>GatewayFilter：需要配置某个路由，才能过滤。如果需要使用全局路由，需要配置Default Filters。</p>
+<h5 id="globalfilter">GlobalFilter</h5>
+<p>GlobalFilter 接口和 GatewayFilter 有一样的接口定义，只不过， GlobalFilter 会作用于所有路由。</p>
+<p>官方定义的GlobalFilter接口如图所示，只需要去实现fliter方法即可。</p>
+<p><img src="11.jpeg" alt=""></p>
+<p>单独定义只需要实现GlobalFilter, Ordered这两个接口就可以了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class CustomFilter implements GlobalFilter, Ordered {
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpRequest request = exchange.getRequest();
+        System.out.println(&#34;当前访问url:&#34; + request.getURI().getPath());
+        return chain.filter(exchange);
+
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>查看运行效果如下：
+<img src="12.jpeg" alt=""></p>
+<h5 id="gatewayfilter">GatewayFilter</h5>
+<p>不同于GlobalFilter，GatewayFilter更像是局部过滤器，Spring定义了31种实现，详情可见官方文档</p>
+<p><a href="https://docs.spring.io/spring-cloud-gateway/docs/3.0.1/reference/html/#gatewayfilter-factories">spring-cloud-gateway 官方文档</a></p>
+<p>官方定义的GatewayFilter接口如图所示，只需要去实现fliter方法即可。</p>
+<p><img src="13.jpeg" alt=""></p>
+<p>我们选取一个常用的 The StripPrefix GatewayFilter 作为示例，配置文件如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">spring:
+  cloud:
+    gateway:
+      routes:
+      - id: nameRoot
+        uri: https://nameservice
+        predicates:
+        - Path=/name/**
+        filters:
+        - StripPrefix=2
+</code></pre></td></tr></table>
+</div>
+</div><p>当形如/name/blue/red的url的请求访问网关的时候，网关访问微服务的请求url 如：nameservice/red，这种过滤器常用来根据url来区分微服务，以求把正确的请求路由到对应的微服务，保障请求可用。</p>
+<h3 id="spring-cloud-gateway限流">Spring Cloud Gateway限流</h3>
+<h4 id="常见的限流处理方式">常见的限流处理方式</h4>
+<p>在系统中设计限流方案时，有一个问题值得设计者去仔细考虑，当请求者被限流规则拦截之后，我们该如何返回结果。一般我们有下面三种限流的处理方式：</p>
+<ul>
+<li>拒绝服务</li>
+<li>排队等待</li>
+<li>服务降级</li>
+</ul>
+<p>最简单的做法是拒绝服务，直接抛出异常，返回错误信息（比如返回 HTTP 状态码 429 Too Many Requests），或者给前端返回 302 重定向到一个错误页面，提示用户资源没有了或稍后再试。但是对于一些比较重要的接口不能直接拒绝，比如秒杀、下单等接口，我们既不希望用户请求太快，也不希望请求失败，这种情况一般会将请求放到一个消息队列中排队等待，消息队列可以起到削峰和限流的作用。第三种处理方式是服务降级，当触发限流条件时，直接返回兜底数据，比如查询商品库存的接口，可以默认返回有货。</p>
+<p>网关作为整个分布式系统的入口，承担了所有的用户请求，所以在网关中进行限流是最合适不过的。网关层限流有时也被称为 接入层限流。</p>
+<h4 id="常见的限流算法">常见的限流算法</h4>
+<h5 id="固定窗口算法fixed-window">固定窗口算法（Fixed Window）</h5>
+<p>固定窗口算法又叫计数器算法，是一种简单方便的限流算法。主要通过一个支持原子操作的计数器来累计 1 秒内的请求次数，当 1 秒内计数达到限流阈值时触发拒绝策略。每过 1 秒，计数器重置为 0 开始重新计数。</p>
+<p>但是此算法存在一个缺陷：</p>
+<p>假设设置限流为每秒2个访问2次，但是当遇到时间窗口的临界突变时，如 1s 中的后 500 ms 和第 2s 的前 500ms 时，虽然是加起来是 1s 时间，却可以被请求 4 次。</p>
+<p><img src="14.jpeg" alt=""></p>
+<h5 id="滑动窗口算法rolling-window-或-sliding-window">滑动窗口算法（Rolling Window 或 Sliding Window）</h5>
+<p>我们已经知道固定窗口算法的实现方式以及它所存在的问题，而滑动窗口算法是对固定窗口算法的改进。既然固定窗口算法在遇到时间窗口的临界突变时会有问题，那么我们在遇到下一个时间窗口前也调整时间窗口不就可以了吗？</p>
+<p>下面是滑动窗口的示意图。</p>
+<p><img src="15.jpeg" alt=""></p>
+<p>但是，只要有时间窗口的存在，还是有可能发生时间窗口的临界突变问题。</p>
+<h5 id="漏桶算法leaky-bucket">漏桶算法（Leaky Bucket）</h5>
+<p>漏桶算法中的漏桶是一个形象的比喻，这里可以用生产者消费者模式进行说明，请求是一个生产者，每一个请求都如一滴水，请求到来后放到一个队列（漏桶）中，而桶底有一个孔，不断的漏出水滴，就如消费者不断的在消费队列中的内容，消费的速率（漏出的速度）等于限流阈值。即假如 QPS  为 2，则每 1s / 2= 500ms 消费一次。漏桶的桶有大小，就如队列的容量，当请求堆积超过指定容量时，会触发拒绝策略。</p>
+<p><img src="16.jpeg" alt=""></p>
+<h5 id="令牌桶算法token-bucket">令牌桶算法（Token Bucket）</h5>
+<p>令牌桶算法同样是实现限流是一种常见的思路，最为常用的 Google 的 Java 开发工具包 Guava 中的限流工具类 RateLimiter 就是令牌桶的一个实现。令牌桶的实现思路类似于生产者和消费之间的关系。</p>
+<p>系统服务作为生产者，按照指定频率向桶（容器）中添加令牌，如 QPS 为 2，每 500ms 向桶中添加一个令牌，如果桶中令牌数量达到阈值，则不再添加。</p>
+<p>请求执行作为消费者，每个请求都需要去桶中拿取一个令牌，取到令牌则继续执行；如果桶中无令牌可取，就触发拒绝策略，可以是超时等待，也可以是直接拒绝本次请求，由此达到限流目的。</p>
+<p>下面是令牌桶限流算法示意图。</p>
+<p><img src="17.jpeg" alt=""></p>
+<h4 id="spring-cloud-gateway-限流实现方式">Spring Cloud Gateway 限流实现方式</h4>
+<h5 id="官方实现的限流过滤器">官方实现的限流过滤器</h5>
+<p>spring cloud gateway里面也提供了一个自实现的限流过滤器</p>
+<p><code>org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory</code></p>
+<p>通过 RequestRateLimiterGatewayFilterFactory ，可以创建一个GatewayFilter的匿名内部类实例，它的内部使用Redis实现限流。限流规则由KeyResolver接口的具体实现类来决定，比如通过IP、url等来进行限流。
+参考官方文档示例</p>
+<p><img src="18.jpeg" alt=""></p>
+<h5 id="自定义限流过滤器">自定义限流过滤器</h5>
+<p>基于GlobalFilter，可以很容易的编写一个全局过滤器来进行限流</p>
+<p>现提供一个基于 Guava的 RateLimiter实现的自定义限流过滤器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class MyIpLimitFilter2 implements GlobalFilter, Ordered {
+    private static final Cache&lt;String, RateLimiter&gt; RATE_LIMITER_CACHE = CacheBuilder
+            .newBuilder()
+            .maximumSize(2)
+            .expireAfterAccess(10, TimeUnit.SECONDS)
+            .build();
+    private static final double DEFAULT_PERMITS_PER_SECOND = 1;
+    @SneakyThrows
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info(&#34;MyIpLimitFilter2 $ filter start. &#34;);
+        String remoteAddr = Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getAddress().getHostAddress();
+        RateLimiter rateLimiter = RATE_LIMITER_CACHE.get(remoteAddr, () -&gt; RateLimiter.create(DEFAULT_PERMITS_PER_SECOND));
+        if (rateLimiter.tryAcquire()) {
+            return chain.filter(exchange);
+        }
+        log.info(&#34;MyIpLimitFilter2 $ filter  本次请求限流.url: {}&#34;,exchange.getRequest().getURI().getRawPath());
+        ServerHttpResponse response = exchange.getResponse();
+        response.setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
+        response.getHeaders().add(&#34;Content-Type&#34;, &#34;application/json;charset=UTF-8&#34;);
+        DataBuffer dataBuffer = response.bufferFactory().wrap(&#34;Too Many Request!!!&#34;.getBytes(StandardCharsets.UTF_8));
+        return response.writeWith(Mono.just(dataBuffer));
+     }
+
+    @Override
+    public int getOrder() {
+        return 2;
+    }
+}
+
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">超级阵雨</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-08-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/spring-cloud-gateway/">spring-cloud-gateway</a>
+          <a href="/tags/%E7%BD%91%E5%85%B3/">网关</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/how_to_build_blog_with_hugo/">
+            <span class="next-text nav-default">如何使用hugo搭建个人静态网站</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:zhenyuokya@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://www.google.com" class="iconfont icon-google" title="google"></a>
+      <a href="https://github.com/" class="iconfont icon-github" title="github"></a>
+      <a href="http://www.weibo.com" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://www.zhihu.com" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://www.douban.com" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://www.bilibili.com" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://zhenyu0324.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>超级阵雨</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

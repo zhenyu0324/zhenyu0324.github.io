@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网关 on 超级阵雨的乌托邦星球</title>
+    <link>https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/</link>
+    <description>Recent content in 网关 on 超级阵雨的乌托邦星球</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 13 Aug 2022 10:59:54 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅谈网关及其应用</title>
+      <link>https://zhenyu0324.github.io/post/spring_cloud_gateway_01/</link>
+      <pubDate>Sat, 13 Aug 2022 10:59:54 +0800</pubDate>
+      
+      <guid>https://zhenyu0324.github.io/post/spring_cloud_gateway_01/</guid>
+      <description>网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边</description>
+    </item>
+    
+  </channel>
+</rss>
