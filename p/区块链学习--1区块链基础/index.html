@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n1.1.2区块链的魅力 具有理想主义情怀的极客所提出的“去中心化”&mdash;&ndash;“链圈” 以赚钱为主要目标的投资者和生意人&mdash;-“币圈” 前者为后者提供了极佳的赚钱土壤，后者为前者注入了赖以生存的资金。听起来好像“沆瀣一气”，其实并没有，这也是区块链行业通常所说的链圈和币圈。\n1.1.3区块链究竟是什么 简单来说，区块链首先是一个分布式网络。\n总结一下区块链是什么：\n区块链是一个分布式网络； 区块链可以帮助多个节点达成共识去记录和 Token 相关的事情； 区块链可以帮助所有人无门槛地构建属于自己的小经济系统。\n1.1.4 推荐资料 基础知识《精通比特币》 行业知识《区块链：从数字货币到信用社会》 技术进阶《区块链原理设计与应用》 1.2 区块链怎么运行 1.2.1 中心化记账的问题 银行是中心化记账模式 问题：如果中心化账本存在错误，怎么办？\n1.2.2记账介绍 每家每户都记账，账簿上不再记载每户村民的余额，而只记载每一笔 Transaction，即记载每一笔交易的付款人、收款人和付款金额。 需要解决：\n一致性问题 安全(加解密) 流程 记账&mdash;-&gt;创建创世区块&mdash;-&gt;交易&mdash;-&gt;打包 Transaction 挖矿）&mdash;-&gt;广播交易 1.3共识机制 在上述记账流程中，打包环节分为 &ldquo;打包 Transaction&rdquo;、&ldquo;广播交易&rdquo; 都需要运用到共识机制。\n共识机制是区块链是核心的组成要素之一，它决定了区块链的业务吞吐量、交易速度、不可篡改性、准入门槛等等，是最为关键的技术要素之一。\n共识机制主要解决了两个问题：\n谁有权利 作弊问题 1.3.1拜占庭将军问题 维基百科:拜占庭将军问题\n百度百科:拜占庭将军问题\n知乎:如何理解拜占庭将军问题？\n拜占庭将军问题（Byzantine failures），是由莱斯利·兰伯特提出的点对点通信中的基本问题。含义是在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的 。 拜占庭将军问题是一个协议问题，拜占庭帝国军队的将军们必须全体一致的决定是否攻击某一支敌军。问题是这些将军在地理上是分隔开来的，并且将军中存在叛徒。叛徒可以任意行动以达到以下目标：欺骗某些将军采取进攻行动；促成一个不是所有将军都同意的决定，如当将军们不希望进攻时促成进攻行动；或者迷惑某些将军，使他们无法做出决定。如果叛徒达到了这些目的之一，则任何攻击行动的结果都是注定要失败的，只有完全达成一致的努力才能获得胜利 。 拜占庭假设是对现实世界的模型化，由于硬件错误、网络拥塞或断开以及遭到恶意攻击，计算机和网络可能出现不可预料的行为 。 1.3.2 最经典的入门型共识机制：PoW 工作量证明 PoW （Proof of Work）工作量证明可以解决上述的两个问题。 在 PoW 这种机制中，计算资源（又称算力）是决定记账权的唯一因素。与之对应的，便是计算难度。计算难度又称作挖矿难度，计算难度是区块链为了控制产生答案的速度，比如平均 10 分钟就有一个答案产生，平均 2 分钟一个答案产生。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n">
 <title>区块链学习--1区块链基础</title>
 
 <link rel='canonical' href='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--1%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80/'>
 
 <link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="区块链学习--1区块链基础">
-<meta property='og:description' content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n1.1.2区块链的魅力 具有理想主义情怀的极客所提出的“去中心化”&mdash;&ndash;“链圈” 以赚钱为主要目标的投资者和生意人&mdash;-“币圈” 前者为后者提供了极佳的赚钱土壤，后者为前者注入了赖以生存的资金。听起来好像“沆瀣一气”，其实并没有，这也是区块链行业通常所说的链圈和币圈。\n1.1.3区块链究竟是什么 简单来说，区块链首先是一个分布式网络。\n总结一下区块链是什么：\n区块链是一个分布式网络； 区块链可以帮助多个节点达成共识去记录和 Token 相关的事情； 区块链可以帮助所有人无门槛地构建属于自己的小经济系统。\n1.1.4 推荐资料 基础知识《精通比特币》 行业知识《区块链：从数字货币到信用社会》 技术进阶《区块链原理设计与应用》 1.2 区块链怎么运行 1.2.1 中心化记账的问题 银行是中心化记账模式 问题：如果中心化账本存在错误，怎么办？\n1.2.2记账介绍 每家每户都记账，账簿上不再记载每户村民的余额，而只记载每一笔 Transaction，即记载每一笔交易的付款人、收款人和付款金额。 需要解决：\n一致性问题 安全(加解密) 流程 记账&mdash;-&gt;创建创世区块&mdash;-&gt;交易&mdash;-&gt;打包 Transaction 挖矿）&mdash;-&gt;广播交易 1.3共识机制 在上述记账流程中，打包环节分为 &ldquo;打包 Transaction&rdquo;、&ldquo;广播交易&rdquo; 都需要运用到共识机制。\n共识机制是区块链是核心的组成要素之一，它决定了区块链的业务吞吐量、交易速度、不可篡改性、准入门槛等等，是最为关键的技术要素之一。\n共识机制主要解决了两个问题：\n谁有权利 作弊问题 1.3.1拜占庭将军问题 维基百科:拜占庭将军问题\n百度百科:拜占庭将军问题\n知乎:如何理解拜占庭将军问题？\n拜占庭将军问题（Byzantine failures），是由莱斯利·兰伯特提出的点对点通信中的基本问题。含义是在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的 。 拜占庭将军问题是一个协议问题，拜占庭帝国军队的将军们必须全体一致的决定是否攻击某一支敌军。问题是这些将军在地理上是分隔开来的，并且将军中存在叛徒。叛徒可以任意行动以达到以下目标：欺骗某些将军采取进攻行动；促成一个不是所有将军都同意的决定，如当将军们不希望进攻时促成进攻行动；或者迷惑某些将军，使他们无法做出决定。如果叛徒达到了这些目的之一，则任何攻击行动的结果都是注定要失败的，只有完全达成一致的努力才能获得胜利 。 拜占庭假设是对现实世界的模型化，由于硬件错误、网络拥塞或断开以及遭到恶意攻击，计算机和网络可能出现不可预料的行为 。 1.3.2 最经典的入门型共识机制：PoW 工作量证明 PoW （Proof of Work）工作量证明可以解决上述的两个问题。 在 PoW 这种机制中，计算资源（又称算力）是决定记账权的唯一因素。与之对应的，便是计算难度。计算难度又称作挖矿难度，计算难度是区块链为了控制产生答案的速度，比如平均 10 分钟就有一个答案产生，平均 2 分钟一个答案产生。\n">
+<meta property='og:description' content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n">
 <meta property='og:url' content='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--1%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80/'>
-<meta property='og:site_name' content='Charles.Zhao'>
+<meta property='og:site_name' content='超级阵雨'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='区块链' /><meta property='article:published_time' content='2021-02-04T15:24:50&#43;08:00'/><meta property='article:modified_time' content='2021-02-04T15:24:50&#43;08:00'/>
 <meta name="twitter:title" content="区块链学习--1区块链基础">
-<meta name="twitter:description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n1.1.2区块链的魅力 具有理想主义情怀的极客所提出的“去中心化”&mdash;&ndash;“链圈” 以赚钱为主要目标的投资者和生意人&mdash;-“币圈” 前者为后者提供了极佳的赚钱土壤，后者为前者注入了赖以生存的资金。听起来好像“沆瀣一气”，其实并没有，这也是区块链行业通常所说的链圈和币圈。\n1.1.3区块链究竟是什么 简单来说，区块链首先是一个分布式网络。\n总结一下区块链是什么：\n区块链是一个分布式网络； 区块链可以帮助多个节点达成共识去记录和 Token 相关的事情； 区块链可以帮助所有人无门槛地构建属于自己的小经济系统。\n1.1.4 推荐资料 基础知识《精通比特币》 行业知识《区块链：从数字货币到信用社会》 技术进阶《区块链原理设计与应用》 1.2 区块链怎么运行 1.2.1 中心化记账的问题 银行是中心化记账模式 问题：如果中心化账本存在错误，怎么办？\n1.2.2记账介绍 每家每户都记账，账簿上不再记载每户村民的余额，而只记载每一笔 Transaction，即记载每一笔交易的付款人、收款人和付款金额。 需要解决：\n一致性问题 安全(加解密) 流程 记账&mdash;-&gt;创建创世区块&mdash;-&gt;交易&mdash;-&gt;打包 Transaction 挖矿）&mdash;-&gt;广播交易 1.3共识机制 在上述记账流程中，打包环节分为 &ldquo;打包 Transaction&rdquo;、&ldquo;广播交易&rdquo; 都需要运用到共识机制。\n共识机制是区块链是核心的组成要素之一，它决定了区块链的业务吞吐量、交易速度、不可篡改性、准入门槛等等，是最为关键的技术要素之一。\n共识机制主要解决了两个问题：\n谁有权利 作弊问题 1.3.1拜占庭将军问题 维基百科:拜占庭将军问题\n百度百科:拜占庭将军问题\n知乎:如何理解拜占庭将军问题？\n拜占庭将军问题（Byzantine failures），是由莱斯利·兰伯特提出的点对点通信中的基本问题。含义是在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的 。 拜占庭将军问题是一个协议问题，拜占庭帝国军队的将军们必须全体一致的决定是否攻击某一支敌军。问题是这些将军在地理上是分隔开来的，并且将军中存在叛徒。叛徒可以任意行动以达到以下目标：欺骗某些将军采取进攻行动；促成一个不是所有将军都同意的决定，如当将军们不希望进攻时促成进攻行动；或者迷惑某些将军，使他们无法做出决定。如果叛徒达到了这些目的之一，则任何攻击行动的结果都是注定要失败的，只有完全达成一致的努力才能获得胜利 。 拜占庭假设是对现实世界的模型化，由于硬件错误、网络拥塞或断开以及遭到恶意攻击，计算机和网络可能出现不可预料的行为 。 1.3.2 最经典的入门型共识机制：PoW 工作量证明 PoW （Proof of Work）工作量证明可以解决上述的两个问题。 在 PoW 这种机制中，计算资源（又称算力）是决定记账权的唯一因素。与之对应的，便是计算难度。计算难度又称作挖矿难度，计算难度是区块链为了控制产生答案的速度，比如平均 10 分钟就有一个答案产生，平均 2 分钟一个答案产生。\n">
+<meta name="twitter:description" content="1. 区块链基础 1.1区块链是什么 1.1.1区块链与区块链行业 区块链是一个崭新的行业，与社交、电影、游戏一样，具有自己独特的内涵和发展过程 这个行业是通过比特币形成的 以比特币为基础，衍生出了许多其他如以太坊、比特股、EOS 等币共同形成了区块链行业。\n">
     </head>
     <body class="
     article-page
@@ -40,7 +40,7 @@
     })();
 </script>
 <div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>
@@ -52,7 +52,7 @@
             <figure class="site-avatar">
                 <a href="/">
                 
-                    <img src="img/avatar_2025.png" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    <img src="/images/zzy.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
                 
                 </a>
                 
@@ -63,8 +63,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Charles.Zhao</a></h1>
-            <h2 class="site-description">Stay hungry,Stay foolish.</h2>
+            <h1 class="site-name"><a href="/">超级阵雨</a></h1>
+            <h2 class="site-description">贩码为生伪文青...</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -107,13 +107,13 @@
 
 
                 
-                <span>Home</span>
+                <span>主页</span>
             </a>
         </li>
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -126,7 +126,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -205,9 +205,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://zhenyu0324.github.io/" selected>English</option>
+                                    <option value="https://zhenyu0324.github.io/en/" >English</option>
                                 
-                                    <option value="https://zhenyu0324.github.io/zh-cn/" >中文</option>
+                                    <option value="https://zhenyu0324.github.io/" selected>中文</option>
                                 
                             </select>
                         </li>
@@ -232,7 +232,7 @@
 
 
 
-                        <span>Dark Mode</span>
+                        <span>暗色模式</span>
                     </li>
                 
             </ol>
@@ -257,7 +257,7 @@
 
 
         </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
+        <h2 class="widget-title section-title">目录</h2>
         
         <div class="widget--toc">
             <nav id="TableOfContents">
@@ -370,7 +370,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Feb 02, 4042</time>
+                <time class="article-time--published">Feb 02,2021</time>
             </div>
         
 
@@ -385,7 +385,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    阅读时长: 19 分钟
                 </time>
             </div>
         
@@ -758,7 +758,7 @@
     
 
 <aside class="related-content--wrapper">
-    <h2 class="section-title">Related content</h2>
+    <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
             
@@ -882,14 +882,14 @@
     <section class="copyright">
         &copy; 
         
-            2021 - 
+            2020 - 
         
         2025 超级阵雨工作室
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

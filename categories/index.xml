@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Categories on Charles.Zhao</title>
+        <title>Categories on 超级阵雨</title>
         <link>https://zhenyu0324.github.io/categories/</link>
-        <description>Recent content in Categories on Charles.Zhao</description>
+        <description>Recent content in Categories on 超级阵雨</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>zh-cn</language>
         <copyright>超级阵雨工作室</copyright>
         <lastBuildDate>Sat, 13 Aug 2022 10:59:54 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>学习笔记</title>
@@ -24,20 +24,52 @@
         <description></description>
         </item>
         <item>
+        <title>Test</title>
+        <link>https://zhenyu0324.github.io/categories/test/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/categories/test/</guid>
+        <description>&lt;img src="https://zhenyu0324.github.io/categories/test/hutomo-abrianto-l2jk-uxb1BY-unsplash.jpg" alt="Featured image of post Test" /&gt;</description>
+        </item>
+        <item>
+        <title>测试</title>
+        <link>https://zhenyu0324.github.io/categories/%E6%B5%8B%E8%AF%95/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/categories/%E6%B5%8B%E8%AF%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Syntax</title>
+        <link>https://zhenyu0324.github.io/categories/syntax/</link>
+        <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/categories/syntax/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Themes</title>
+        <link>https://zhenyu0324.github.io/categories/themes/</link>
+        <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/categories/themes/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Test With Whitespaces</title>
+        <link>https://zhenyu0324.github.io/categories/test-with-whitespaces/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/categories/test-with-whitespaces/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>中文</title>
         <link>https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/</link>
         <pubDate>Wed, 30 Aug 2017 01:37:56 +0800</pubDate>
         
         <guid>https://zhenyu0324.github.io/categories/%E4%B8%AD%E6%96%87/</guid>
         <description></description>
-        </item>
-        <item>
-        <title>Test</title>
-        <link>https://zhenyu0324.github.io/categories/test/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://zhenyu0324.github.io/categories/test/</guid>
-        <description>&lt;img src="https://zhenyu0324.github.io/categories/test/hutomo-abrianto-l2jk-uxb1BY-unsplash.jpg" alt="Featured image of post Test" /&gt;</description>
         </item>
         
     </channel>

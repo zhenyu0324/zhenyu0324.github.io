@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n区块链的存储基于分布式数据库；\n数据库是区块链的数据载体，区块链是交易的业务逻辑载体；\n区块链按时间序列化区块数据，整个网络有一个最终确定状态；\n区块链只对添加有效，对其他操作无效；\n交易基于非对称加密的公私钥验证；\n区块链网络要求拜占庭将军容错；\n共识算法能够“解决”双花问题\n2.1.2 区块链的类型 公有区块链 区块链通常指的是公有区块链 联盟链 所谓联盟链，就是这个区块链具有准入许可，不像公链，任何人都可以随时进入。准入许可也就意味着候选节点进入区块链时需要得到已经在网络中的节点许可，所以联盟链也叫做许可链。 侧链 侧链是一种双向挂钩技术，将主链中的代币锁定到侧链中使用。所以可以将主链看作主干道，侧链看作与主链相对独立的一条分支道，作为主链功能的低耦合拓展。 2.1.3区块链的核心技术组成 四个组成模块\nP2P 网络协议 分布式一致性算法（共识机制） 加密签名算法 账户与存储模型 2.1.3.1 P2P 网络协议 P2P 网络协议是所有区块链的最底层模块，负责交易数据的网络传输和广播、节点发现和维护\n通常我们所用的都是比特币 P2P 网络协议模块，它遵循一定的交互原则。比如：初次连接到其他节点会被要求按照握手协议来确认状态，在握手之后开始请求 Peer 节点的地址数据以及区块数据。\n这套 P2P 交互协议也具有自己的指令集合，指令体现在在消息头（Message Header) 的命令（command）域中，这些命令为上层提供了节点发现、节点获取、区块头获取、区块获取等功能。\n2.1.3.2分布式一致性算法 在经典分布式计算领域，我们有 Raft 和 Paxos 算法家族代表的非拜占庭容错算法，以及具有拜占庭容错特性的 PBFT 共识算法。\n如果从技术演化的角度来看，我们可以得出一个图，其中，区块链技术把原来的分布式算法进行了经济学上的拓展。\n在图中我们可以看到，计算机应用在最开始多为单点应用，高可用方便采用的是冷灾备，后来发展到异地多活，这些异地多活可能采用的是负载均衡和路由技术，随着分布式系统技术的发展，我们过渡到了 Paxos 和 Raft 为主的分布式系统。\n而在区块链领域，多采用 PoW 工作量证明算法、PoS 权益证明算法，以及 DPoS 代理权益证明算法，以上三种是业界主流的共识算法，这些算法与经典分布式一致性算法不同的是融入了经济学博弈的概念，下面我分别简单介绍这三种共识算法。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n">
 <title>区块链学习--2技术上</title>
 
 <link rel='canonical' href='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--2%E6%8A%80%E6%9C%AF%E4%B8%8A/'>
 
 <link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="区块链学习--2技术上">
-<meta property='og:description' content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n区块链的存储基于分布式数据库；\n数据库是区块链的数据载体，区块链是交易的业务逻辑载体；\n区块链按时间序列化区块数据，整个网络有一个最终确定状态；\n区块链只对添加有效，对其他操作无效；\n交易基于非对称加密的公私钥验证；\n区块链网络要求拜占庭将军容错；\n共识算法能够“解决”双花问题\n2.1.2 区块链的类型 公有区块链 区块链通常指的是公有区块链 联盟链 所谓联盟链，就是这个区块链具有准入许可，不像公链，任何人都可以随时进入。准入许可也就意味着候选节点进入区块链时需要得到已经在网络中的节点许可，所以联盟链也叫做许可链。 侧链 侧链是一种双向挂钩技术，将主链中的代币锁定到侧链中使用。所以可以将主链看作主干道，侧链看作与主链相对独立的一条分支道，作为主链功能的低耦合拓展。 2.1.3区块链的核心技术组成 四个组成模块\nP2P 网络协议 分布式一致性算法（共识机制） 加密签名算法 账户与存储模型 2.1.3.1 P2P 网络协议 P2P 网络协议是所有区块链的最底层模块，负责交易数据的网络传输和广播、节点发现和维护\n通常我们所用的都是比特币 P2P 网络协议模块，它遵循一定的交互原则。比如：初次连接到其他节点会被要求按照握手协议来确认状态，在握手之后开始请求 Peer 节点的地址数据以及区块数据。\n这套 P2P 交互协议也具有自己的指令集合，指令体现在在消息头（Message Header) 的命令（command）域中，这些命令为上层提供了节点发现、节点获取、区块头获取、区块获取等功能。\n2.1.3.2分布式一致性算法 在经典分布式计算领域，我们有 Raft 和 Paxos 算法家族代表的非拜占庭容错算法，以及具有拜占庭容错特性的 PBFT 共识算法。\n如果从技术演化的角度来看，我们可以得出一个图，其中，区块链技术把原来的分布式算法进行了经济学上的拓展。\n在图中我们可以看到，计算机应用在最开始多为单点应用，高可用方便采用的是冷灾备，后来发展到异地多活，这些异地多活可能采用的是负载均衡和路由技术，随着分布式系统技术的发展，我们过渡到了 Paxos 和 Raft 为主的分布式系统。\n而在区块链领域，多采用 PoW 工作量证明算法、PoS 权益证明算法，以及 DPoS 代理权益证明算法，以上三种是业界主流的共识算法，这些算法与经典分布式一致性算法不同的是融入了经济学博弈的概念，下面我分别简单介绍这三种共识算法。\n">
+<meta property='og:description' content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n">
 <meta property='og:url' content='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--2%E6%8A%80%E6%9C%AF%E4%B8%8A/'>
-<meta property='og:site_name' content='Charles.Zhao'>
+<meta property='og:site_name' content='超级阵雨'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='区块链' /><meta property='article:published_time' content='2021-02-05T10:15:28&#43;08:00'/><meta property='article:modified_time' content='2021-02-05T10:15:28&#43;08:00'/>
 <meta name="twitter:title" content="区块链学习--2技术上">
-<meta name="twitter:description" content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n区块链的存储基于分布式数据库；\n数据库是区块链的数据载体，区块链是交易的业务逻辑载体；\n区块链按时间序列化区块数据，整个网络有一个最终确定状态；\n区块链只对添加有效，对其他操作无效；\n交易基于非对称加密的公私钥验证；\n区块链网络要求拜占庭将军容错；\n共识算法能够“解决”双花问题\n2.1.2 区块链的类型 公有区块链 区块链通常指的是公有区块链 联盟链 所谓联盟链，就是这个区块链具有准入许可，不像公链，任何人都可以随时进入。准入许可也就意味着候选节点进入区块链时需要得到已经在网络中的节点许可，所以联盟链也叫做许可链。 侧链 侧链是一种双向挂钩技术，将主链中的代币锁定到侧链中使用。所以可以将主链看作主干道，侧链看作与主链相对独立的一条分支道，作为主链功能的低耦合拓展。 2.1.3区块链的核心技术组成 四个组成模块\nP2P 网络协议 分布式一致性算法（共识机制） 加密签名算法 账户与存储模型 2.1.3.1 P2P 网络协议 P2P 网络协议是所有区块链的最底层模块，负责交易数据的网络传输和广播、节点发现和维护\n通常我们所用的都是比特币 P2P 网络协议模块，它遵循一定的交互原则。比如：初次连接到其他节点会被要求按照握手协议来确认状态，在握手之后开始请求 Peer 节点的地址数据以及区块数据。\n这套 P2P 交互协议也具有自己的指令集合，指令体现在在消息头（Message Header) 的命令（command）域中，这些命令为上层提供了节点发现、节点获取、区块头获取、区块获取等功能。\n2.1.3.2分布式一致性算法 在经典分布式计算领域，我们有 Raft 和 Paxos 算法家族代表的非拜占庭容错算法，以及具有拜占庭容错特性的 PBFT 共识算法。\n如果从技术演化的角度来看，我们可以得出一个图，其中，区块链技术把原来的分布式算法进行了经济学上的拓展。\n在图中我们可以看到，计算机应用在最开始多为单点应用，高可用方便采用的是冷灾备，后来发展到异地多活，这些异地多活可能采用的是负载均衡和路由技术，随着分布式系统技术的发展，我们过渡到了 Paxos 和 Raft 为主的分布式系统。\n而在区块链领域，多采用 PoW 工作量证明算法、PoS 权益证明算法，以及 DPoS 代理权益证明算法，以上三种是业界主流的共识算法，这些算法与经典分布式一致性算法不同的是融入了经济学博弈的概念，下面我分别简单介绍这三种共识算法。\n">
+<meta name="twitter:description" content="2. 区块链技术 2.1 技术基础 2.1.1 区块链的技术定义 简单来说，区块链是一个提供了拜占庭容错、并保证了最终一致性的分布式数据库。\n从数据结构上看，它是基于时间序列的链式数据块结构 从节点拓扑上看，它所有的节点互为冗余备份 从操作上看，它提供了基于密码学的公私钥管理体系来管理账户 区块链在技术上的 7 个特征\n">
     </head>
     <body class="
     article-page
@@ -40,7 +40,7 @@
     })();
 </script>
 <div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>
@@ -52,7 +52,7 @@
             <figure class="site-avatar">
                 <a href="/">
                 
-                    <img src="img/avatar_2025.png" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    <img src="/images/zzy.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
                 
                 </a>
                 
@@ -63,8 +63,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Charles.Zhao</a></h1>
-            <h2 class="site-description">Stay hungry,Stay foolish.</h2>
+            <h1 class="site-name"><a href="/">超级阵雨</a></h1>
+            <h2 class="site-description">贩码为生伪文青...</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -107,13 +107,13 @@
 
 
                 
-                <span>Home</span>
+                <span>主页</span>
             </a>
         </li>
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -126,7 +126,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -205,9 +205,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://zhenyu0324.github.io/" selected>English</option>
+                                    <option value="https://zhenyu0324.github.io/en/" >English</option>
                                 
-                                    <option value="https://zhenyu0324.github.io/zh-cn/" >中文</option>
+                                    <option value="https://zhenyu0324.github.io/" selected>中文</option>
                                 
                             </select>
                         </li>
@@ -232,7 +232,7 @@
 
 
 
-                        <span>Dark Mode</span>
+                        <span>暗色模式</span>
                     </li>
                 
             </ol>
@@ -257,7 +257,7 @@
 
 
         </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
+        <h2 class="widget-title section-title">目录</h2>
         
         <div class="widget--toc">
             <nav id="TableOfContents">
@@ -388,7 +388,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Feb 02, 5052</time>
+                <time class="article-time--published">Feb 02,2021</time>
             </div>
         
 
@@ -403,7 +403,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    阅读时长: 18 分钟
                 </time>
             </div>
         
@@ -707,7 +707,7 @@ PoC 共识（概念性证明）、PoE 共识（存在性证明）。</p>
     
 
 <aside class="related-content--wrapper">
-    <h2 class="section-title">Related content</h2>
+    <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
             
@@ -831,14 +831,14 @@ PoC 共识（概念性证明）、PoE 共识（存在性证明）。</p>
     <section class="copyright">
         &copy; 
         
-            2021 - 
+            2020 - 
         
         2025 超级阵雨工作室
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Java调优 on Charles.Zhao</title>
+        <title>Java调优 on 超级阵雨</title>
         <link>https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/</link>
-        <description>Recent content in Java调优 on Charles.Zhao</description>
+        <description>Recent content in Java调优 on 超级阵雨</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>zh-cn</language>
         <copyright>超级阵雨工作室</copyright>
         <lastBuildDate>Wed, 03 Mar 2021 12:06:28 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/tags/java%E8%B0%83%E4%BC%98/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Java性能调优5</title>

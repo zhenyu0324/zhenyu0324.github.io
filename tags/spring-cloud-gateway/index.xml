@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Spring-Cloud-Gateway on Charles.Zhao</title>
+        <title>Spring-Cloud-Gateway on 超级阵雨</title>
         <link>https://zhenyu0324.github.io/tags/spring-cloud-gateway/</link>
-        <description>Recent content in Spring-Cloud-Gateway on Charles.Zhao</description>
+        <description>Recent content in Spring-Cloud-Gateway on 超级阵雨</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>zh-cn</language>
         <copyright>超级阵雨工作室</copyright>
         <lastBuildDate>Sat, 13 Aug 2022 10:59:54 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/tags/spring-cloud-gateway/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>浅谈网关及其应用-上</title>
