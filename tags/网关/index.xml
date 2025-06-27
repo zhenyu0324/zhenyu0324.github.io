@@ -1,20 +1,663 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>网关 on 超级阵雨的乌托邦星球</title>
-    <link>https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/</link>
-    <description>Recent content in 网关 on 超级阵雨的乌托邦星球</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Sat, 13 Aug 2022 10:59:54 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>浅谈网关及其应用-上</title>
-      <link>https://zhenyu0324.github.io/post/spring_cloud_gateway_01/</link>
-      <pubDate>Sat, 13 Aug 2022 10:59:54 +0800</pubDate>
-      
-      <guid>https://zhenyu0324.github.io/post/spring_cloud_gateway_01/</guid>
-      <description>网关概述 什么是网关 网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>网关 on Charles.Zhao</title>
+        <link>https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/</link>
+        <description>Recent content in 网关 on Charles.Zhao</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>超级阵雨工作室</copyright>
+        <lastBuildDate>Sat, 13 Aug 2022 10:59:54 +0800</lastBuildDate><atom:link href="https://zhenyu0324.github.io/tags/%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>浅谈网关及其应用-上</title>
+        <link>https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/</link>
+        <pubDate>Sat, 13 Aug 2022 10:59:54 +0800</pubDate>
+        
+        <guid>https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/</guid>
+        <description>&lt;h1 id=&#34;网关概述&#34;&gt;网关概述
+&lt;/h1&gt;&lt;h2 id=&#34;什么是网关&#34;&gt;什么是网关
+&lt;/h2&gt;&lt;p&gt;网关（Gateway）这个词我们应该都很熟悉了，它在计算机科学中，尤其是计算机网络中十分常见，主要是用来表示位于内部区域边缘，与外界进行交互的某个物理或逻辑设备，比如你家里的路由器就属于家庭内网与互联网之间的网关。&lt;/p&gt;
+&lt;p&gt;在实际使用中，通常把网关分为两类：流量网关与业务网关。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;流量网关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;流量网关,顾名思义就是控制流量进入集群的网关,有很多工作需要在这一步做,对于一个服务集群,势必有很多非法的请求或者无效的请求,这时候要将请求拒之门外,降低集群的流量压力。&lt;/p&gt;
+&lt;p&gt;定义全局性的、跟具体的后端业务应用和服务完全无关的策略网关就是上图所示的架构模型——流量网关。流量网关通常只专注于全局的Api管理策略，比如全局流量监控、日志记录、全局限流、黑白名单控制、接入请求到业务系统的负载均衡等，有点类似防火墙。Kong 就是典型的流量网关。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;业务网关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当一个单体应用被拆分成许许多多的微服务应用后，也带来了一些问题。一些与业务非强相关的功能，比如权限控制、日志输出、数据加密、熔断限流等，每个微服务应用都需要，因此存在着大量重复的代码实现。而且由于系统的迭代、人员的更替，各个微服务中这些功能的实现细节出现了较大的差异，导致维护成本变高。另一方面，原先单体应用下非常容易做的接口管理，在服务拆分后没有了一个集中管理的地方，无法统计已存在哪些接口、接口定义是什么、运行状态如何。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;网关就是为了解决上述问题。作为微服务体系中的核心基础设施，一般需要具备接口管理、协议适配、熔断限流、安全防护等功能，各种开源的网关产品（比如 zuul）都提供了优秀高可扩展性的架构、可以很方便的实现我们需要的一些功能、比如鉴权、日志监控、熔断限流等。&lt;/p&gt;
+&lt;p&gt;与流量网关相对应的就是业务网关,业务网关更靠近我们的业务,也就是与服务器应用层打交道,那么有很多应用层需要考虑的事情就可以依托业务网关,例如在线程模型、协议适配、熔断限流，服务编排等。&lt;/p&gt;
+&lt;p&gt;目前业务网关比较成熟的 API 网关框架产品有三个 分别是:Zuul1、Zuul2 和 SpringCloud Gateway&lt;/p&gt;
+&lt;p&gt;我们可以通过下图来加深对二者的认知。
+&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/01.jpeg&#34;
+	width=&#34;640&#34;
+	height=&#34;333&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/01_hu_1d3f5ef0b2341b4c.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/01_hu_2a473a65a850bce7.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;192&#34;
+		data-flex-basis=&#34;461px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这张图展示了一个多层 Gateway 架构，其中有一个总的 Gateway 接入所有的流量(流量网关)，并分发给不同的子系统，还有第二级 Gateway 用于做各个子系统的接入 Gateway(业务网关)。可以看到，网关所管理的服务力度可粗可细。通过网关，我们可以把分布式架构组织成一个星型架构，由网络对服务的请求进行路由和分发。&lt;/p&gt;
+&lt;p&gt;有时候我们也会模糊流量网关和业务网关，让一个网关承担所有的工作,所以这两者之间并没有严格的界线。&lt;/p&gt;
+&lt;h2 id=&#34;业务网关概述&#34;&gt;业务网关概述
+&lt;/h2&gt;&lt;h3 id=&#34;什么是业务网关&#34;&gt;什么是业务网关
+&lt;/h3&gt;&lt;p&gt;网关的角色是作为一个 API 架构，用来&lt;strong&gt;保护、增强和控制&lt;/strong&gt;对于 API 服务的访问。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;API 网关是一个处于应用程序或服务（提供 REST API 接口服务）之前的系统，用来管理授权、访问控制和流量限制等，这样 REST API 接口服务就被 API 网关保护起来，对所有的调用者透明。因此，隐藏在 业务网关后面的业务系统就可以专注于创建和管理服务，而不用去处理这些策略性的基础设施。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通俗的说业务网关中就是做一些通用的基础设施功能。类似AOP中的横切关注点概念，把业务系统中涉及的一些通用功能（日志分析、鉴权、路由等）抽取到业务网关中统一管理。业务 网关不是一个典型的业务系统， 而是一个为了让业务系统更专注与业务服务本身，给API服务提供更多附加能力的一个中间层。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;为什么需要业务网关&#34;&gt;为什么需要业务网关
+&lt;/h3&gt;&lt;p&gt;在微服务架构中，服务的粒度被进一步细分，各个业务服务可以被独立的设计、开发、测试、部署和管理。各个独立部署单元可以用不同的开发测试团队维护，可以使用不同的编程语言和技术平台进行设计，这就要求必须使用一种语言和平台无关的服务协议作为各个单元间的通讯方式。&lt;/p&gt;
+&lt;p&gt;业务网关作为分散在各个业务系统微服务的 API 聚合点和统一接入点，外部请求通过访问这个接入点，即可访问内部所有的 REST API 服务。&lt;/p&gt;
+&lt;h3 id=&#34;业务网关的职能&#34;&gt;业务网关的职能
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;请求接入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;作为所有 API 接口服务请求的接入点，管理所有的接入请求&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;业务聚合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;作为所有后端业务服务的聚合点，所有的业务服务都可以在这里被调用&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中介策略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实现安全、验证、路由、过滤、流控，缓存等策略，进行一些必要的中介处理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;提供配置管理工具，对所有 API 服务的调用生命周期和相应的中介策略进行统一管理。&lt;/p&gt;
+&lt;h2 id=&#34;开源网关介绍&#34;&gt;开源网关介绍
+&lt;/h2&gt;&lt;p&gt;目前常见的开源网关大致上按照语言分类有如下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nginx+lua&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Open Resty、Kong、Orange、Abtesting gateway&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Janus、fagongzi、Grpc-gateway&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Java&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Zuul/Zuul2、Spring Cloud Gateway、Kaazing KWG、gravitee、Dromara soul 等&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NodeJS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Express Gateway、Micro Gateway&lt;/p&gt;
+&lt;p&gt;按照使用数量、成熟度等来划分，主流的有 4 个：&lt;/p&gt;
+&lt;p&gt;OpenResty 、Kong、 Zuul/Zuul2、 Spring Cloud Gateway&lt;/p&gt;
+&lt;h3 id=&#34;zuulzuul2&#34;&gt;Zuul/Zuul2
+&lt;/h3&gt;&lt;p&gt;项目地址：github.com/Netflix/zuul&lt;/p&gt;
+&lt;p&gt;Zuul 是 Netflix 开源的 API 网关系统，它的主要设计目标是动态路由、监控、弹性和安全。&lt;/p&gt;
+&lt;p&gt;Zuul 的内部原理可以简单看做是很多不同功能 filter 的集合。Zuul 1.x 基于同步 IO，也是 Spring Cloud 全家桶的一部分，可以方便的配合 Spring Boot/Spring Cloud 配置和使用。&lt;/p&gt;
+&lt;h3 id=&#34;spring-cloud-gateway&#34;&gt;Spring Cloud Gateway
+&lt;/h3&gt;&lt;p&gt;项目地址：
+github.com/spring-cloud/spring-cloud-gateway/&lt;/p&gt;
+&lt;p&gt;Spring Cloud Gateway 基于 Java 8、Spring 5.0、Spring Boot 2.0、Project Reactor，发展的比 Zuul 2 要早，目前也是 Spring Cloud 全家桶的一部分。&lt;/p&gt;
+&lt;p&gt;Spring Cloud Gateway 可以看做是一个 Zuul 1.x 的升级版和代替品，比 Zuul 2 更早的使用 Netty 实现异步 IO，从而实现了一个简单、比 Zuul 1.x 更高效的、与 Spring Cloud 紧密配合的 API 网关。&lt;/p&gt;
+&lt;p&gt;Spring cloud Gateway 的几个核心概念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;路由&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;网关最基础的部分，路由信息由一个ID、一个目的URL、一组断言和一组Filter组成。当断言为真，则说明请求的URL和配置匹配。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;断言&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;作为路由的匹配条件&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;过滤器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;过滤器Fliter 会对请求和响应进行修改处理&lt;/p&gt;
+&lt;h2 id=&#34;spring-cloud-gateway-介绍及使用案例&#34;&gt;Spring Cloud Gateway 介绍及使用案例
+&lt;/h2&gt;&lt;h3 id=&#34;spring-cloud-gateway-1&#34;&gt;Spring Cloud Gateway
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Spring Cloud Gateway 是由 WebFlux + Netty + Reactor 实现的响应式的 API 网关。&lt;/li&gt;
+&lt;li&gt;Spring Cloud Gateway 不能在传统的 servlet 容器中工作，也不能构建成 war 包！&lt;/li&gt;
+&lt;li&gt;Spring Cloud Gateway 为微服务架构提供一种简单且有效的 API 路由的管理方式，并基于 Filter 的方式提供网关的基本功能，例如说安全认证、监控、限流等等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意：Spring Cloud Gateway会和spring-webmvc的依赖冲突，需要排除spring-webmvc&lt;/p&gt;
+&lt;h3 id=&#34;spring-cloud-gateway核心概念&#34;&gt;Spring Cloud Gateway核心概念
+&lt;/h3&gt;&lt;h4 id=&#34;路由route&#34;&gt;路由（route)
+&lt;/h4&gt;&lt;p&gt;路由是网关中最基础的部分，路由信息包括一个ID、一个目的URI、一组断言工厂、一组Filter组成。如果断言为真，则说明请求的URL和配置的路由匹配。&lt;/p&gt;
+&lt;h4 id=&#34;断言predicates&#34;&gt;断言(predicates)
+&lt;/h4&gt;&lt;p&gt;Java8中的断言函数，SpringCloud Gateway中的断言函数类型是Spring5.0框架中的ServerWebExchange。断言函数允许开发者去定义匹配Http request中的任何信息，比如请求头和参数等。&lt;/p&gt;
+&lt;h4 id=&#34;过滤器filter&#34;&gt;过滤器（Filter)
+&lt;/h4&gt;&lt;p&gt;SpringCloud Gateway中的filter分为Gateway FilIer和Global Filter。Filter可以对请求和响应进行处理。&lt;/p&gt;
+&lt;h3 id=&#34;spring-cloud-gateway如何工作&#34;&gt;Spring Cloud Gateway如何工作
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/02.jpeg&#34;
+	width=&#34;924&#34;
+	height=&#34;1264&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/02_hu_563e81a1b27f0676.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/02_hu_bbc8cdc97470dc1a.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;73&#34;
+		data-flex-basis=&#34;175px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;使用案例介绍&#34;&gt;使用案例介绍
+&lt;/h3&gt;&lt;p&gt;我们在本地模拟一个简单的网关使用场景：通过网关查询 微服务【订单服务】的一个接口。业务架构大致如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/03.jpeg&#34;
+	width=&#34;1292&#34;
+	height=&#34;754&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/03_hu_b4445d50763fd4aa.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/03_hu_34a5ae6214302ffd.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;171&#34;
+		data-flex-basis=&#34;411px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;需要部署三个服务在本地，分别是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;eureka负载均衡器[eureka]&lt;/li&gt;
+&lt;li&gt;网关[gateway]&lt;/li&gt;
+&lt;li&gt;微服务[zhenyu-order]&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;序号&lt;/th&gt;
+          &lt;th&gt;服务名称&lt;/th&gt;
+          &lt;th&gt;端口号&lt;/th&gt;
+          &lt;th&gt;备注&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;1&lt;/td&gt;
+          &lt;td&gt;eurka-server&lt;/td&gt;
+          &lt;td&gt;8761&lt;/td&gt;
+          &lt;td&gt;eureka服务&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;2&lt;/td&gt;
+          &lt;td&gt;service-gateway&lt;/td&gt;
+          &lt;td&gt;80&lt;/td&gt;
+          &lt;td&gt;网关服务&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;3&lt;/td&gt;
+          &lt;td&gt;zhenyu-order&lt;/td&gt;
+          &lt;td&gt;8081&lt;/td&gt;
+          &lt;td&gt;微服务-订单&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;首先，我们搭建一个Eureka 服务，作为服务注册与发现的负载均衡器。
+其次，分别在本地启动网关服务于微服务应用，启动完毕后，可以在eureka页面发现当前应用如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/04.jpeg&#34;
+	width=&#34;2788&#34;
+	height=&#34;1226&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/04_hu_4c23aa216537b4dd.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/04_hu_8861cf6cc276df12.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;227&#34;
+		data-flex-basis=&#34;545px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;网关的配置路由规则如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; routes:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        - id: zhenyu-order
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          uri: lb://zhenyu-order
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          predicates:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            - Path=/zhenyu-order/hello
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          filters:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            - StripPrefix=1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;在微服务【zhenyu-order】应用中，增加一个接口，实现如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;@GetMapping(&amp;#34;/queryOrder&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    public String queryOrder(@RequestParam String orderNo) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return &amp;#34;hello, 当前订单号：&amp;#34; + orderNo;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;重新部署服务后，访问网关地址：
+&lt;code&gt;http://localhost/zhenyu-order/queryOrder?orderNo=ABC&lt;/code&gt;
+访问结果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/05.jpeg&#34;
+	width=&#34;2210&#34;
+	height=&#34;358&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/05_hu_8d7d5b53e022df1e.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/05_hu_c163610868470d32.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;617&#34;
+		data-flex-basis=&#34;1481px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;spring-cloud-gateway-窥探技术原理&#34;&gt;Spring Cloud Gateway 窥探技术原理
+&lt;/h2&gt;&lt;h3 id=&#34;路由&#34;&gt;路由
+&lt;/h3&gt;&lt;p&gt;在上面的示例中，我们看到一组路由有以下几个组成部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ID、目标URI&lt;/li&gt;
+&lt;li&gt;一系列的断言【Predicate】&lt;/li&gt;
+&lt;li&gt;过滤器【Filters】&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/06.jpeg&#34;
+	width=&#34;1249&#34;
+	height=&#34;588&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/06_hu_fe1aa56617077bdc.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/06_hu_962d6f1dbed28129.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;509px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;web 请求，通过一些匹配条件，定位到真正的服务节点，并在这个转发过程的前后，进行一些精细化控制&lt;/p&gt;
+&lt;p&gt;predicate 就是我们的匹配条件&lt;/p&gt;
+&lt;p&gt;filter：就可以理解为一个无所不能的拦截器，有了这两个元素，再加上目标的uri，就可以实现一个具体的路由了。&lt;/p&gt;
+&lt;h4 id=&#34;predicate-断言条件转发规则介绍&#34;&gt;Predicate 断言条件(转发规则)介绍
+&lt;/h4&gt;&lt;p&gt;Predicate 来源于 Java 8，是 Java 8 中引入的一个函数，Predicate 接受一个输入参数，返回一个布尔值结果。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）。可以用于接口请求参数校验、判断新老数据是否有变化需要进行更新操作。&lt;/p&gt;
+&lt;p&gt;在 Spring Cloud Gateway 中 Spring 利用 Predicate 的特性实现了各种路由匹配规则，有通过 Header、请求参数等不同的条件来进行作为条件匹配到对应的路由。网上有一张图总结了 Spring Cloud 内置的几种 Predicate 的实现。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/07.jpeg&#34;
+	width=&#34;692&#34;
+	height=&#34;361&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/07_hu_58a6e0785015eb5e.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/07_hu_ea85898cc15342.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;191&#34;
+		data-flex-basis=&#34;460px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;从官方文档来看，Spring Cloud GateWay 内置了11种断言方式，具体可见下方链接。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.spring.io/spring-cloud-gateway/docs/3.0.1/reference/html/#gateway-request-predicates-factories&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;spring-cloud-gateway 官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/08.jpeg&#34;
+	width=&#34;2772&#34;
+	height=&#34;1366&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/08_hu_240c6e6fd16f2f93.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/08_hu_787ab688897d0be4.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;202&#34;
+		data-flex-basis=&#34;487px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们从中选取几种作为示例&lt;/p&gt;
+&lt;h5 id=&#34;通过请求参数匹配&#34;&gt;通过请求参数匹配
+&lt;/h5&gt;&lt;p&gt;配置如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;spring:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  cloud:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    gateway:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      routes:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        - id: query_route
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          predicates:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            - Query=foo, ba.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          uri: http://www.csdn.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;验证结果如图所示
+&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/09.jpeg&#34;
+	width=&#34;1452&#34;
+	height=&#34;1400&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/09_hu_a9377221300f06f9.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/09_hu_3953c9e606af7718.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;103&#34;
+		data-flex-basis=&#34;248px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;通过请求路径匹配匹配&#34;&gt;通过请求路径匹配匹配
+&lt;/h5&gt;&lt;p&gt;配置如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;spring:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  cloud:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    gateway:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      routes:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        - id: baidu
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          predicates:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            - Path=/baidu
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          uri: http://www.baidu.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;验证结果如图所示&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/10.jpeg&#34;
+	width=&#34;1462&#34;
+	height=&#34;1298&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/10_hu_e03657f32caf90fa.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/10_hu_293d671acc962732.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;112&#34;
+		data-flex-basis=&#34;270px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;过滤器-globalfilter-vs-gatewayfilter&#34;&gt;过滤器 GlobalFilter vs GatewayFilter
+&lt;/h4&gt;&lt;p&gt;在Spring Cloud Gateway 网关中，大量的使用Fliters，主要做一些过滤、拦截、校验、转发、日志等工作。&lt;/p&gt;
+&lt;p&gt;Global Filters：全局过滤器，不需要配置路由，系统初始化作用到所有路由上。&lt;/p&gt;
+&lt;p&gt;GatewayFilter：需要配置某个路由，才能过滤。如果需要使用全局路由，需要配置Default Filters。&lt;/p&gt;
+&lt;h5 id=&#34;globalfilter&#34;&gt;GlobalFilter
+&lt;/h5&gt;&lt;p&gt;GlobalFilter 接口和 GatewayFilter 有一样的接口定义，只不过， GlobalFilter 会作用于所有路由。&lt;/p&gt;
+&lt;p&gt;官方定义的GlobalFilter接口如图所示，只需要去实现fliter方法即可。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/11.jpeg&#34;
+	width=&#34;1906&#34;
+	height=&#34;844&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/11_hu_5cd110fb32fe5e62.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/11_hu_1979f8c6a274b8c1.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;225&#34;
+		data-flex-basis=&#34;541px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;单独定义只需要实现GlobalFilter, Ordered这两个接口就可以了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;public class CustomFilter implements GlobalFilter, Ordered {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @Override
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    public Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        ServerHttpRequest request = exchange.getRequest();
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        System.out.println(&amp;#34;当前访问url:&amp;#34; + request.getURI().getPath());
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return chain.filter(exchange);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @Override
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    public int getOrder() {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;查看运行效果如下：
+&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/12.jpeg&#34;
+	width=&#34;2552&#34;
+	height=&#34;444&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/12_hu_892db83536f9c31c.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/12_hu_ee6aee4868b8bbee.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;574&#34;
+		data-flex-basis=&#34;1379px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;gatewayfilter&#34;&gt;GatewayFilter
+&lt;/h5&gt;&lt;p&gt;不同于GlobalFilter，GatewayFilter更像是局部过滤器，Spring定义了31种实现，详情可见官方文档&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.spring.io/spring-cloud-gateway/docs/3.0.1/reference/html/#gatewayfilter-factories&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;spring-cloud-gateway 官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;官方定义的GatewayFilter接口如图所示，只需要去实现fliter方法即可。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/13.jpeg&#34;
+	width=&#34;2680&#34;
+	height=&#34;910&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/13_hu_f103df7258155b17.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/13_hu_c3f00eb70e9cdf8a.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;294&#34;
+		data-flex-basis=&#34;706px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们选取一个常用的 The StripPrefix GatewayFilter 作为示例，配置文件如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;spring:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  cloud:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    gateway:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      routes:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      - id: nameRoot
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        uri: https://nameservice
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        predicates:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        - Path=/name/**
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        filters:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        - StripPrefix=2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;当形如/name/blue/red的url的请求访问网关的时候，网关访问微服务的请求url 如：nameservice/red，这种过滤器常用来根据url来区分微服务，以求把正确的请求路由到对应的微服务，保障请求可用。&lt;/p&gt;
+&lt;h3 id=&#34;spring-cloud-gateway限流&#34;&gt;Spring Cloud Gateway限流
+&lt;/h3&gt;&lt;h4 id=&#34;常见的限流处理方式&#34;&gt;常见的限流处理方式
+&lt;/h4&gt;&lt;p&gt;在系统中设计限流方案时，有一个问题值得设计者去仔细考虑，当请求者被限流规则拦截之后，我们该如何返回结果。一般我们有下面三种限流的处理方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;拒绝服务&lt;/li&gt;
+&lt;li&gt;排队等待&lt;/li&gt;
+&lt;li&gt;服务降级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最简单的做法是拒绝服务，直接抛出异常，返回错误信息（比如返回 HTTP 状态码 429 Too Many Requests），或者给前端返回 302 重定向到一个错误页面，提示用户资源没有了或稍后再试。但是对于一些比较重要的接口不能直接拒绝，比如秒杀、下单等接口，我们既不希望用户请求太快，也不希望请求失败，这种情况一般会将请求放到一个消息队列中排队等待，消息队列可以起到削峰和限流的作用。第三种处理方式是服务降级，当触发限流条件时，直接返回兜底数据，比如查询商品库存的接口，可以默认返回有货。&lt;/p&gt;
+&lt;p&gt;网关作为整个分布式系统的入口，承担了所有的用户请求，所以在网关中进行限流是最合适不过的。网关层限流有时也被称为 接入层限流。&lt;/p&gt;
+&lt;h4 id=&#34;常见的限流算法&#34;&gt;常见的限流算法
+&lt;/h4&gt;&lt;h5 id=&#34;固定窗口算法fixed-window&#34;&gt;固定窗口算法（Fixed Window）
+&lt;/h5&gt;&lt;p&gt;固定窗口算法又叫计数器算法，是一种简单方便的限流算法。主要通过一个支持原子操作的计数器来累计 1 秒内的请求次数，当 1 秒内计数达到限流阈值时触发拒绝策略。每过 1 秒，计数器重置为 0 开始重新计数。&lt;/p&gt;
+&lt;p&gt;但是此算法存在一个缺陷：&lt;/p&gt;
+&lt;p&gt;假设设置限流为每秒2个访问2次，但是当遇到时间窗口的临界突变时，如 1s 中的后 500 ms 和第 2s 的前 500ms 时，虽然是加起来是 1s 时间，却可以被请求 4 次。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/14.jpeg&#34;
+	width=&#34;1080&#34;
+	height=&#34;305&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/14_hu_7d73a2cb2329938a.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/14_hu_c74cd35dba890cbb.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;354&#34;
+		data-flex-basis=&#34;849px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;滑动窗口算法rolling-window-或-sliding-window&#34;&gt;滑动窗口算法（Rolling Window 或 Sliding Window）
+&lt;/h5&gt;&lt;p&gt;我们已经知道固定窗口算法的实现方式以及它所存在的问题，而滑动窗口算法是对固定窗口算法的改进。既然固定窗口算法在遇到时间窗口的临界突变时会有问题，那么我们在遇到下一个时间窗口前也调整时间窗口不就可以了吗？&lt;/p&gt;
+&lt;p&gt;下面是滑动窗口的示意图。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/15.jpeg&#34;
+	width=&#34;1080&#34;
+	height=&#34;357&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/15_hu_31d90941fd48a5c8.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/15_hu_affba9b0515c3ab9.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;302&#34;
+		data-flex-basis=&#34;726px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;但是，只要有时间窗口的存在，还是有可能发生时间窗口的临界突变问题。&lt;/p&gt;
+&lt;h5 id=&#34;漏桶算法leaky-bucket&#34;&gt;漏桶算法（Leaky Bucket）
+&lt;/h5&gt;&lt;p&gt;漏桶算法中的漏桶是一个形象的比喻，这里可以用生产者消费者模式进行说明，请求是一个生产者，每一个请求都如一滴水，请求到来后放到一个队列（漏桶）中，而桶底有一个孔，不断的漏出水滴，就如消费者不断的在消费队列中的内容，消费的速率（漏出的速度）等于限流阈值。即假如 QPS  为 2，则每 1s / 2= 500ms 消费一次。漏桶的桶有大小，就如队列的容量，当请求堆积超过指定容量时，会触发拒绝策略。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/16.jpeg&#34;
+	width=&#34;1080&#34;
+	height=&#34;677&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/16_hu_9008019a3f71b48.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/16_hu_80bade4726cf8bc2.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;159&#34;
+		data-flex-basis=&#34;382px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;令牌桶算法token-bucket&#34;&gt;令牌桶算法（Token Bucket）
+&lt;/h5&gt;&lt;p&gt;令牌桶算法同样是实现限流是一种常见的思路，最为常用的 Google 的 Java 开发工具包 Guava 中的限流工具类 RateLimiter 就是令牌桶的一个实现。令牌桶的实现思路类似于生产者和消费之间的关系。&lt;/p&gt;
+&lt;p&gt;系统服务作为生产者，按照指定频率向桶（容器）中添加令牌，如 QPS 为 2，每 500ms 向桶中添加一个令牌，如果桶中令牌数量达到阈值，则不再添加。&lt;/p&gt;
+&lt;p&gt;请求执行作为消费者，每个请求都需要去桶中拿取一个令牌，取到令牌则继续执行；如果桶中无令牌可取，就触发拒绝策略，可以是超时等待，也可以是直接拒绝本次请求，由此达到限流目的。&lt;/p&gt;
+&lt;p&gt;下面是令牌桶限流算法示意图。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/17.jpeg&#34;
+	width=&#34;1080&#34;
+	height=&#34;463&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/17_hu_4ce39928360a155f.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/17_hu_be0dcb29b03dc76d.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;233&#34;
+		data-flex-basis=&#34;559px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;spring-cloud-gateway-限流实现方式&#34;&gt;Spring Cloud Gateway 限流实现方式
+&lt;/h4&gt;&lt;h5 id=&#34;官方实现的限流过滤器&#34;&gt;官方实现的限流过滤器
+&lt;/h5&gt;&lt;p&gt;spring cloud gateway里面也提供了一个自实现的限流过滤器&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;通过 RequestRateLimiterGatewayFilterFactory ，可以创建一个GatewayFilter的匿名内部类实例，它的内部使用Redis实现限流。限流规则由KeyResolver接口的具体实现类来决定，比如通过IP、url等来进行限流。
+参考官方文档示例&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/18.jpeg&#34;
+	width=&#34;1828&#34;
+	height=&#34;1478&#34;
+	srcset=&#34;https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/18_hu_10961ded4d6dd8e2.jpeg 480w, https://zhenyu0324.github.io/p/%E6%B5%85%E8%B0%88%E7%BD%91%E5%85%B3%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E4%B8%8A/18_hu_563b73797889721f.jpeg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;123&#34;
+		data-flex-basis=&#34;296px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;自定义限流过滤器&#34;&gt;自定义限流过滤器
+&lt;/h5&gt;&lt;p&gt;基于GlobalFilter，可以很容易的编写一个全局过滤器来进行限流&lt;/p&gt;
+&lt;p&gt;现提供一个基于 Guava的 RateLimiter实现的自定义限流过滤器&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;public class MyIpLimitFilter2 implements GlobalFilter, Ordered {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    private static final Cache&amp;lt;String, RateLimiter&amp;gt; RATE_LIMITER_CACHE = CacheBuilder
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            .newBuilder()
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            .maximumSize(2)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            .expireAfterAccess(10, TimeUnit.SECONDS)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            .build();
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    private static final double DEFAULT_PERMITS_PER_SECOND = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @SneakyThrows
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @Override
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    public Mono&amp;lt;Void&amp;gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        log.info(&amp;#34;MyIpLimitFilter2 $ filter start. &amp;#34;);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        String remoteAddr = Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getAddress().getHostAddress();
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        RateLimiter rateLimiter = RATE_LIMITER_CACHE.get(remoteAddr, () -&amp;gt; RateLimiter.create(DEFAULT_PERMITS_PER_SECOND));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        if (rateLimiter.tryAcquire()) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            return chain.filter(exchange);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        log.info(&amp;#34;MyIpLimitFilter2 $ filter  本次请求限流.url: {}&amp;#34;,exchange.getRequest().getURI().getRawPath());
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        ServerHttpResponse response = exchange.getResponse();
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        response.setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        response.getHeaders().add(&amp;#34;Content-Type&amp;#34;, &amp;#34;application/json;charset=UTF-8&amp;#34;);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        DataBuffer dataBuffer = response.bufferFactory().wrap(&amp;#34;Too Many Request!!!&amp;#34;.getBytes(StandardCharsets.UTF_8));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return response.writeWith(Mono.just(dataBuffer));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    @Override
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    public int getOrder() {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return 2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

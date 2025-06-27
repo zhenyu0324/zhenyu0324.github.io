@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="2.11 比特股BTS 没有开放式智能合约的区块链项目——比特股\n比特股发布于 2014 年，虽然没有引入智能合约的概念，但它提供了功能极为丰富的金融类工具，比特股上所有的金融合约都是事先在代码里写好的，所以说它的本身就是一个超级智能合约集合。\n2.11.1 什么是比特股 比特股是一个公开透明的、7*24 小时不间断运行的、基于区块链技术的去中心化交易平台。\n它兼具了区块链的优点，也是第一个有关稳定数字货币的尝试，目前比特股提供了若干核心的金融服务，例如支付、撮合交易、资产存托等服务。\n\b相较于传统的金融 IT 系统，它的服务器是由分散在世界各地的受托人（Delegated）维护的，即使其中一些人被攻击也不会导致整个系统的宕机。\n比特股目前全网在线的服务器有 27 个，由于 DPoS 共识算法提供了较好的交易吞吐性能，理论上比特股的 TPS 可达 10 万，这也是比特股在技术上区别于其他区块链的最显著特征。比特股较好的 TPS 其实也是为了它的功能服务的。\n2.11.2 比特股的两个机制 那么比特股是如何设计中心化交易所来避免上述风险的呢？\n比特股作为一个去中心化的交易所，它有两个机制可以避免上述的风险。\n第一、资金出入是由承兑商来支持的，人人都可以成为承兑商，也就是人人承兑；\n第二、锚定机制提供了稳定货币的出入金过程，锚定机制也保证了比特股的出入资金和交易撮合是分离的，避免了中心化交易平台的弊端。\n2.11.2.1 人人承兑 人人承兑就是提供了从法币到系统内置货币的转换，比特股系统内置了多种货币，它锚定了多数法币。\n例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。而人人承兑货币其实就是提供了 bitCNY 和\b真正人民币之间的相互转换。\n它的机制上\b有点类似那个比特币的场外交易。所谓场外交易，就是没有中心化撮合中介，交易双方自行议价成交。\n2.11.2.2 锚定机制 锚定机制是一种去中心化的抵押机制。我们刚才提到了比特股系统内置了多种货币，它锚定了多数法币，例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。\n系统内置货币的发行商是系统自身，发行给抵押了 bts 的用户，发行的数量是由抵押的代币数量决定的。你用 bts 抵押，然后换取 bitCNY。\n换句话说，任何持有 bts 的人可以用它来抵押生产系统的内置货币，例如 bitCNY，它的抵押规则要求两倍\b价值的 bts 进行抵押，由于有 2 倍价值的 bts 作为保障，所以定义 1 bitCNY = 1 元人民币的风险较低。\n">
+<title>区块链学习--4技术下</title>
+
+<link rel='canonical' href='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--4%E6%8A%80%E6%9C%AF%E4%B8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="区块链学习--4技术下">
+<meta property='og:description' content="2.11 比特股BTS 没有开放式智能合约的区块链项目——比特股\n比特股发布于 2014 年，虽然没有引入智能合约的概念，但它提供了功能极为丰富的金融类工具，比特股上所有的金融合约都是事先在代码里写好的，所以说它的本身就是一个超级智能合约集合。\n2.11.1 什么是比特股 比特股是一个公开透明的、7*24 小时不间断运行的、基于区块链技术的去中心化交易平台。\n它兼具了区块链的优点，也是第一个有关稳定数字货币的尝试，目前比特股提供了若干核心的金融服务，例如支付、撮合交易、资产存托等服务。\n\b相较于传统的金融 IT 系统，它的服务器是由分散在世界各地的受托人（Delegated）维护的，即使其中一些人被攻击也不会导致整个系统的宕机。\n比特股目前全网在线的服务器有 27 个，由于 DPoS 共识算法提供了较好的交易吞吐性能，理论上比特股的 TPS 可达 10 万，这也是比特股在技术上区别于其他区块链的最显著特征。比特股较好的 TPS 其实也是为了它的功能服务的。\n2.11.2 比特股的两个机制 那么比特股是如何设计中心化交易所来避免上述风险的呢？\n比特股作为一个去中心化的交易所，它有两个机制可以避免上述的风险。\n第一、资金出入是由承兑商来支持的，人人都可以成为承兑商，也就是人人承兑；\n第二、锚定机制提供了稳定货币的出入金过程，锚定机制也保证了比特股的出入资金和交易撮合是分离的，避免了中心化交易平台的弊端。\n2.11.2.1 人人承兑 人人承兑就是提供了从法币到系统内置货币的转换，比特股系统内置了多种货币，它锚定了多数法币。\n例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。而人人承兑货币其实就是提供了 bitCNY 和\b真正人民币之间的相互转换。\n它的机制上\b有点类似那个比特币的场外交易。所谓场外交易，就是没有中心化撮合中介，交易双方自行议价成交。\n2.11.2.2 锚定机制 锚定机制是一种去中心化的抵押机制。我们刚才提到了比特股系统内置了多种货币，它锚定了多数法币，例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。\n系统内置货币的发行商是系统自身，发行给抵押了 bts 的用户，发行的数量是由抵押的代币数量决定的。你用 bts 抵押，然后换取 bitCNY。\n换句话说，任何持有 bts 的人可以用它来抵押生产系统的内置货币，例如 bitCNY，它的抵押规则要求两倍\b价值的 bts 进行抵押，由于有 2 倍价值的 bts 作为保障，所以定义 1 bitCNY = 1 元人民币的风险较低。\n">
+<meta property='og:url' content='https://zhenyu0324.github.io/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--4%E6%8A%80%E6%9C%AF%E4%B8%8B/'>
+<meta property='og:site_name' content='Charles.Zhao'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='区块链' /><meta property='article:published_time' content='2021-02-07T16:05:48&#43;08:00'/><meta property='article:modified_time' content='2021-02-07T16:05:48&#43;08:00'/>
+<meta name="twitter:title" content="区块链学习--4技术下">
+<meta name="twitter:description" content="2.11 比特股BTS 没有开放式智能合约的区块链项目——比特股\n比特股发布于 2014 年，虽然没有引入智能合约的概念，但它提供了功能极为丰富的金融类工具，比特股上所有的金融合约都是事先在代码里写好的，所以说它的本身就是一个超级智能合约集合。\n2.11.1 什么是比特股 比特股是一个公开透明的、7*24 小时不间断运行的、基于区块链技术的去中心化交易平台。\n它兼具了区块链的优点，也是第一个有关稳定数字货币的尝试，目前比特股提供了若干核心的金融服务，例如支付、撮合交易、资产存托等服务。\n\b相较于传统的金融 IT 系统，它的服务器是由分散在世界各地的受托人（Delegated）维护的，即使其中一些人被攻击也不会导致整个系统的宕机。\n比特股目前全网在线的服务器有 27 个，由于 DPoS 共识算法提供了较好的交易吞吐性能，理论上比特股的 TPS 可达 10 万，这也是比特股在技术上区别于其他区块链的最显著特征。比特股较好的 TPS 其实也是为了它的功能服务的。\n2.11.2 比特股的两个机制 那么比特股是如何设计中心化交易所来避免上述风险的呢？\n比特股作为一个去中心化的交易所，它有两个机制可以避免上述的风险。\n第一、资金出入是由承兑商来支持的，人人都可以成为承兑商，也就是人人承兑；\n第二、锚定机制提供了稳定货币的出入金过程，锚定机制也保证了比特股的出入资金和交易撮合是分离的，避免了中心化交易平台的弊端。\n2.11.2.1 人人承兑 人人承兑就是提供了从法币到系统内置货币的转换，比特股系统内置了多种货币，它锚定了多数法币。\n例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。而人人承兑货币其实就是提供了 bitCNY 和\b真正人民币之间的相互转换。\n它的机制上\b有点类似那个比特币的场外交易。所谓场外交易，就是没有中心化撮合中介，交易双方自行议价成交。\n2.11.2.2 锚定机制 锚定机制是一种去中心化的抵押机制。我们刚才提到了比特股系统内置了多种货币，它锚定了多数法币，例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。\n系统内置货币的发行商是系统自身，发行给抵押了 bts 的用户，发行的数量是由抵押的代币数量决定的。你用 bts 抵押，然后换取 bitCNY。\n换句话说，任何持有 bts 的人可以用它来抵押生产系统的内置货币，例如 bitCNY，它的抵押规则要求两倍\b价值的 bts 进行抵押，由于有 2 倍价值的 bts 作为保障，所以定义 1 bitCNY = 1 元人民币的风险较低。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="img/avatar_2025.png" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Charles.Zhao</a></h1>
+            <h2 class="site-description">Stay hungry,Stay foolish.</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/zhenyu0324'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://zhenyu0324.github.io/" selected>English</option>
+                                
+                                    <option value="https://zhenyu0324.github.io/zh-cn/" >中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#211-比特股bts">2.11 比特股BTS</a>
+      <ol>
+        <li><a href="#2111-什么是比特股">2.11.1 什么是比特股</a></li>
+        <li><a href="#2112-比特股的两个机制">2.11.2 比特股的两个机制</a>
+          <ol>
+            <li><a href="#21121-人人承兑">2.11.2.1 人人承兑</a></li>
+            <li><a href="#21122-锚定机制">2.11.2.2 锚定机制</a></li>
+          </ol>
+        </li>
+        <li><a href="#2113-比特股的技术概览">2.11.3 比特股的技术概览</a></li>
+      </ol>
+    </li>
+    <li><a href="#212-引人瞩目的区块链项目eosiotacardano">2.12 引人瞩目的区块链项目：EOS、IOTA、Cardano</a>
+      <ol>
+        <li><a href="#2121-柚子-eos">2.12.1 柚子 EOS</a></li>
+        <li><a href="#2122-埃欧塔-iota">2.12.2 埃欧塔 IOTA</a></li>
+        <li><a href="#2123-卡尔达诺-cardano">2.12.3 卡尔达诺 Cardano</a></li>
+      </ol>
+    </li>
+    <li><a href="#213-国内区块链项目技术一览">2.13 国内区块链项目技术一览</a>
+      <ol>
+        <li><a href="#2131-小蚁-neo">2.13.1 小蚁 NEO</a></li>
+        <li><a href="#2132-元界-metaverse">2.13.2 元界 Metaverse</a></li>
+        <li><a href="#2133-量子链-qtum">2.13.3 量子链 QTUM</a></li>
+        <li><a href="#2134-比原链-bytom">2.13.4 比原链 Bytom</a></li>
+        <li><a href="#2134-本体网络-ontology-network">2.13.4 本体网络 Ontology Network</a></li>
+      </ol>
+    </li>
+    <li><a href="#214-联盟链和它的困境">2.14 联盟链和它的困境</a>
+      <ol>
+        <li><a href="#2141-超级账本">2.14.1 超级账本</a></li>
+        <li><a href="#2142-联盟链的困境">2.14.2 联盟链的困境</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" >
+                学习笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--4%E6%8A%80%E6%9C%AF%E4%B8%8B/">区块链学习--4技术下</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 02, 7072</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="211-比特股bts">2.11 比特股BTS
+</h2><p><strong>没有开放式智能合约的区块链项目——比特股</strong></p>
+<p>比特股发布于 2014 年，虽然没有引入智能合约的概念，但它提供了功能极为丰富的金融类工具，比特股上所有的金融合约都是事先在代码里写好的，所以说它的本身就是一个超级智能合约集合。</p>
+<h3 id="2111-什么是比特股">2.11.1 什么是比特股
+</h3><p>比特股是一个公开透明的、7*24 小时不间断运行的、基于区块链技术的去中心化交易平台。</p>
+<p>它兼具了区块链的优点，也是第一个有关稳定数字货币的尝试，目前比特股提供了若干核心的金融服务，例如支付、撮合交易、资产存托等服务。</p>
+<p>相较于传统的金融 IT 系统，它的服务器是由分散在世界各地的受托人（Delegated）维护的，即使其中一些人被攻击也不会导致整个系统的宕机。</p>
+<p>比特股目前全网在线的服务器有 27 个，由于 DPoS 共识算法提供了较好的交易吞吐性能，理论上比特股的 TPS 可达 10 万，这也是比特股在技术上区别于其他区块链的最显著特征。比特股较好的 TPS 其实也是为了它的功能服务的。</p>
+<h3 id="2112-比特股的两个机制">2.11.2 比特股的两个机制
+</h3><p>那么比特股是如何设计中心化交易所来避免上述风险的呢？</p>
+<p>比特股作为一个去中心化的交易所，它有两个机制可以避免上述的风险。</p>
+<p>第一、资金出入是由承兑商来支持的，人人都可以成为承兑商，也就是人人承兑；</p>
+<p>第二、锚定机制提供了稳定货币的出入金过程，锚定机制也保证了比特股的出入资金和交易撮合是分离的，避免了中心化交易平台的弊端。</p>
+<h4 id="21121-人人承兑">2.11.2.1 人人承兑
+</h4><p>人人承兑就是提供了从法币到系统内置货币的转换，比特股系统内置了多种货币，它锚定了多数法币。</p>
+<p>例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。而人人承兑货币其实就是提供了 bitCNY 和真正人民币之间的相互转换。</p>
+<p>它的机制上有点类似那个比特币的场外交易。所谓场外交易，就是没有中心化撮合中介，交易双方自行议价成交。</p>
+<h4 id="21122-锚定机制">2.11.2.2 锚定机制
+</h4><p>锚定机制是一种去中心化的抵押机制。我们刚才提到了比特股系统内置了多种货币，它锚定了多数法币，例如 bitCNY、bitUSD、bitEUR 等等，这些系统内置货币是可以与 CNY、USD、EUR 按照 1：1 兑换的。</p>
+<p>系统内置货币的发行商是系统自身，发行给抵押了 bts 的用户，发行的数量是由抵押的代币数量决定的。你用 bts 抵押，然后换取 bitCNY。</p>
+<p>换句话说，任何持有 bts 的人可以用它来抵押生产系统的内置货币，例如 bitCNY，它的抵押规则要求两倍价值的 bts 进行抵押，由于有 2 倍价值的 bts 作为保障，所以定义 1 bitCNY = 1 元人民币的风险较低。</p>
+<h3 id="2113-比特股的技术概览">2.11.3 比特股的技术概览
+</h3><p>比特股的核心代码是由 Cryptonomex 公司开源的石墨烯（Graphene）框架演变而来，它的主体代码是 C++ 编写的，里面使用了大量的 boost 库组件，如果你对石墨烯技术感兴趣，并且熟悉 C++，可以仔细研究一番。</p>
+<p>除了比特股核心，这里还有一套 Javascript 编写的 UI 产品，叫做 Bitshares-UI，Bitshares-UI 其实是一个轻量级的基于浏览器的钱包：比特股钱包，这个钱包将用户密钥存储在本地浏览器上，并且密钥是通过用户密码加密并储存在浏览器数据库。</p>
+<h2 id="212-引人瞩目的区块链项目eosiotacardano">2.12 引人瞩目的区块链项目：EOS、IOTA、Cardano
+</h2><h3 id="2121-柚子-eos">2.12.1 柚子 EOS
+</h3><p>EOS 全称 EOS.IO 软件，EOS 也是 EOS.IO 上的平台代币缩写，它暂时没有准确的中文翻译，中文社区把 EOS 叫柚子，这一点其实得益于 EOS 的发音与水果“柚子”相近。</p>
+<p>EOS 是一个以太坊的竞争型区块链，它提供了全新的区块链架构，使得去中心化平台水平扩容和垂直扩容都成为了可能。</p>
+<p>如果智能合约是程序，那么可以把 EOS 看成是一个超大的操作系统了，它为所有的程序，也就是智能合约提供了基本设施。例如账户、授权、数据库、异步通信等接口。</p>
+<p><strong>EOS 的瞩目之处</strong></p>
+<ol>
+<li>EOS 号称可以提供百万级 TPS 交易性能</li>
+<li>EOS 的链上治理机制：区块链宪法以及 21 个超级节点</li>
+</ol>
+<p>在 EOS 中，记账节点又被称作超级节点，EOS 一共有 21 个主节点，另外还有 100 个备选超级节点，这些超级节点完全是等价的。</p>
+<p>超级节点的基本职责包括了忠实打包交易、执行并验证智能合约、向全网广播有效区块以外，还多了一项职责：保障并促进 EOS 项目的发展。</p>
+<p>如何促进呢？BM 在 EOS 中强化了 DPoS 算法的投票机制，并首次提出了区块链宪法的概念。</p>
+<blockquote>
+<p>EOS.IO 应用使得区块链创建了一个点对点的服务条款协议或者绑定用户到一个合约，这都需要用户对其签名，简称“宪法”。</p>
+<p>宪法的内容定义了仅仅依靠代码无法在用户间履行义务，同时通过建立管辖权和可选的法律来解决相互间的争端。</p>
+<p>每个在网络广播的交易都必须将宪法的哈希值作为签名的一部分，从而显性地将签名者绑定在合约中。</p>
+<p>宪法还定义了人类可读意图的源代码协议。 这个意图是用来识别错误和功能之间的差异，当错误发生时，引导社区对什么是适当或不当修复。</p></blockquote>
+<p><strong>争议之处</strong></p>
+<p>Vitalik 针对 EOS 超级节点竞选发表过意见。他认为 21 个节点的 DPoS 虽然引入了治理结构，但也很容易受到选民和持币大户的操纵，最终导致“财阀统治型”的治理结构。</p>
+<p>在超级节点竞选过程中，某些节点为了获得更多的选票，承诺当选后可以给投票者分红，这在西方文化中是无法接受的，这一点似乎违背了 BM 设计 DPoS 的初衷，所以 BM 以及 EOS 团队都表示坚决反对。</p>
+<p>BM 对此也给了回应，BM 表示自己的目标是降低创建社区的准入门槛，并允许市场自由竞争来奖励最高效的社区以及惩罚最腐败的社区。</p>
+<h3 id="2122-埃欧塔-iota">2.12.2 埃欧塔 IOTA
+</h3><p>IOTA 是一个为了物联网（IoT) 而生的区块链项目。严格来说，IOTA 不是“区块链”，因为它没有区块，也不是链式结构。</p>
+<p>IOTA 提出了一种基于有向无环图（DAG）的分布式账本结构，这种结构 IOTA 将其命名为 The Tangle，探戈。</p>
+<p>任意交易 Tx-black 会引用过去的两条交易记录，这样被引用的交易 Tx-purple 相当于有了一次确认，间接地证明了合法性，随着一次又一次的被引用，Tx-purple 会转变成 Tx-green。</p>
+<ol>
+<li>Tx-black 相当于图种的黑色图块，代表未确认的交易；</li>
+<li>Tx-purple 相当于紫色图块，代表已确认但还未成熟的交易；</li>
+<li>Tx-green 相当于是绿色图块，代表已确认已成熟的交易，是可信的。</li>
+</ol>
+<p>也就是说，我们发送交易的目标是成本绿色部分的交易，成为绿色部分的交易，可信度是可以计算的，面对不同的交易场景，可信度可以设置为 51%，90% 或者百分之百。</p>
+<p>IOTA 上的共识算法叫做 MCMC 算法，它可以任意选择黑色部分的两笔交易，进行引用。</p>
+<p>我们回到 DAG 的结构中，我们发现每一个绿色的交易都会有一条从黑色起始位置通往它的路径，那么你这笔交易的可信程度就可以很容易计算。</p>
+<p>例如我们执行 MCMC 算法 N 次，这笔交易被全网接受的概率就是 M/N，其中 M 就是能从底部通往这笔交易的数量。</p>
+<h3 id="2123-卡尔达诺-cardano">2.12.3 卡尔达诺 Cardano
+</h3><p>卡尔达诺（Cardano）也是一个正在开发中的新一代区块链智能合约平台。</p>
+<p>卡尔达诺项目最大的特色是由理论研究主导，严格采用数学形式化验证的来证明严谨、安全性的区块链。</p>
+<p>卡尔达诺认为现阶段基础公链在无论在可规模化性（Scalability）、可互操作性（Interoperability）和可持续发展性（Sustainability）均存在不足，卡尔达诺希望进行概念和技术上的创新，最终解决上述三个方面问题。</p>
+<p>卡尔达诺的团队认为目前区块链面临着两个比较突出的问题：</p>
+<ol>
+<li>区块链协议的升级将会导致区块链分叉</li>
+<li>区块链的水平扩容和垂直扩容能力不足。</li>
+</ol>
+<p>所以 Cardano 提出了分层架构理念，这似乎与传统 IT 架构模式：分层式架构模式有点像，卡尔达诺由两个层次组成。</p>
+<ol>
+<li>Settlement Layer 清算层：卡尔达诺的代币 ADA 在该层流动，是整个系统的支付和清算的基础。</li>
+<li>Computation Layer 计算层：卡尔达诺将在计算层提供智能合约、身份认证、消息通信等等功能。</li>
+</ol>
+<p>相比于概念创新，卡尔达诺的团队研究了一种被命名为 Ouroboros 的算法，它其实也是 PoS 共识算法的变种，不同的是卡尔达诺团队为此提供了数学形式化证明，证明了它是高效、安全的共识算法。</p>
+<h2 id="213-国内区块链项目技术一览">2.13 国内区块链项目技术一览
+</h2><h3 id="2131-小蚁-neo">2.13.1 小蚁 NEO
+</h3><p>我们以前讲到过，NEO 的前身是小蚁，小蚁最早在 2015 年发起，它在 2017 年中正式更名为 NEO。</p>
+<p>NEO 项目一共经历过两次 ICO，第一次 ICO 是项目创立，第二次 ICO 是项目更名后的品牌升级。可以说通过 NEO 项目的起起落落见证了整个国内区块链项目的发展。</p>
+<p><strong>设计思路</strong></p>
+<p>NEO 是一个开放式智能经济平台，它提供了数字身份、数字资产、智能合约三种核心元素用来支持 NEO 智能经济生态。</p>
+<ul>
+<li>
+<p>数字资产：数字资产是以电子数据的形式存在的可编程控制的资产，NEO 在底层也直接支持类似 ERC20 的 Token 机制，所以用户可以在 NEO 上自行注册登记资产、交易和流转。它也通过数字身份解决与实体资产的映射关系，用户通过正规的数字身份所注册登记的资产受到法律的保护。</p>
+</li>
+<li>
+<p>数字身份：数字身份是指以电子数据形式存在的个人、组织、事物的身份信息，NEO 将实现一套兼容 X.509 的数字身份标准以及支持 Web Of Trust 式的点对点的证书签发模式。</p>
+</li>
+<li>
+<p>智能合约：NEO 上的智能合约与以太坊不同，叫做 NeoContract。这套智能合约体系的最大特点是直接支持 C#、Java 等主流编程语言，所以开发者可以在熟悉的 IDE 环境（Visual Studio、Eclipse 等）中进行智能合约的开发、调试、编译。</p>
+</li>
+</ul>
+<p><strong>技术特点</strong></p>
+<ul>
+<li>
+<p>NEO 采用了 PBFT 类的共识算法。NEO 的修改版为 dBFT 共识算法，这里 d 为 Delegated，就是代理人的意思。所有的 PBFT 类算法都有个特性，就是通信复杂度是节点数量的平方次，例如 7 个节点出一次块至少通信 72 次，对网络带宽要求很高。所以记账节点一般不会很多，它带来的优势就是 TPS 较高，并且不会分叉。</p>
+</li>
+<li>
+<p>自成一派的智能合约体系。这里降低了智能合约开发者的局限性，不必使用 Solidity 语言开发。</p>
+</li>
+<li>
+<p>C# 技术生态。NEO 的主要实现都是 C# 语言编写的，得益于.Net Core 的开源，NEO 的技术生态也在一直扩张。</p>
+</li>
+<li>
+<p>Token 体系。提供了等价于以太坊 ERC20 的 NEP-5 Token 体系。</p>
+</li>
+</ul>
+<h3 id="2132-元界-metaverse">2.13.2 元界 Metaverse
+</h3><p>元界是一个关注社会和商业需求的区块链项目，目标是构建以数字资产（Metavase Smart Token）和数字身份 (Avatar) 为基础新型区块链生态，这种生态会为人类社会带来深刻的变革。</p>
+<p>总体思路是总结人与人、人与资产之间的关系，把总结后的通用需求抽象成模型，然后做到区块链底层供使用者方便使用，这种方式我们叫做 BISC（Buit-in Smart Contract）内置智能合约，它可以降低商业应用在开发和使用过程中的技术风险。</p>
+<h3 id="2133-量子链-qtum">2.13.3 量子链 QTUM
+</h3><p>量子链致力于开发比特币和以太坊之外的新型区块链生态，它的目标是通过自行设计，让比特币和以太坊完美地融合在一起，并通过智能合约为人们提供 Dapp 平台。</p>
+<p>除此之外，量子链还提出了移动端 Dapp 策略，通过引入身份机制和 Data-feed 链外数据达到合规性要求，最终通过推动 Dapp 的普及，让传统互联网企业可以将量子链作为一个新的应用平台进行尝试。</p>
+<p>量子链关注利用区块链技术进行价值传输，首次提出了 VTP——Value Transfering Protocal，价值传输协议的概念。这里的价值传输协议是对标 HTTP、SMTP、POP3、SSH 等协议的。</p>
+<p>量子链认为，在比特币之前人们一直无法在不借助第三方的情况下进行较好的点对点价值转移，比特币是运行在互联网上的一个 VTP 协议，随着区块链技术的发展，人与人、人与信息的交互更加多样化，未来会有更多的实体会被数字化（Tokenization）。</p>
+<p>这里所说的就是资产登记，被登记完之后，肯定还会面临价值流转的问题。量子链从技术出发，提供了第一个结合比特币 UTXO 和以太坊 EVM 的区块链技术生态区来解决上述问题。</p>
+<p><strong>技术特点</strong></p>
+<ul>
+<li>
+<p>与以太坊智能合约体系高度兼容的技术栈。</p>
+</li>
+<li>
+<p>共识算法使用了 PoS3.0 算法，属于经典 PoS 算法。</p>
+</li>
+<li>
+<p>提出了主控智能合约和普通智能合约的概念，通过主控合约可以引入链外数据 Data-feed。</p>
+</li>
+<li>
+<p>通过主控合约可以提供合规性需求。</p>
+</li>
+<li>
+<p>提供了等价于以太坊 ERC20 的 QRC20 Token 体系。</p>
+</li>
+</ul>
+<h3 id="2134-比原链-bytom">2.13.4 比原链 Bytom
+</h3><p>比原链是一种多元的资产交互协议。简单来理解也是做数字资产的，不过换了种说法，理念稍不同。比原链认为在区块链上存在两种不同形态资产。</p>
+<ol>
+<li>比特资产：是指区块链上原生的数字货币、数字资产，例如比特币、以太币；</li>
+<li>原子资产：对应到现实世界的资产，例如权证、权益、股息、债券、情报资讯、预测信息等。</li>
+</ol>
+<p>人们可以通过比原链进行对上述两种资产进行登记、交换、对赌、甚至基于合约的更具复杂性的交互操作。目的是连通原子世界与比特世界，促进资产在两个世界间的交互和流转。</p>
+<p><strong>技术特点</strong></p>
+<ul>
+<li>
+<p>共识算法是 PoW，属于忠实的比特币 PoW 党。</p>
+</li>
+<li>
+<p>挖矿算法采用对人工智能 ASIC 芯片友好型算法，在哈希过程中引入矩阵和卷积计算，使得矿机在闲置或被淘汰后，可用于 AI 硬件加速服务，从而产生额外的社会效益。</p>
+</li>
+<li>
+<p>兼容比特币 UTXO 模型。</p>
+</li>
+<li>
+<p>默认提供了基于 HD 的主私钥账户体系。</p>
+</li>
+<li>
+<p>加密模块提供了基于国密 SM2、SM3 标准算法。</p>
+</li>
+<li>
+<p>植入了隔离见证设计。</p>
+</li>
+</ul>
+<h3 id="2134-本体网络-ontology-network">2.13.4 本体网络 Ontology Network
+</h3><p>本体网络是原 NEO 项目组成员李俊创立的，不过与 NEO 是完全独立的项目，随着技术大咖季宙栋的加入，市值跃入 TOP20。</p>
+<p>本体网络是一个主打构建分布式信任体系的区块链项目，支持多链、多系统融合的协议网络，不同的链和不同的系统都可以通过本体的信任协议进行协作。</p>
+<p>本体包含独立的分布式账本、P2P 网络协议、模块化的共识协议组，模块化的智能合约机制几个主要模块。</p>
+<p>本体的产品形式是 ONTO，ONTO 是基于本体的综合客户端产品、区块链搜索引擎和区块链体系的入口。</p>
+<p>ONTO 将帮助用户实现包括数字身份管理、数字资产管理、分布式数据交换等综合性功能，ONTO 可以将数字身份与现实身份进行映射关联，用户可以利用这款产品建立自己的数字身份和多维的身份画像，通过密码学算法实现隐私保护。</p>
+<p>本体主要提供了以下三种协议。</p>
+<ol>
+<li>
+<p>提供分布式身份管理框架 （ONT ID），一个基于 W3C 的 DID 规范构建的去中心化的身份标识协议。</p>
+</li>
+<li>
+<p>提供分布式数据交易协议 （ONT DATA），用于构建去中心化数据交易应用框架。</p>
+</li>
+<li>
+<p>提供了信用评分协议（ONT Scores)，支持建立开发不同的声誉评价逻辑，提供评级授权与审计功能。
+支撑这些协议的是 ONT 公链，以及 ONT 区块链高性能可定制化框架。</p>
+</li>
+</ol>
+<p><strong>技术特点</strong></p>
+<ul>
+<li>
+<p>基于账户模型，并保留 UTXO 模型。</p>
+</li>
+<li>
+<p>共识算法采用 VBFT，它是结合 PoS、VRF(Verifiable Random Function) 和 BFT 的全新共识算法。</p>
+</li>
+<li>
+<p>模块化的智能合约，提供 WASM 和 NEO VM 两种。</p>
+</li>
+<li>
+<p>通过 FPGA 加速计算密集型的业务模块。</p>
+</li>
+<li>
+<p>多层跨链的结构设计。</p>
+</li>
+<li>
+<p>提供链上搜索引擎。</p>
+</li>
+</ul>
+<h2 id="214-联盟链和它的困境">2.14 联盟链和它的困境
+</h2><p>联盟链源自于 Vitalik 对区块链的概念分类，是他第一次提出了联盟链的说法，联盟链的英文是 Consortium Blockchain。</p>
+<p>所谓联盟链，就是这个区块链具有准入许可，不像公链，任何人都可以随时进入，准入许可意味着候选节点进入区块链时需要得到已经在网络中的节点的许可。</p>
+<p>所以联盟链也叫做许可链，也就是 Permisson Chain，这个叫法在国外比较常见。联盟链的节点数通常不多，维护成本相比公链要低。</p>
+<p>有关联盟链与公链的概念区别，它们的区别仅仅是看新加入的节点是否要经过全网中其他节点的许可，这决定了一个区块链是否开放，开放程度决定了项目生态的大小，这也是最直观的区别。</p>
+<p>联盟链的技术框架很多，其中又以超级账本项目下的技术框架最为知名，应用也最为广泛，它基本代表了联盟链，所以，今天我们就重点来介绍一下超级账本项目。</p>
+<h3 id="2141-超级账本">2.14.1 超级账本
+</h3><p>超级账本在 2015 年年底被发起，吸纳了众多重量级公司加入，它们包括大家耳熟能详的 IBM、Intel、Accenture、日立、JP 摩根、Digital Asset Holdings 等公司。</p>
+<p>超级账本的代码和组织结构都结构清晰、层次分明。可以说无论从声势还是实力上来说，它都可以完胜公链。</p>
+<p>主要技术框架</p>
+<ol>
+<li>Hyperledger Fabric</li>
+</ol>
+<p>没有中文名，暂译【纺布克】，是 IBM 提供的，超级账本第一个项目。</p>
+<ol start="2">
+<li>Hyperledger Sawtooth</li>
+</ol>
+<p>中文名【锯齿湖】，Intel 提供，是超级账本第二个项目。</p>
+<ol start="3">
+<li>Hyperledger Iroha</li>
+</ol>
+<p>没有中文名，暂译【伊路哈】，由 Soramitsu 提供。</p>
+<ol start="4">
+<li>Hyperledger Burrow</li>
+</ol>
+<p>没有中文名，暂译【掘地者】，由 Monax 提供。 掘地者提供了一个模块化的区块链客户端，提供了权限管理的智能合约虚拟机，它部分建立在以太坊虚拟机（EVM）规范的基础上。</p>
+<ol start="5">
+<li>Hyperledger Indy</li>
+</ol>
+<p>有中文名，暂译【因迪】。 因迪是特别为去中心化的身份而建立的一种分布式账本。</p>
+<h3 id="2142-联盟链的困境">2.14.2 联盟链的困境
+</h3><p>超级账本系列技术框架很好地诠释了分布式账本技术走到极致是什么样子的。</p>
+<p>几乎所有的超级账本项目都是技术主导，技术的强大也让他们忽视了市场的真实需求。</p>
+<p>联盟链是少数节点之间的活动，它往往退化成微观经济中的博弈，所以利用联盟链构建少数节点之间的协作系统不是一个技术问题，而是变成了如何构造一个稳定的微观经济模型使得协作者可以达成帕累托改进，在这里，技术变成了次要的。</p>
+<p>再好的技术工具如果不结合有效的激励和反馈机制，那么联盟链的应用落地过程似乎变得异常艰难，它很可能最后沦落为普通的分布式系统，这个分布式系统仍然是中心化的。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--7%E4%BB%8E%E4%B8%9A%E5%8C%BA%E5%9D%97%E9%93%BE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">区块链学习--7从业区块链</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--6%E5%8C%BA%E5%9D%97%E9%93%BE%E4%B8%8E%E5%BD%93%E4%B8%8B%E4%BA%92%E8%81%94%E7%BD%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">区块链学习--6区块链与当下互联网</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--5%E6%95%B0%E5%AD%97%E8%B4%A7%E5%B8%81%E4%B8%8E%E6%95%B0%E5%AD%97%E8%B5%84%E4%BA%A7/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">区块链学习--5数字货币与数字资产</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--3%E6%8A%80%E6%9C%AF%E4%B8%AD/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">区块链学习--3技术中</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0--2%E6%8A%80%E6%9C%AF%E4%B8%8A/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">区块链学习--2技术上</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2025 超级阵雨工作室
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
